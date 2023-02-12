@@ -76,6 +76,22 @@
             </tr>
             </tbody>
         </table>
+
+        <div class="row sign-block mt-5">
+            <div class="col-6">
+                Врач дерматопатолог:
+            </div>
+            <div class="col-6">
+                {{ patient.doctor }}
+            </div>
+        </div>
+
+        <div class="row sign-block mt-3 mb-5">
+            <div class="col-6">
+                Дата:
+            </div>
+            <div class="col-6">{{currentDate}}</div>
+        </div>
     </div>
 </template>
 
@@ -85,13 +101,16 @@ import AuthLayout from "../../Layouts/AuthLayout.vue";
 
 export default {
     components: {Head, Link},
-    props: ['patient'],
+    props: ['patient', 'currentDate'],
     layout: AuthLayout
 }
 </script>
 
 <style scoped>
-@page { size: auto;  margin: 0 50px; }
+@page {
+    size: auto;
+    margin: 0 50px;
+}
 
 .page-title {
     font-size: 20px;
@@ -105,6 +124,10 @@ export default {
 .back-to-show {
     margin: 30px;
     display: block;
+}
+
+.sign-block {
+    font-size: 20px;
 }
 
 @media print {

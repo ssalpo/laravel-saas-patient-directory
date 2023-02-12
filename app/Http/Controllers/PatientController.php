@@ -76,7 +76,7 @@ class PatientController extends Controller
     public function edit(Patient $patient)
     {
         $doctors = Doctor::all()->transform(fn($doctor) => ['id' => $doctor->id, 'name' => $doctor->name]);
-        $categories = Category::all()->transform(fn($category) => ['id' => $category->id, 'name' => $category->name]);
+        $categories = Category::all();
 
         return inertia('Patients/Edit', [
             'id' => $patient->id,
@@ -119,7 +119,26 @@ class PatientController extends Controller
 
     public function print(Patient $patient)
     {
-        return inertia('Patients/Print', compact('patient'));
+        $patient->load('doctor', 'categories');
+
+        return inertia('Patients/Print', [
+            'currentDate' => date('d.m.Y'),
+            'patient' => [
+                'id' => $patient->id,
+                'name' => $patient->name,
+                'birthday' => $patient->birthday->format('d.m.Y'),
+                'gender' => $patient->gender,
+                'sampling_date' => $patient->sampling_date->format('d.m.Y H:i'),
+                'sample_receipt_date' => $patient->sample_receipt_date->format('d.m.Y H:i'),
+                'anamnes' => $patient->anamnes,
+                'doctor' => $patient->doctor->name,
+                'case_numbers' => $patient->case_numbers,
+                'categories' => $patient->categories->implode('name', ', '),
+                'microscopic_description' => $patient->microscopic_description,
+                'diagnosis' => $patient->diagnosis,
+                'note' => $patient->note,
+            ]
+        ]);
     }
 
     private function uploadPhotos($patient, $request)
