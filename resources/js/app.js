@@ -11,7 +11,6 @@ import DefaultLayout from './Layouts/DefaultLayout.vue';
 InertiaProgress.init()
 
 createInertiaApp({
-    title: title => `${title} - DotnetDevs`,
     resolve: (name) => {
         let page = resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'));
 
