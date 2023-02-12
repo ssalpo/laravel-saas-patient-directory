@@ -156,7 +156,7 @@ export default {
             },
             form: useForm({
                 name: this.patient?.name,
-                birthday: this.patient?.birthday || '12.02.2023',
+                birthday: this.patient?.birthday || '',
                 gender: this.patient?.gender !== undefined ? this.patient.gender : 1,
                 sampling_date: this.patient?.sampling_date,
                 sample_receipt_date: this.patient?.sample_receipt_date,

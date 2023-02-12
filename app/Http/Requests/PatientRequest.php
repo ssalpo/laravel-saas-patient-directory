@@ -43,9 +43,9 @@ class PatientRequest extends FormRequest
     {
         return $this->merge([
             'gender' => $this->gender === 1,
-            'birthday' => Carbon::parse($this->birthday)->format('Y-m-d'),
-            'sampling_date' => Carbon::parse($this->sampling_date)->format('Y-m-d H:i'),
-            'sample_receipt_date' => Carbon::parse($this->sample_receipt_date)->format('Y-m-d H:i'),
+            'birthday' => $this->birthday ? Carbon::parse($this->birthday)->format('Y-m-d') : null,
+            'sampling_date' => $this->sampling_date ? Carbon::parse($this->sampling_date)->format('Y-m-d H:i') : null,
+            'sample_receipt_date' => $this->sample_receipt_date ? Carbon::parse($this->sample_receipt_date)->format('Y-m-d H:i') : null,
         ]);
     }
 }
