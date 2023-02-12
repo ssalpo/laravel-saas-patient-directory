@@ -42,7 +42,7 @@ class PatientRequest extends FormRequest
     protected function prepareForValidation()
     {
         return $this->merge([
-            'gender' => $this->gender === 1,
+            'gender' => $this->gender == 1,
             'birthday' => $this->birthday ? Carbon::parse($this->birthday)->format('Y-m-d') : null,
             'sampling_date' => $this->sampling_date ? Carbon::parse($this->sampling_date)->format('Y-m-d H:i') : null,
             'sample_receipt_date' => $this->sample_receipt_date ? Carbon::parse($this->sample_receipt_date)->format('Y-m-d H:i') : null,
