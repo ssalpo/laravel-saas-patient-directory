@@ -83,7 +83,7 @@ class PatientController extends Controller
                 'sampling_date' => $patient->sampling_date->format('d.m.Y H:i'),
                 'sample_receipt_date' => $patient->sample_receipt_date->format('d.m.Y H:i'),
                 'anamnes' => $patient->anamnes,
-                'doctor_id' => $patient->doctor_id,
+                'doctor' => $patient->doctor_id,
                 'categories' => $patient->categories
             ]]);
     }
@@ -138,7 +138,7 @@ class PatientController extends Controller
             return Doctor::findOrFail($doctor)->id;
         }
 
-        return Doctor::where('name', 'LIKE', '%' . $doctor . '%')()->firstOrNew(['name' => $doctor])->id;
+        return Doctor::where('name', 'LIKE', '%' . $doctor . '%')->firstOrCreate(['name' => $doctor])->id;
     }
 
     private function uploadPhotos($patient, $request)
