@@ -108,6 +108,11 @@
                                 </div>
                             </div>
 
+                            <div v-if="errors['categories.0.code'] || errors['categories.0.code']"
+                                 class="invalid-feedback-simple">
+                                {{ errors['categories.0.code'] || errors['categories.0.code'] }}
+                            </div>
+
                             <div>
                                 <button type="button" @click="addCategory" class="btn btn-sm btn-info mt-2">
                                     <i class="fa fa-plus"></i>
@@ -117,14 +122,31 @@
                         <div class="form-group">
                             <label>Направивший врач</label>
 
-                            <select class="form-control" :class="{'is-invalid': errors.doctor_id}"
-                                    v-model="form.doctor_id">
-                                <option :value="null">Не выбран</option>
-                                <option v-for="doctor in doctors" :value="doctor.id">{{ doctor.name }}</option>
-                            </select>
+                            <div v-if="!newDoctor">
+                                <select class="form-control" :class="{'is-invalid': errors.doctor}"
+                                        v-model="form.doctor">
+                                    <option :value="null">Не выбран</option>
+                                    <option v-for="doctor in doctors" :value="doctor.id">{{ doctor.name }}</option>
+                                </select>
 
-                            <div v-if="errors.doctor_id" class="error invalid-feedback">
-                                {{ errors.doctor_id }}
+                                <button @click="toggleNewDoctor" type="button" class="btn btn-sm btn-link">
+                                    + Новый врач
+                                </button>
+                            </div>
+
+                            <div v-else>
+                                <input type="text"
+                                       v-model.trim="form.doctor"
+                                       class="form-control"
+                                       placeholder="Введите имя доктора">
+
+                                <button @click="toggleNewDoctor" type="button" class="btn btn-sm btn-link">
+                                    Выбрать из списка
+                                </button>
+                            </div>
+
+                            <div v-if="errors.doctor" class="invalid-feedback-simple">
+                                {{ errors.doctor }}
                             </div>
                         </div>
                         <div class="form-group">
@@ -153,6 +175,8 @@
                         <button type="submit" :disabled="form.processing" class="btn btn-primary">
                             {{ id ? 'Сохранить' : 'Добавить' }}
                         </button>
+
+                        <Link :href="route('patients.index')" class="btn btn-default ml-2">Отменить</Link>
                     </div>
                 </form>
             </div>
@@ -168,6 +192,7 @@ export default {
     components: {DateTimePicker, Head, Link},
     data() {
         return {
+            newDoctor: false,
             birthdayConfig: {
                 locale: 'ru',
                 format: 'DD.MM.YYYY'
@@ -184,7 +209,7 @@ export default {
                 sampling_date: this.patient?.sampling_date,
                 sample_receipt_date: this.patient?.sample_receipt_date,
                 anamnes: this.patient?.anamnes,
-                doctor_id: this.patient?.doctor_id,
+                doctor: this.patient?.doctor_id,
                 categories: this.patient?.categories || [],
                 photos: this.patient?.photos || [],
             }),
@@ -209,6 +234,10 @@ export default {
         },
         removeCategory(index) {
             this.form.categories.splice(index, 1);
+        },
+        toggleNewDoctor() {
+            this.newDoctor = !this.newDoctor;
+            this.form.doctor = null
         }
     }
 }

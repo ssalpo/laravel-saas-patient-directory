@@ -34,7 +34,7 @@ class PatientController extends Controller
     public function store(PatientRequest $request)
     {
         $patient = DB::transaction(function () use ($request) {
-            $patient = Patient::create($request->validated());
+            $patient = Patient::create($request->validated() + ['doctor_id' => $this->findDoctorOrCreateByName($request->doctor)]);
 
             $patient->generateCaseNumbers();
 
@@ -91,7 +91,7 @@ class PatientController extends Controller
     public function update(Patient $patient, PatientRequest $request)
     {
         $patient = DB::transaction(function () use ($patient, $request) {
-            $patient->update($request->validated());
+            $patient->update($request->validated() + ['doctor_id' => $this->findDoctorOrCreateByName($request->doctor)]);
 
             $patient->generateCaseNumbers();
 
@@ -130,6 +130,15 @@ class PatientController extends Controller
                 'note' => $patient->note,
             ]
         ]);
+    }
+
+    private function findDoctorOrCreateByName(int|string $doctor)
+    {
+        if (is_numeric($doctor)) {
+            return Doctor::findOrFail($doctor)->id;
+        }
+
+        return Doctor::create(['name' => $doctor])->id;
     }
 
     private function uploadPhotos($patient, $request)

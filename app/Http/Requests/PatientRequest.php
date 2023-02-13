@@ -31,7 +31,7 @@ class PatientRequest extends FormRequest
             'sampling_date' => 'required|date_format:Y-m-d H:i',
             'sample_receipt_date' => 'required|date_format:Y-m-d H:i',
             'anamnes' => 'nullable|string',
-            'doctor_id' => 'required|exists:doctors,id',
+            'doctor' => 'required',
             'categories' => 'required|array',
             'categories.*.code' => 'required|string|min:2|max:5',
             'categories.*.description' => 'required|string|min:2|max:255',

@@ -44,7 +44,7 @@
                         </tr>
                         <tr>
                             <td>Номер медицинской записи</td>
-                            <td>что это?</td>
+                            <td>-</td>
                         </tr>
                         <tr>
                             <td>Дата/время забора образца</td>
@@ -58,6 +58,12 @@
                             <td>Номер кейса</td>
                             <td>
                                 <div v-for="case_number in patient.case_numbers">{{ case_number }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Направивший врач</td>
+                            <td>
+                                {{patient.doctor}}
                             </td>
                         </tr>
                         </tbody>
