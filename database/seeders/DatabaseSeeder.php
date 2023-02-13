@@ -24,6 +24,5 @@ class DatabaseSeeder extends Seeder
          \App\Models\Doctor::factory(10)->create();
 
         $this->call(UsersTableSeeder::class);
-        $this->call(CategoriesTableSeeder::class);
     }
 }

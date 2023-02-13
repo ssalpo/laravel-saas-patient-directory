@@ -33,7 +33,8 @@ class PatientRequest extends FormRequest
             'anamnes' => 'nullable|string',
             'doctor_id' => 'required|exists:doctors,id',
             'categories' => 'required|array',
-            'categories.*' => 'required|integer|exists:categories,id',
+            'categories.*.code' => 'required|string|min:2|max:5',
+            'categories.*.description' => 'required|string|min:2|max:255',
             'photos' => 'nullable|array',
             'photos.*' => 'required|mimes:jpg,jpeg,png|max:200000'
         ];

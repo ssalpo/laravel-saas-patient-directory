@@ -24,9 +24,6 @@ Route::middleware('auth:sanctum')->group(static function () {
     Route::get('/patients/{patient}/print', [PatientController::class, 'print'])->name('patients.print');
     Route::resource('patients', PatientController::class)->except('index');
 
-    // Categories
-    Route::resource('categories', CategoryController::class);
-
     // Doctors
     Route::resource('doctors', DoctorController::class);
 

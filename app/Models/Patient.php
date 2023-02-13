@@ -18,6 +18,7 @@ class Patient extends Model
         'sampling_date',
         'sample_receipt_date',
         'anamnes',
+        'categories',
         'doctor_id',
         'microscopic_description',
         'diagnosis',
@@ -26,6 +27,7 @@ class Patient extends Model
 
     protected $casts = [
         'case_numbers' => 'array',
+        'categories' => 'array',
         'birthday' => 'date',
         'sampling_date' => 'datetime',
         'sample_receipt_date' => 'datetime',
@@ -40,6 +42,11 @@ class Patient extends Model
         );
     }
 
+    public function getCategoriesFormattedAttribute()
+    {
+        return array_map(fn($c) => sprintf('%s (%s)', $c['code'], $c['description']), $this->categories);
+    }
+
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);
@@ -48,11 +55,6 @@ class Patient extends Model
     public function photos()
     {
         return $this->morphMany(Photo::class, 'photoable');
-    }
-
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class);
     }
 
     public function generateCaseNumbers(): array
@@ -64,7 +66,7 @@ class Patient extends Model
                 'D%s/%s %s',
                 substr(date('Y'), -2),
                 sprintf("%02d", $this->id),
-                $category->name
+                $category['code']
             );
         }
 

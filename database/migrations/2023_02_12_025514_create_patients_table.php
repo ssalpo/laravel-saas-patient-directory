@@ -22,6 +22,7 @@ return new class extends Migration
             $table->dateTime('sampling_date')->comment('Дата и время забора образца');
             $table->dateTime('sample_receipt_date')->comment('Дата и время получения образца');
             $table->text('anamnes')->nullable();
+            $table->jsonb('categories')->nullable();
             $table->foreignId('doctor_id')->constrained();
             $table->text('microscopic_description')->nullable()->comment('Микроскопическое описание');
             $table->text('diagnosis')->nullable()->comment('Диагноз');

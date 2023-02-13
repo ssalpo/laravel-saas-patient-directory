@@ -19,11 +19,6 @@
                         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Управление</a>
                         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="left: 0px; right: inherit;">
                             <li>
-                                <Link :href="route('categories.index')" class="nav-link">
-                                    Категории
-                                </Link>
-                            </li>
-                            <li>
                                 <Link :href="route('doctors.index')" class="nav-link">
                                     Врачи
                                 </Link>

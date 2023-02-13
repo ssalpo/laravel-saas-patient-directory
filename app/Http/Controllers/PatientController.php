@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PatientRequest;
 use App\Http\Requests\PatientResultRequest;
-use App\Models\Category;
 use App\Models\Doctor;
 use App\Models\Patient;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PatientController extends Controller
@@ -29,17 +27,14 @@ class PatientController extends Controller
     public function create()
     {
         $doctors = Doctor::all()->transform(fn($doctor) => ['id' => $doctor->id, 'name' => $doctor->name]);
-        $categories = Category::all();
 
-        return inertia('Patients/Edit', compact('doctors', 'categories'));
+        return inertia('Patients/Edit', compact('doctors'));
     }
 
     public function store(PatientRequest $request)
     {
         $patient = DB::transaction(function () use ($request) {
             $patient = Patient::create($request->validated());
-
-            $patient->categories()->sync($request->categories);
 
             $patient->generateCaseNumbers();
 
@@ -64,7 +59,7 @@ class PatientController extends Controller
                 'sample_receipt_date' => $patient->sample_receipt_date->format('d.m.Y H:i'),
                 'anamnes' => $patient->anamnes,
                 'doctor' => $patient->doctor->name,
-                'categories' => $patient->categories->implode('name', ', '),
+                'categories' => implode(', ', $patient->categories_formatted),
                 'microscopic_description' => $patient->microscopic_description,
                 'diagnosis' => $patient->diagnosis,
                 'note' => $patient->note,
@@ -76,12 +71,10 @@ class PatientController extends Controller
     public function edit(Patient $patient)
     {
         $doctors = Doctor::all()->transform(fn($doctor) => ['id' => $doctor->id, 'name' => $doctor->name]);
-        $categories = Category::all();
 
         return inertia('Patients/Edit', [
             'id' => $patient->id,
             'doctors' => $doctors,
-            'categories' => $categories,
             'patient' => [
                 'id' => $patient->id,
                 'name' => $patient->name,
@@ -91,7 +84,7 @@ class PatientController extends Controller
                 'sample_receipt_date' => $patient->sample_receipt_date->format('d.m.Y H:i'),
                 'anamnes' => $patient->anamnes,
                 'doctor_id' => $patient->doctor_id,
-                'categories' => $patient->categories->pluck('id')
+                'categories' => $patient->categories
             ]]);
     }
 
@@ -99,8 +92,6 @@ class PatientController extends Controller
     {
         $patient = DB::transaction(function () use ($patient, $request) {
             $patient->update($request->validated());
-
-            $patient->categories()->sync($request->categories);
 
             $patient->generateCaseNumbers();
 
@@ -119,7 +110,7 @@ class PatientController extends Controller
 
     public function print(Patient $patient)
     {
-        $patient->load('doctor', 'categories');
+        $patient->load('doctor');
 
         return inertia('Patients/Print', [
             'currentDate' => date('d.m.Y'),
@@ -133,7 +124,7 @@ class PatientController extends Controller
                 'anamnes' => $patient->anamnes,
                 'doctor' => $patient->doctor->name,
                 'case_numbers' => $patient->case_numbers,
-                'categories' => $patient->categories->implode('name', ', '),
+                'categories' => implode(', ', $patient->categories_formatted),
                 'microscopic_description' => $patient->microscopic_description,
                 'diagnosis' => $patient->diagnosis,
                 'note' => $patient->note,
