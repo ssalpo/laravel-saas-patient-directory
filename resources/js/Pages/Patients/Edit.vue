@@ -209,7 +209,7 @@ export default {
                 sampling_date: this.patient?.sampling_date,
                 sample_receipt_date: this.patient?.sample_receipt_date,
                 anamnes: this.patient?.anamnes,
-                doctor: this.patient?.doctor_id,
+                doctor: this.patient?.doctor || null,
                 categories: this.patient?.categories || [],
                 photos: this.patient?.photos || [],
             }),
