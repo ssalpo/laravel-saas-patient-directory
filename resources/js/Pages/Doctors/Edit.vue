@@ -30,7 +30,10 @@
 
                     <div class="card-footer">
                         <button type="submit" :disabled="form.processing" class="btn btn-primary">
-                            {{ doctor?.id ? 'Сохранить' : 'Добавить' }}
+                            <span v-if="form.processing">
+                                <i class="fas fa-spinner fa-spin"></i> Сохранение...
+                            </span>
+                            <span v-else>{{ doctor?.id ? 'Сохранить' : 'Добавить' }}</span>
                         </button>
 
                         <Link :href="route('doctors.index')" class="btn btn-default ml-2">Отменить</Link>
