@@ -138,7 +138,7 @@ class PatientController extends Controller
             return Doctor::findOrFail($doctor)->id;
         }
 
-        return Doctor::create(['name' => $doctor])->id;
+        return Doctor::where('name', 'LIKE', '%' . $doctor . '%')()->firstOrNew(['name' => $doctor])->id;
     }
 
     private function uploadPhotos($patient, $request)
