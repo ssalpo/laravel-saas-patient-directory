@@ -13,38 +13,53 @@
         <div class="container">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">
-                        <input type="text" v-model="search.query" class="form-control form-control-sm"
-                               placeholder="Ф.И.О, код" />
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" v-model="search.query" class="form-control form-control-sm"
+                                   placeholder="Ф.И.О, код"/>
+                        </div>
+                        <div class="col-6">
+                            <select v-model="search.status" class="form-control form-control-sm">
+                                <option :value="null">Выберите статус</option>
+                                <option :value="1">На проверке</option>
+                                <option :value="2">Проверено</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th style="width: 10px">ID</th>
-                            <th>Ф.И.О</th>
-                            <th>Номер кейса</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="patient in patients.data">
-                            <td>{{ patient.id }}</td>
-                            <td>
-                                <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
-                            </td>
-                            <td>{{ patient.case_numbers }}</td>
-                            <td class="text-center">
-                                <Link :href="route('patients.edit', patient.id)">
-                                    <i class="fa fa-pencil-alt"></i>
-                                </Link>
-                            </td>
-                        </tr>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 10px">ID</th>
+                                <th>Ф.И.О</th>
+                                <th>Номер кейса</th>
+                                <th>Статус</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="patient in patients.data">
+                                <td>{{ patient.id }}</td>
+                                <td>
+                                    <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
+                                </td>
+                                <td>{{ patient.case_numbers }}</td>
+                                <td :class="[patient.status === 1 ? 'text-danger' : 'text-success']">
+                                    {{ patient.status == 1 ? 'На проверке' : 'Проверено' }}
+                                </td>
+                                <td class="text-center">
+                                    <Link :href="route('patients.edit', patient.id)">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </Link>
+                                </td>
+                            </tr>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <!-- /.card-body -->
 
@@ -66,14 +81,15 @@ export default {
     props: ['patients'],
     data: () => ({
         search: {
-            query: ''
+            query: '',
+            status: null
         },
     }),
     watch: {
         search: {
             deep: true,
             handler: debounce(function () {
-                this.$inertia.get('/', pickBy(this.search), {preserveState: true})
+                this.$inertia.get('/patients/all', pickBy(this.search), {preserveState: true})
             }, 700)
         }
     },

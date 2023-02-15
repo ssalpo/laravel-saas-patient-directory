@@ -12,179 +12,250 @@
     <div class="content">
         <div class="container">
             <div class="card card-primary">
-                <!-- form start -->
-                <form @submit.prevent="submit">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>Ф.И.О</label>
-                            <input type="text" class="form-control"
-                                   :class="{'is-invalid': errors.name}"
-                                   v-model="form.name">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Ф.И.О</label>
+                        <input type="text" class="form-control"
+                               :class="{'is-invalid': errors.name}"
+                               v-model="form.name">
 
-                            <div v-if="errors.name" class="error invalid-feedback">
-                                {{ errors.name }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Дата рождения</label>
-
-                            <date-time-picker :class="{'is-invalid': errors.birthday}" v-model="form.birthday"
-                                              :value="form.birthday" :config="birthdayConfig"/>
-
-                            <div v-if="errors.birthday" class="error invalid-feedback">
-                                {{ errors.birthday }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Пол</label>
-                            <div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input"
-                                           :class="{'is-invalid': errors.gender}"
-                                           type="radio" v-model="form.gender" name="gender"
-                                           :value="1">
-                                    <label class="form-check-label">Мужской</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input"
-                                           :class="{'is-invalid': errors.gender}"
-                                           type="radio" v-model="form.gender" name="gender"
-                                           :value="0">
-                                    <label class="form-check-label">Женский</label>
-                                </div>
-                            </div>
-
-                            <div v-if="errors.gender" class="error invalid-feedback">
-                                {{ errors.gender }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Дата/время забора образца</label>
-
-                            <date-time-picker :class="{'is-invalid': errors.sampling_date}" v-model="form.sampling_date"
-                                              :value="form.sampling_date" :config="sampleConfig"/>
-
-                            <div v-if="errors.sampling_date" class="error invalid-feedback">
-                                {{ errors.sampling_date }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Дата/время получения образца</label>
-
-                            <date-time-picker :class="{'is-invalid': errors.sample_receipt_date}"
-                                              v-model="form.sample_receipt_date" :value="form.sample_receipt_date"
-                                              :config="sampleConfig"/>
-
-                            <div v-if="errors.sample_receipt_date" class="error invalid-feedback">
-                                {{ errors.sample_receipt_date }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Анамнез</label>
-                            <input type="text" :class="{'is-invalid': errors.anamnes}" class="form-control"
-                                   v-model="form.anamnes">
-
-                            <div v-if="errors.anamnes" class="error invalid-feedback">
-                                {{ errors.anamnes }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Тип/Место забора образца</label>
-                            <div class="row mt-2" v-for="(category, index) in form.categories">
-                                <div class="col-4">
-                                    <input type="text" v-model="category.code" class="form-control form-control-sm"
-                                           placeholder="Введите код, например A1 или B1">
-                                </div>
-                                <div class="col-4">
-                                    <input type="text" v-model="category.description"
-                                           class="form-control form-control-sm"
-                                           placeholder="Введите описание, например рука">
-                                </div>
-                                <div class="col-4">
-                                    <button type="button" @click="removeCategory(index)" class="btn btn-sm btn-warning">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div v-if="errors['categories.0.code'] || errors['categories.0.code']"
-                                 class="invalid-feedback-simple">
-                                {{ errors['categories.0.code'] || errors['categories.0.code'] }}
-                            </div>
-
-                            <div>
-                                <button type="button" @click="addCategory" class="btn btn-sm btn-info mt-2">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="form-group" v-if="$page.props.shared.userPermissions.includes('select_doctor_patients')">
-                            <label>Направивший врач</label>
-
-                            <div v-if="!newDoctor">
-                                <select class="form-control" :class="{'is-invalid': errors.doctor}"
-                                        v-model="form.doctor">
-                                    <option :value="null">Не выбран</option>
-                                    <option v-for="doctor in doctors" :value="doctor.id">{{ doctor.name }}</option>
-                                </select>
-
-                                <button @click="toggleNewDoctor" type="button" class="btn btn-sm btn-link">
-                                    + Новый врач
-                                </button>
-                            </div>
-
-                            <div v-else>
-                                <input type="text"
-                                       v-model.trim="form.doctor"
-                                       class="form-control"
-                                       placeholder="Введите имя доктора">
-
-                                <button @click="toggleNewDoctor" type="button" class="btn btn-sm btn-link">
-                                    Выбрать из списка
-                                </button>
-                            </div>
-
-                            <div v-if="errors.doctor" class="invalid-feedback-simple">
-                                {{ errors.doctor }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Фото</label>
-
-                            <div class="custom-file">
-                                <input type="file" :class="{'is-invalid': errors.photos}"
-                                       multiple
-                                       @input="form.photos = $event.target.files"
-                                       class="custom-file-input">
-                                <label class="custom-file-label">
-                                    {{
-                                        form.photos.length ? `Выбранных файлов ${form.photos.length}` : 'Выбрать файлы'
-                                    }}
-                                </label>
-                            </div>
-
-                            <div v-if="errors.photos" class="error invalid-feedback">
-                                {{ errors.photos }}
-                            </div>
+                        <div v-if="errors.name" class="error invalid-feedback">
+                            {{ errors.name }}
                         </div>
                     </div>
-                    <!-- /.card-body -->
+                    <div class="form-group">
+                        <label>Дата рождения</label>
 
-                    <div class="card-footer">
-                        <button type="submit" :disabled="form.processing" class="btn btn-primary">
-                            <span v-if="form.processing">
-                                <i class="fas fa-spinner fa-spin"></i> Сохранение...
-                            </span>
-                            <span v-else>{{ id ? 'Сохранить' : 'Добавить' }}</span>
-                        </button>
+                        <date-time-picker :class="{'is-invalid': errors.birthday}" v-model="form.birthday"
+                                          :value="form.birthday" :config="birthdayConfig"/>
 
-                        <Link :href="route('patients.index')" class="btn btn-default ml-2">Отменить</Link>
+                        <div v-if="errors.birthday" class="error invalid-feedback">
+                            {{ errors.birthday }}
+                        </div>
                     </div>
-                </form>
+                    <div class="form-group">
+                        <label>Пол</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input"
+                                       :class="{'is-invalid': errors.gender}"
+                                       type="radio" v-model="form.gender" name="gender"
+                                       :value="1">
+                                <label class="form-check-label">Мужской</label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input"
+                                       :class="{'is-invalid': errors.gender}"
+                                       type="radio" v-model="form.gender" name="gender"
+                                       :value="0">
+                                <label class="form-check-label">Женский</label>
+                            </div>
+                        </div>
+
+                        <div v-if="errors.gender" class="error invalid-feedback">
+                            {{ errors.gender }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Дата/время забора образца</label>
+
+                        <date-time-picker :class="{'is-invalid': errors.sampling_date}" v-model="form.sampling_date"
+                                          :value="form.sampling_date" :config="sampleConfig"/>
+
+                        <div v-if="errors.sampling_date" class="error invalid-feedback">
+                            {{ errors.sampling_date }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Дата/время получения образца</label>
+
+                        <date-time-picker :class="{'is-invalid': errors.sample_receipt_date}"
+                                          v-model="form.sample_receipt_date" :value="form.sample_receipt_date"
+                                          :config="sampleConfig"/>
+
+                        <div v-if="errors.sample_receipt_date" class="error invalid-feedback">
+                            {{ errors.sample_receipt_date }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Анамнез</label>
+                        <input type="text" :class="{'is-invalid': errors.anamnes}" class="form-control"
+                               v-model="form.anamnes">
+
+                        <div v-if="errors.anamnes" class="error invalid-feedback">
+                            {{ errors.anamnes }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Тип/Место забора образца</label>
+                        <div class="row mt-2" v-for="(category, index) in form.categories">
+                            <div class="col-4">
+                                <input type="text" v-model="category.code" class="form-control form-control-sm"
+                                       placeholder="Введите код, например A1 или B1">
+                            </div>
+                            <div class="col-4">
+                                <input type="text" v-model="category.description"
+                                       class="form-control form-control-sm"
+                                       placeholder="Введите описание, например рука">
+                            </div>
+                            <div class="col-4">
+                                <button type="button" @click="removeCategory(index)" class="btn btn-sm btn-warning">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div v-if="errors['categories.0.code'] || errors['categories.0.code']"
+                             class="invalid-feedback-simple">
+                            {{ errors['categories.0.code'] || errors['categories.0.code'] }}
+                        </div>
+
+                        <div>
+                            <button type="button" @click="addCategory" class="btn btn-sm btn-info mt-2">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group"
+                         v-if="$page.props.shared.userPermissions.includes('select_doctor_patients')">
+                        <label>Направивший врач</label>
+
+                        <div v-if="!newDoctor">
+                            <select class="form-control" :class="{'is-invalid': errors.doctor}"
+                                    v-model="form.doctor">
+                                <option :value="null">Не выбран</option>
+                                <option v-for="(name, id) in doctors" :value="id">{{ name }}</option>
+                            </select>
+
+                            <button @click="toggleNewDoctor" type="button" class="btn btn-sm btn-link">
+                                + Новый врач
+                            </button>
+                        </div>
+
+                        <div v-else>
+                            <input type="text"
+                                   v-model.trim="form.doctor"
+                                   class="form-control"
+                                   placeholder="Введите имя доктора">
+
+                            <button @click="toggleNewDoctor" type="button" class="btn btn-sm btn-link">
+                                Выбрать из списка
+                            </button>
+                        </div>
+
+                        <div v-if="errors.doctor" class="invalid-feedback-simple">
+                            {{ errors.doctor }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Фото</label>
+
+                        <div class="custom-file">
+                            <input type="file" :class="{'is-invalid': errors.photos}"
+                                   multiple
+                                   @input="form.photos = $event.target.files"
+                                   class="custom-file-input">
+                            <label class="custom-file-label">
+                                {{
+                                    form.photos.length ? `Выбранных файлов ${form.photos.length}` : 'Выбрать файлы'
+                                }}
+                            </label>
+                        </div>
+
+                        <div v-if="errors.photos" class="error invalid-feedback">
+                            {{ errors.photos }}
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                    <button type="button" @click="id ? submit() : null" :data-toggle="!id ? 'modal' : ''" :data-target="!id ? '#confirm-modal' : ''" :disabled="form.processing"
+                            class="btn btn-primary">
+                        <span v-if="form.processing">
+                            <i class="fas fa-spinner fa-spin"></i> Сохранение...
+                        </span>
+
+                        <span v-else>{{ id ? 'Сохранить' : 'Добавить' }}</span>
+                    </button>
+
+                    <Link :href="route('patients.index')" class="btn btn-default ml-2">Отменить</Link>
+                </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="confirm-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Проверьте корректность данных</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td width="270">Ф.И.О</td>
+                            <td>{{ form.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Дата рождения</td>
+                            <td>{{ form.birthday }}</td>
+                        </tr>
+                        <tr>
+                            <td>Пол</td>
+                            <td>{{ form.gender ? 'Мужской' : 'Женский' }}</td>
+                        </tr>
+                        <tr>
+                            <td>Дата/время забора образца</td>
+                            <td>{{ form.sampling_date }}</td>
+                        </tr>
+                        <tr>
+                            <td>Дата/время получения образца</td>
+                            <td>{{ form.sample_receipt_date }}</td>
+                        </tr>
+                        <tr>
+                            <td>Анамнез</td>
+                            <td>{{ form.anamnes }}</td>
+                        </tr>
+                        <tr>
+                            <td>Тип/Место забора образца</td>
+                            <td>
+                                <div v-for="category in form.categories">{{ category.code }}
+                                    ({{ category.description }})
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Направивший врач</td>
+                            <td>{{ selectedDoctor }}</td>
+                        </tr>
+                        <tr>
+                            <td>Количество прикрепленных фото</td>
+                            <td>{{ form.photos.length }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Изменить данные</button>
+
+                    <button type="button" @click="submit" class="btn btn-primary" data-dismiss="modal" :disabled="form.processing">
+                        <span v-if="form.processing">
+                            <i class="fas fa-spinner fa-spin"></i> Сохранение...
+                        </span>
+
+                        <span v-else>{{ id ? 'Сохранить' : 'Добавить' }}</span>
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 </template>
 <script>
 import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
@@ -216,6 +287,11 @@ export default {
                 categories: this.patient?.categories || [],
                 photos: this.patient?.photos || [],
             }),
+        }
+    },
+    computed: {
+        selectedDoctor() {
+            return this.doctors[parseFloat(this.form.doctor)] || this.form.doctor
         }
     },
     methods: {

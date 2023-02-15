@@ -13,44 +13,52 @@
         <div class="container">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">
-                        <input type="text" v-model="search.query" class="form-control form-control-sm"
-                               placeholder="Ф.И.О, код" />
-                    </div>
-
-                    <div class="card-tools" v-if="$page.props.shared.userPermissions.includes('create_patients')">
-                        <Link :href="route('patients.create')" class="btn btn-success btn-sm px-3">
-                            Новый пациент
-                        </Link>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                            <input type="text" v-model="search.query" class="form-control form-control-sm"
+                                   placeholder="Ф.И.О, код"/>
+                        </div>
+                        <div class="col-lg-9 col-md-8 col-sm-6 col-12 mt-3 mt-sm-0 text-right" v-if="$page.props.shared.userPermissions.includes('create_patients')">
+                            <Link :href="route('patients.create')" class="btn btn-success btn-sm px-3">
+                                Новый пациент
+                            </Link>
+                        </div>
                     </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th style="width: 10px">ID</th>
-                            <th>Ф.И.О</th>
-                            <th>Номер кейса</th>
-                            <th v-if="$page.props.shared.userPermissions.includes('edit_patients')" ></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="patient in patients.data">
-                            <td>{{ patient.id }}</td>
-                            <td>
-                                <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
-                            </td>
-                            <td>{{ patient.case_numbers }}</td>
-                            <td v-if="$page.props.shared.userPermissions.includes('edit_patients')" class="text-center">
-                                <Link :href="route('patients.edit', patient.id)">
-                                    <i class="fa fa-pencil-alt"></i>
-                                </Link>
-                            </td>
-                        </tr>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 10px">ID</th>
+                                <th>Ф.И.О</th>
+                                <th>Номер кейса</th>
+                                <th>Статус</th>
+                                <th v-if="$page.props.shared.userPermissions.includes('edit_patients')"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="patient in patients.data">
+                                <td>{{ patient.id }}</td>
+                                <td>
+                                    <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
+                                </td>
+                                <td>{{ patient.case_numbers }}</td>
+                                <td :class="[patient.status === 1 ? 'text-danger' : 'text-success']">
+                                    {{ patient.status == 1 ? 'На проверке' : 'Проверено' }}
+                                </td>
+                                <td v-if="$page.props.shared.userPermissions.includes('edit_patients')"
+                                    class="text-center">
+                                    <Link :href="route('patients.edit', patient.id)">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </Link>
+                                </td>
+                            </tr>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <!-- /.card-body -->
 

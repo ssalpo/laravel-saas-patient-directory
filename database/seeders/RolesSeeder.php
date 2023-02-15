@@ -62,9 +62,13 @@ class RolesSeeder extends Seeder
         $roleAdmin->syncPermissions([
             ...$permissionsManagerUsers,
             ...$permissionsManagerPatients,
-           // $permissionSelectDoctorPatients,
+            $permissionSelectDoctorPatients,
             ...$permissionsManagerDoctors,
             $permissionAddReport
+        ]);
+
+        $roleDoctor->syncPermissions([
+            ...$permissionsManagerPatients
         ]);
     }
 }

@@ -25,6 +25,7 @@ class PatientController extends Controller
             ->through(fn($patient) => [
                 'id' => $patient->id,
                 'name' => $patient->name,
+                'status' => $patient->status,
                 'case_numbers' => implode(', ', $patient->case_numbers)
             ]);
 
@@ -40,6 +41,7 @@ class PatientController extends Controller
             ->through(fn($patient) => [
                 'id' => $patient->id,
                 'name' => $patient->name,
+                'status' => $patient->status,
                 'case_numbers' => implode(', ', $patient->case_numbers)
             ]);
 
@@ -48,7 +50,7 @@ class PatientController extends Controller
 
     public function create()
     {
-        $doctors = Doctor::all()->transform(fn($doctor) => ['id' => $doctor->id, 'name' => $doctor->name]);
+        $doctors = Doctor::pluck('name', 'id');
 
         return inertia('Patients/Edit', compact('doctors'));
     }
@@ -98,7 +100,7 @@ class PatientController extends Controller
     {
         $patient = Patient::myByPermission()->findOrFail($id);
 
-        $doctors = Doctor::all()->transform(fn($doctor) => ['id' => $doctor->id, 'name' => $doctor->name]);
+        $doctors = Doctor::pluck('name', 'id');
 
         return inertia('Patients/Edit', [
             'id' => $patient->id,

@@ -46,6 +46,11 @@ class Patient extends Model
             fn($q, $search) => $q->where('name', 'LIKE', '%' . $search . '%')
                 ->orWhereRaw("JSON_SEARCH(case_numbers, 'all', ?) IS NOT NULL", ["%{$search}%"])
         );
+
+        $q->when(
+            request('status'),
+            fn($q, $status) => $q->whereStatus($status)
+        );
     }
 
     public function scopeMyByPermission($q, string $field = 'created_by')
