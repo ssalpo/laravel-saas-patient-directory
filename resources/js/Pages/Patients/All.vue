@@ -1,0 +1,81 @@
+<template>
+    <Head>
+        <title>Список всех пациентов</title>
+    </Head>
+
+    <div class="content-header">
+        <div class="container">
+            <h1 class="m-0">Список всех пациентов</h1>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <input type="text" v-model="search.query" class="form-control form-control-sm"
+                               placeholder="Ф.И.О, код" />
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 10px">ID</th>
+                            <th>Ф.И.О</th>
+                            <th>Номер кейса</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="patient in patients.data">
+                            <td>{{ patient.id }}</td>
+                            <td>
+                                <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
+                            </td>
+                            <td>{{ patient.case_numbers }}</td>
+                            <td class="text-center">
+                                <Link :href="route('patients.edit', patient.id)">
+                                    <i class="fa fa-pencil-alt"></i>
+                                </Link>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer clearfix" v-if="patients.links.length > 3">
+                    <pagination :links="patients.links"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+import {Head, Link} from "@inertiajs/inertia-vue3";
+import Pagination from "../../Shared/Pagination.vue";
+import debounce from 'lodash/debounce'
+import pickBy from 'lodash/pickBy'
+
+export default {
+    components: {Pagination, Head, Link},
+    props: ['patients'],
+    data: () => ({
+        search: {
+            query: ''
+        },
+    }),
+    watch: {
+        search: {
+            deep: true,
+            handler: debounce(function () {
+                this.$inertia.get('/', pickBy(this.search), {preserveState: true})
+            }, 700)
+        }
+    },
+}
+</script>

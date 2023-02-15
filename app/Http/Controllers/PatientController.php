@@ -12,8 +12,23 @@ class PatientController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('can:read_all_patients')->only('all');
         $this->middleware('can:create_patients')->only(['create', 'store']);
-        $this->middleware('can:edit_patients')->only(['edit', 'update']);
+        $this->middleware('can:edit_patients,read_all_patients')->only(['edit', 'update']);
+    }
+
+    public function all()
+    {
+        $patients = Patient::filter()
+            ->orderBy('created_at', 'DESC')
+            ->paginate(100)
+            ->through(fn($patient) => [
+                'id' => $patient->id,
+                'name' => $patient->name,
+                'case_numbers' => implode(', ', $patient->case_numbers)
+            ]);
+
+        return inertia('Patients/All', compact('patients'));
     }
 
     public function index()
@@ -57,7 +72,7 @@ class PatientController extends Controller
 
     public function show(int $id)
     {
-        $patient = Patient::my('created_by')->findOrFail($id);
+        $patient = Patient::myByPermission()->findOrFail($id);
 
         return inertia('Patients/Show', [
             'patient' => [
@@ -81,7 +96,7 @@ class PatientController extends Controller
 
     public function edit(int $id)
     {
-        $patient = Patient::my('created_by')->findOrFail($id);
+        $patient = Patient::myByPermission()->findOrFail($id);
 
         $doctors = Doctor::all()->transform(fn($doctor) => ['id' => $doctor->id, 'name' => $doctor->name]);
 
@@ -104,7 +119,7 @@ class PatientController extends Controller
     public function update(int $id, PatientRequest $request)
     {
         $patient = DB::transaction(function () use ($id, $request) {
-            $patient = Patient::my('created_by')->findOrFail($id);
+            $patient = Patient::myByPermission()->findOrFail($id);
 
             $doctor = $request->getDoctor();
 

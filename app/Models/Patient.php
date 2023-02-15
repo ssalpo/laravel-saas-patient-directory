@@ -48,6 +48,14 @@ class Patient extends Model
         );
     }
 
+    public function scopeMyByPermission($q, string $field = 'created_by')
+    {
+        $q->when(
+            !auth()->user()?->can('read_all_patients'),
+            fn($q) => $q->my($field)
+        );
+    }
+
     public function getCategoriesFormattedAttribute()
     {
         return array_map(fn($c) => sprintf('%s (%s)', $c['code'], $c['description']), $this->categories);

@@ -26,7 +26,7 @@
                                 </Link>
                             </li>
                             <li v-if="$page.props.shared.userPermissions.includes('read_all_patients')">
-                                <Link :href="route('patients.index')" class="nav-link">
+                                <Link :href="route('patients.all')" class="nav-link">
                                     Все пациенты
                                 </Link>
                             </li>
