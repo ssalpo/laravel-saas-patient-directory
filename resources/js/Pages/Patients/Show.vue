@@ -14,7 +14,8 @@
                         <i class="fa fa-print"></i>
                     </Link>
 
-                    <Link v-if="$page.props.shared.userPermissions.includes('edit_patients')" :href="route('patients.edit', patient.id)" class="btn btn-primary">
+                    <Link v-if="$page.props.shared.userPermissions.includes('edit_patients')"
+                          :href="route('patients.edit', patient.id)" class="btn btn-primary">
                         <i class="fa fa-pencil-alt"></i>
                     </Link>
                 </div><!-- /.col -->
@@ -63,7 +64,7 @@
                         <tr>
                             <td>Направивший врач</td>
                             <td>
-                                {{patient.doctor}}
+                                {{ patient.doctor }}
                             </td>
                         </tr>
                         </tbody>
@@ -147,7 +148,18 @@
                                 </div>
                                 <div class="modal-body text-center">
                                     <span v-if="photoLoading">Фотография загружается...</span>
-                                    <span v-if="photoLoadingError">Ошибка загрузки фотографии, попробуйте еще раз.</span>
+                                    <span
+                                        v-if="photoLoadingError">Ошибка загрузки фотографии, попробуйте еще раз.</span>
+
+                                    <a :href="selectedPhoto" target="_blank" v-if="!photoLoading && !photoLoading" class="btn btn-sm btn-default mb-3 mr-3">
+                                        открыть в новом окне
+                                    </a>
+
+                                    <button v-if="!photoLoading && !photoLoading && !originalPhotoShowed"
+                                            @click="showOriginalPhoto" class="btn btn-sm btn-primary mb-3">показать
+                                        оригинал
+                                    </button>
+
                                     <img v-lazy="selectedPhoto" style="max-width: 100%; height: 100%">
                                 </div>
                             </div>
@@ -169,6 +181,7 @@ export default {
     props: ['patient'],
     data: function () {
         return {
+            originalPhotoShowed: false,
             photoLoading: false,
             photoLoadingError: false,
             selectedPhoto: '',
@@ -199,6 +212,10 @@ export default {
             this.form.post(route('patients.results', this.patient.id), {preserveState: true, preserveScroll: true})
 
             this.editBlock = ''
+        },
+        showOriginalPhoto() {
+            this.selectedPhoto = this.selectedPhoto.replace('/thumb', '');
+            this.originalPhotoShowed = true;
         }
     }
 }

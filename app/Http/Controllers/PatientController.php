@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PatientRequest;
 use App\Http\Requests\PatientResultRequest;
+use App\Jobs\ResizePatientPhotos;
 use App\Models\Doctor;
 use App\Models\Patient;
 use Illuminate\Support\Facades\DB;
@@ -91,7 +92,9 @@ class PatientController extends Controller
                 'microscopic_description' => $patient->microscopic_description,
                 'diagnosis' => $patient->diagnosis,
                 'note' => $patient->note,
-                'photos' => $patient->photos->pluck('url')
+                'photos' => $patient->photos->map(
+                    fn($photo) => $photo->has_thumb ? 'thumb/' . $photo->url : $photo->url
+                )
             ]
         ]);
     }
@@ -178,9 +181,15 @@ class PatientController extends Controller
     private function uploadPhotos($patient, $request)
     {
         if ($photos = $request->file('photos')) {
+            $uploadedPhotos = [];
+
             foreach ($photos as $photo) {
-                $patient->photos()->create(['url' => $photo?->store('photos', 'public')]);
+                $photo = $patient->photos()->create(['url' => $photo?->store('photos', 'public')]);
+
+                $uploadedPhotos[] = $photo;
             }
+
+            ResizePatientPhotos::dispatch($uploadedPhotos);
         }
     }
 }

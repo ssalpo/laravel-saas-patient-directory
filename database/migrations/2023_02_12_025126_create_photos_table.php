@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('photos', function (Blueprint $table) {
             $table->id();
             $table->string('url');
+            $table->boolean('has_thumb')->default(false);
             $table->unsignedBigInteger('photoable_id');
             $table->string('photoable_type');
             $table->softDeletes();
