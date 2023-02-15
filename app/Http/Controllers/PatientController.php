@@ -10,9 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 class PatientController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:create_patients')->only(['create', 'store']);
+        $this->middleware('can:edit_patients')->only(['edit', 'update']);
+    }
+
     public function index()
     {
-        $patients = Patient::filter()
+        $patients = Patient::my('created_by')
+            ->filter()
             ->orderBy('created_at', 'DESC')
             ->paginate(100)
             ->through(fn($patient) => [
@@ -34,7 +41,9 @@ class PatientController extends Controller
     public function store(PatientRequest $request)
     {
         $patient = DB::transaction(function () use ($request) {
-            $patient = Patient::create($request->validated() + ['doctor_id' => $this->findDoctorOrCreateByName($request->doctor)]);
+            $doctor = $request->getDoctor();
+
+            $patient = Patient::create($request->validated() + ['doctor_id' => $this->findDoctorOrCreateByName($doctor)]);
 
             $patient->generateCaseNumbers();
 
@@ -46,8 +55,10 @@ class PatientController extends Controller
         return redirect()->route('patients.show', $patient->id);
     }
 
-    public function show(Patient $patient)
+    public function show(int $id)
     {
+        $patient = Patient::my('created_by')->findOrFail($id);
+
         return inertia('Patients/Show', [
             'patient' => [
                 'id' => $patient->id,
@@ -68,8 +79,10 @@ class PatientController extends Controller
         ]);
     }
 
-    public function edit(Patient $patient)
+    public function edit(int $id)
     {
+        $patient = Patient::my('created_by')->findOrFail($id);
+
         $doctors = Doctor::all()->transform(fn($doctor) => ['id' => $doctor->id, 'name' => $doctor->name]);
 
         return inertia('Patients/Edit', [
@@ -88,10 +101,14 @@ class PatientController extends Controller
             ]]);
     }
 
-    public function update(Patient $patient, PatientRequest $request)
+    public function update(int $id, PatientRequest $request)
     {
-        $patient = DB::transaction(function () use ($patient, $request) {
-            $patient->update($request->validated() + ['doctor_id' => $this->findDoctorOrCreateByName($request->doctor)]);
+        $patient = DB::transaction(function () use ($id, $request) {
+            $patient = Patient::my('created_by')->findOrFail($id);
+
+            $doctor = $request->getDoctor();
+
+            $patient->update($request->validated() + ['doctor_id' => $this->findDoctorOrCreateByName($doctor)]);
 
             $patient->generateCaseNumbers();
 

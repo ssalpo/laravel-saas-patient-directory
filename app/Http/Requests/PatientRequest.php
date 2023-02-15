@@ -24,25 +24,39 @@ class PatientRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|string|min:1|max:255',
             'birthday' => 'date:Y-m-d',
             'gender' => 'required|boolean',
             'sampling_date' => 'required|date_format:Y-m-d H:i',
             'sample_receipt_date' => 'required|date_format:Y-m-d H:i',
             'anamnes' => 'nullable|string',
-            'doctor' => 'required',
             'categories' => 'required|array',
             'categories.*.code' => 'required|string|min:2|max:5',
             'categories.*.description' => 'required|string|min:2|max:255',
             'photos' => 'nullable|array',
-            'photos.*' => 'required|mimes:jpg,jpeg,png|max:200000'
+            'photos.*' => 'required|mimes:jpg,jpeg,png|max:200000',
+            'created_by' => 'required|integer'
         ];
+
+        if ($this->user()?->can('select_doctor_patients')) {
+            $rules['doctor'] = 'required';
+        }
+
+        return $rules;
+    }
+
+    public function getDoctor()
+    {
+        return $this->user()?->can('select_doctor_patients')
+            ? $this->doctor
+            : $this->user()?->name;
     }
 
     protected function prepareForValidation()
     {
         return $this->merge([
+            'created_by' => auth()->id(),
             'gender' => $this->gender == 1,
             'birthday' => $this->birthday ? Carbon::parse($this->birthday)->format('Y-m-d') : null,
             'sampling_date' => $this->sampling_date ? Carbon::parse($this->sampling_date)->format('Y-m-d H:i') : null,

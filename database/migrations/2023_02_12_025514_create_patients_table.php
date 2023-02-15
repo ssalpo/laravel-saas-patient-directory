@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
             $table->jsonb('case_numbers')->nullable();
+            $table->tinyInteger('status')->default(\App\Models\Patient::STATUS_CHECKING);
             $table->string('name');
             $table->date('birthday');
             $table->boolean('gender');
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->text('microscopic_description')->nullable()->comment('Микроскопическое описание');
             $table->text('diagnosis')->nullable()->comment('Диагноз');
             $table->text('note')->nullable()->comment('заметка');
+            $table->foreignId('created_by')->constrained('users');
             $table->softDeletes();
             $table->timestamps();
         });

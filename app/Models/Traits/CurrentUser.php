@@ -4,8 +4,8 @@ namespace App\Models\Traits;
 
 trait CurrentUser
 {
-    public function scopeMy($q)
+    public function scopeMy($q, $field = 'user_id')
     {
-        return $q->whereUserId(auth()->id());
+        return $q->where($field, auth()->id());
     }
 }

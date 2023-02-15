@@ -14,7 +14,7 @@
                         <i class="fa fa-print"></i>
                     </Link>
 
-                    <Link :href="route('patients.edit', patient.id)" class="btn btn-primary">
+                    <Link v-if="$page.props.shared.userPermissions.includes('edit_patients')" :href="route('patients.edit', patient.id)" class="btn btn-primary">
                         <i class="fa fa-pencil-alt"></i>
                     </Link>
                 </div><!-- /.col -->

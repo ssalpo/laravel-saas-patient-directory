@@ -12,7 +12,7 @@
     <div class="content">
         <div class="container">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header" v-if="$page.props.shared.userPermissions.includes('create_doctors')">
                     <div class="card-tools">
                         <Link :href="route('doctors.create')" class="btn btn-success btn-sm px-3">
                             Новый врач
@@ -33,7 +33,7 @@
                         <tr v-for="doctor in doctors.data">
                             <td>{{ doctor.id }}</td>
                             <td>{{ doctor.name }}</td>
-                            <td class="text-center">
+                            <td class="text-center" v-if="$page.props.shared.userPermissions.includes('edit_doctors')">
                                 <Link :href="route('doctors.edit', doctor.id)">
                                     <i class="fa fa-pencil-alt"></i>
                                 </Link>

@@ -119,7 +119,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" v-if="$page.props.shared.userPermissions.includes('select_doctor_patients')">
                             <label>Направивший врач</label>
 
                             <div v-if="!newDoctor">

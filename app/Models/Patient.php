@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CurrentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Patient extends Model
 {
-    use HasFactory;
+    use HasFactory, CurrentUser, SoftDeletes;
 
     protected $fillable = [
         'case_numbers',
+        'status',
         'name',
         'birthday',
         'gender',
@@ -23,6 +25,7 @@ class Patient extends Model
         'microscopic_description',
         'diagnosis',
         'note',
+        'created_by'
     ];
 
     protected $casts = [
@@ -32,6 +35,9 @@ class Patient extends Model
         'sampling_date' => 'datetime',
         'sample_receipt_date' => 'datetime',
     ];
+
+    public const STATUS_CHECKING = 1;
+    public const STATUS_CHECKED = 2;
 
     public function scopeFilter($q)
     {

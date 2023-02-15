@@ -7,6 +7,13 @@ use App\Models\Doctor;
 
 class DoctorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:read_doctors')->only('index');
+        $this->middleware('can:edit_doctors')->only(['edit', 'update']);
+        $this->middleware('can:create_doctors')->only(['create', 'store']);
+    }
+
     public function index()
     {
         $doctors = Doctor::paginate(100);

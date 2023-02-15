@@ -18,7 +18,7 @@
                                placeholder="Ф.И.О, код" />
                     </div>
 
-                    <div class="card-tools">
+                    <div class="card-tools" v-if="$page.props.shared.userPermissions.includes('create_patients')">
                         <Link :href="route('patients.create')" class="btn btn-success btn-sm px-3">
                             Новый пациент
                         </Link>
@@ -32,7 +32,7 @@
                             <th style="width: 10px">ID</th>
                             <th>Ф.И.О</th>
                             <th>Номер кейса</th>
-                            <th></th>
+                            <th v-if="$page.props.shared.userPermissions.includes('edit_patients')" ></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -42,7 +42,7 @@
                                 <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
                             </td>
                             <td>{{ patient.case_numbers }}</td>
-                            <td class="text-center">
+                            <td v-if="$page.props.shared.userPermissions.includes('edit_patients')" class="text-center">
                                 <Link :href="route('patients.edit', patient.id)">
                                     <i class="fa fa-pencil-alt"></i>
                                 </Link>
