@@ -82,7 +82,7 @@
                 Врач дерматопатолог:
             </div>
             <div class="col-6">
-                {{ patient.doctor }}
+                Султонов Р.А.
             </div>
         </div>
 

@@ -242,7 +242,10 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Изменить данные</button>
 
-                    <button type="button" @click="submit" class="btn btn-primary" data-dismiss="modal" :disabled="form.processing">
+                    <button type="button"
+                            @click="submit"
+                            class="btn btn-primary"
+                            :disabled="form.processing">
                         <span v-if="form.processing">
                             <i class="fas fa-spinner fa-spin"></i> Сохранение...
                         </span>
@@ -297,6 +300,7 @@ export default {
     methods: {
         submit() {
             if (!this.id) {
+                $('#confirm-modal').modal('hide');
                 this.form.post('/patients', {forceFormData: true});
                 return;
             }
