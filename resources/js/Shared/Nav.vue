@@ -30,6 +30,11 @@
                                     Все пациенты
                                 </Link>
                             </li>
+                            <li v-if="$page.props.shared.userPermissions.includes('read_users')">
+                                <Link :href="route('users.index')" class="nav-link">
+                                    Пользователи
+                                </Link>
+                            </li>
                         </ul>
                     </li>
                 </ul>
