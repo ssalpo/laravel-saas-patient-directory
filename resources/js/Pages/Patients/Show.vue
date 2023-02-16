@@ -131,8 +131,8 @@
                                     </a>
 
                                     <button v-if="!photoLoading && !photoLoading && !originalPhotoShowed"
-                                            @click="showOriginalPhoto" class="btn btn-sm btn-primary mb-3">показать
-                                        оригинал
+                                            @click="showOriginalPhoto" class="btn btn-sm btn-primary mb-3">
+                                        показать оригинал
                                     </button>
 
                                     <img v-lazy="selectedPhoto" style="max-width: 100%; height: 100%">
@@ -170,18 +170,18 @@ export default {
     created() {
         this.$Lazyload.$on('loading', (listener) => {
             this.photoLoading = true
-        })
+        });
 
         this.$Lazyload.$on('loaded', (listener) => {
             this.photoLoading = false
-        })
+        });
 
         this.$Lazyload.$on('error', (listener) => {
             this.photoLoading = false
             this.photoLoadingError = true
-        })
+        });
 
-        $(document).on('hide.bs.modal',"#photo-view-modal", function () {
+        $(document).on('hide.bs.modal', '#photo-view-modal',  () => {
             this.originalPhotoShowed = false
         });
     },
