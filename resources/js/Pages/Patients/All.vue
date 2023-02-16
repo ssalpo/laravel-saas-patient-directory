@@ -49,9 +49,11 @@
                                 <td>{{ patient.case_numbers }}</td>
                                 <td :class="[patient.status === 1 ? 'text-danger' : 'text-success']">
                                     {{ patient.status == 1 ? 'На проверке' : 'Проверено' }}
+
+                                    <Link :href="route('patients.edit.report', patient.id)">({{patient.status === 1 ? 'ответить' : 'редактировать ответ'}})</Link>
                                 </td>
                                 <td class="text-center">
-                                    <Link :href="route('patients.edit', patient.id)">
+                                    <Link :href="route('patients.edit.report', patient.id)">
                                         <i class="fa fa-pencil-alt"></i>
                                     </Link>
                                 </td>
@@ -73,7 +75,7 @@
 <script>
 import {Head, Link} from "@inertiajs/inertia-vue3";
 import Pagination from "../../Shared/Pagination.vue";
-import debounce from 'lodash/debounce'
+import throttle from 'lodash/debounce'
 import pickBy from 'lodash/pickBy'
 
 export default {
@@ -88,7 +90,7 @@ export default {
     watch: {
         search: {
             deep: true,
-            handler: debounce(function () {
+            handler: throttle(function () {
                 this.$inertia.get('/patients/all', pickBy(this.search), {preserveState: true})
             }, 700)
         }

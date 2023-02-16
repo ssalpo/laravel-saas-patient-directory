@@ -83,16 +83,7 @@
                         <tr>
                             <td>Микроскопическое описание</td>
                             <td>
-                                <textarea
-                                    v-if="editBlock === 'microscopic_description' || !patient.microscopic_description"
-                                    class="form-control" v-model="form.microscopic_description"
-                                    @blur="saveResults"></textarea>
-
-                                <div v-else>
-                                    <div>{{ patient.microscopic_description }}</div>
-
-                                    <a href="" @click.prevent="editBlock = 'microscopic_description'"><small>Редактировать</small></a>
-                                </div>
+                                {{ patient.microscopic_description }}
                             </td>
                         </tr>
                         <tr>
@@ -100,36 +91,19 @@
                                 <b>Диагноз</b>
                             </td>
                             <td>
-                                <textarea v-if="editBlock === 'diagnosis' || !patient.diagnosis"
-                                          class="form-control"
-                                          v-model="form.diagnosis"
-                                          @blur="saveResults"></textarea>
-
-                                <div v-else>
-                                    <div>{{ patient.diagnosis }}</div>
-                                    <a href="" @click.prevent="editBlock = 'diagnosis'"><small>Редактировать</small></a>
-                                </div>
+                                {{ patient.diagnosis }}
                             </td>
                         </tr>
                         <tr>
                             <td>Заметка</td>
                             <td>
-                                <textarea v-if="editBlock === 'note' || !patient.note"
-                                          class="form-control"
-                                          v-model="form.note"
-                                          @blur="saveResults"></textarea>
-
-                                <div v-else>
-                                    <div>{{ patient.note }}</div>
-                                    <a href="" @click.prevent="editBlock = 'note'"><small>Редактировать</small></a>
-                                </div>
-
+                                {{ patient.note }}
                             </td>
                         </tr>
                         </tbody>
                     </table>
 
-                    <h4 class="mt-5 mb-3">Прикрепленные фотография</h4>
+                    <h4 class="mt-5 mb-3" v-show="patient.photos.length > 0">Прикрепленные фотография</h4>
 
                     <div class="btn btn-default mr-2"
                          @click="selectedPhoto = `/storage/${photo}`"
@@ -151,7 +125,8 @@
                                     <span
                                         v-if="photoLoadingError">Ошибка загрузки фотографии, попробуйте еще раз.</span>
 
-                                    <a :href="selectedPhoto" target="_blank" v-if="!photoLoading && !photoLoading" class="btn btn-sm btn-default mb-3 mr-3">
+                                    <a :href="selectedPhoto" target="_blank" v-if="!photoLoading && !photoLoading"
+                                       class="btn btn-sm btn-default mb-3 mr-3">
                                         открыть в новом окне
                                     </a>
 
@@ -185,7 +160,6 @@ export default {
             photoLoading: false,
             photoLoadingError: false,
             selectedPhoto: '',
-            editBlock: '',
             form: useForm({
                 microscopic_description: this.patient?.microscopic_description,
                 diagnosis: this.patient?.diagnosis,
@@ -206,13 +180,12 @@ export default {
             this.photoLoading = false
             this.photoLoadingError = true
         })
+
+        $("#photo-view-modal").on("hidden.bs.modal", function () {
+            this.originalPhotoShowed = false
+        });
     },
     methods: {
-        saveResults() {
-            this.form.post(route('patients.results', this.patient.id), {preserveState: true, preserveScroll: true})
-
-            this.editBlock = ''
-        },
         showOriginalPhoto() {
             this.selectedPhoto = this.selectedPhoto.replace('/thumb', '');
             this.originalPhotoShowed = true;

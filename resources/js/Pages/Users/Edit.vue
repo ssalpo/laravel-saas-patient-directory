@@ -71,7 +71,7 @@
                             <span v-else>{{ user?.id ? 'Сохранить' : 'Добавить' }}</span>
                         </button>
 
-                        <Link :href="route('users.index')" class="btn btn-default ml-2">Отменить</Link>
+                        <Link :href="route('users.index')" :class="{disabled: form.processing}" class="btn btn-default ml-2">Отменить</Link>
                     </div>
                 </form>
             </div>

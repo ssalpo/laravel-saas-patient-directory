@@ -140,9 +140,25 @@ class PatientController extends Controller
         return redirect()->route('patients.show', $patient->id);
     }
 
-    public function storeResults(Patient $patient, PatientResultRequest $request)
+    public function editReport(Patient $patient)
     {
-        $patient->update($request->validated());
+        $patientData = [
+            'id' => $patient->id,
+            'microscopic_description' => $patient->microscopic_description,
+            'diagnosis' => $patient->diagnosis,
+            'note' => $patient->note,
+        ];
+
+        return inertia('Patients/Report', [
+            'patient' => $patientData
+        ]);
+    }
+
+    public function updateReport(Patient $patient, PatientResultRequest $request)
+    {
+        $patient->update($request->validated() + ['status' => Patient::STATUS_CHECKED]);
+
+        return redirect()->route('patients.show', $patient->id);
     }
 
     public function print(Patient $patient)

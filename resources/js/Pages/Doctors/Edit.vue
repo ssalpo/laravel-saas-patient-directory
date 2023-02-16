@@ -36,7 +36,7 @@
                             <span v-else>{{ doctor?.id ? 'Сохранить' : 'Добавить' }}</span>
                         </button>
 
-                        <Link :href="route('doctors.index')" class="btn btn-default ml-2">Отменить</Link>
+                        <Link :href="route('doctors.index')" :class="{disabled: form.processing}" class="btn btn-default ml-2">Отменить</Link>
                     </div>
                 </form>
             </div>

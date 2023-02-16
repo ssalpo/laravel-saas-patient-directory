@@ -23,7 +23,8 @@ Route::middleware('auth:sanctum')->group(static function () {
     // Patients
     Route::get('/', [PatientController::class, 'index'])->name('patients.index');
     Route::get('/patients/all', [PatientController::class, 'all'])->name('patients.all');
-    Route::post('/patients/{patient}/results', [PatientController::class, 'storeResults'])->name('patients.results');
+    Route::get('/patients/{patient}/report', [PatientController::class, 'editReport'])->name('patients.edit.report');
+    Route::put('/patients/{patient}/results', [PatientController::class, 'updateReport'])->name('patients.update.report');
     Route::get('/patients/{patient}/print', [PatientController::class, 'print'])->name('patients.print');
     Route::resource('patients', PatientController::class)->except('index');
 
