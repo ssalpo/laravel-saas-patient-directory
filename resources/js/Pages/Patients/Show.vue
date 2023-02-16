@@ -181,7 +181,7 @@ export default {
             this.photoLoadingError = true
         })
 
-        $("#photo-view-modal").on("hidden.bs.modal", function () {
+        $(document).on('hide.bs.modal',"#photo-view-modal", function () {
             this.originalPhotoShowed = false
         });
     },
