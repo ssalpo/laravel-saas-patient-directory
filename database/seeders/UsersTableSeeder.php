@@ -45,7 +45,7 @@ class UsersTableSeeder extends Seeder
         ];
 
         foreach ($users as $userData) {
-            $user = User::create(array_merge(Arr::except($userData, 'role') , ['password' => Hash::make($userData['password'])]));
+            $user = User::create(array_merge(Arr::except($userData, 'role') , ['password' => $userData['password']]));
 
             $user->assignRole($userData['role']);
         }
