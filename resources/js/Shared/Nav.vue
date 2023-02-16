@@ -16,7 +16,7 @@
                     </li>
 
                     <li class="nav-item dropdown"
-                        v-if="$page.props.shared.userPermissions.includes('read_all_patients') || $page.props.shared.userPermissions.includes('read_doctors')"
+                        v-if="$page.props.shared.userPermissions.includes('read_all_patients') || $page.props.shared.userPermissions.includes('read_doctors') || $page.props.shared.userPermissions.includes('read_users') || $page.props.shared.userPermissions.includes('read_roles')"
                     >
                         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Управление</a>
                         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="left: 0px; right: inherit;">
@@ -33,6 +33,11 @@
                             <li v-if="$page.props.shared.userPermissions.includes('read_users')">
                                 <Link :href="route('users.index')" class="nav-link">
                                     Пользователи
+                                </Link>
+                            </li>
+                            <li v-if="$page.props.shared.userPermissions.includes('read_roles')">
+                                <Link :href="route('roles.index')" class="nav-link">
+                                    Роли
                                 </Link>
                             </li>
                         </ul>

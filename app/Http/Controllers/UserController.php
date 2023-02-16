@@ -10,6 +10,13 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:read_users')->only('index');
+        $this->middleware('can:create_users')->only(['create', 'store']);
+        $this->middleware('can:edit_users')->only(['edit', 'update']);
+    }
+
     public function index()
     {
         $users = User::orderBy('created_at', 'DESC')

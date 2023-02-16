@@ -20,10 +20,22 @@ class RolesSeeder extends Seeder
         $roleResident = Role::create(['name' => 'resident', 'readable_name' => 'Ординатор']);
         $roleDoctor = Role::create(['name' => 'doctor', 'readable_name' => 'Доктор']);
 
-        $permissionReadUsers = Permission::create(['name' => 'read_users']);
-        $permissionEditUsers = Permission::create(['name' => 'edit_users']);
-        $permissionCreateUsers = Permission::create(['name' => 'create_users']);
-        $permissionDeleteUsers = Permission::create(['name' => 'delete_users']);
+        $permissionReadRoles = Permission::create(['name' => 'read_roles', 'readable_name' => 'Просматривать список ролей']);
+        $permissionEditRoles = Permission::create(['name' => 'edit_roles', 'readable_name' => 'Редактировать ролей']);
+        $permissionCreateRoles = Permission::create(['name' => 'create_roles', 'readable_name' => 'Создавать ролей']);
+        $permissionDeleteRoles = Permission::create(['name' => 'delete_roles', 'readable_name' => 'Удалять ролей']);
+
+        $permissionsManagerRoles = [
+            $permissionReadRoles,
+            $permissionEditRoles,
+            $permissionCreateRoles,
+            $permissionDeleteRoles,
+        ];
+
+        $permissionReadUsers = Permission::create(['name' => 'read_users', 'readable_name' => 'Просматривать список пользователей']);
+        $permissionEditUsers = Permission::create(['name' => 'edit_users', 'readable_name' => 'Редактировать пользователей']);
+        $permissionCreateUsers = Permission::create(['name' => 'create_users', 'readable_name' => 'Создавать пользователей']);
+        $permissionDeleteUsers = Permission::create(['name' => 'delete_users', 'readable_name' => 'Удалять пользователей']);
 
         $permissionsManagerUsers = [
             $permissionReadUsers,
@@ -32,11 +44,11 @@ class RolesSeeder extends Seeder
             $permissionDeleteUsers,
         ];
 
-        $permissionReadPatients = Permission::create(['name' => 'read_all_patients']);
-        $permissionSelectDoctorPatients = Permission::create(['name' => 'select_doctor_patients']);
-        $permissionEditPatients = Permission::create(['name' => 'edit_patients']);
-        $permissionCreatePatients = Permission::create(['name' => 'create_patients']);
-        $permissionDeletePatients = Permission::create(['name' => 'delete_patients']);
+        $permissionReadPatients = Permission::create(['name' => 'read_all_patients', 'readable_name' => 'Просматривать всех пациентов']);
+        $permissionSelectDoctorPatients = Permission::create(['name' => 'select_doctor_patients', 'readable_name' => 'Выбрать врача в списке']);
+        $permissionEditPatients = Permission::create(['name' => 'edit_patients', 'readable_name' => 'Редактировать пациентов']);
+        $permissionCreatePatients = Permission::create(['name' => 'create_patients', 'readable_name' => 'Создавать пациентов']);
+        $permissionDeletePatients = Permission::create(['name' => 'delete_patients', 'readable_name' => 'Удалять пациентов']);
 
         $permissionsManagerPatients = [
             $permissionReadPatients,
@@ -45,10 +57,10 @@ class RolesSeeder extends Seeder
             $permissionDeletePatients
         ];
 
-        $permissionReadDoctors = Permission::create(['name' => 'read_doctors']);
-        $permissionEditDoctors = Permission::create(['name' => 'edit_doctors']);
-        $permissionCreateDoctors = Permission::create(['name' => 'create_doctors']);
-        $permissionDeleteDoctors = Permission::create(['name' => 'delete_doctors']);
+        $permissionReadDoctors = Permission::create(['name' => 'read_doctors', 'readable_name' => 'Просматривать список врачей']);
+        $permissionEditDoctors = Permission::create(['name' => 'edit_doctors', 'readable_name' => 'Редактировать врачей']);
+        $permissionCreateDoctors = Permission::create(['name' => 'create_doctors', 'readable_name' => 'Создавать врачей']);
+        $permissionDeleteDoctors = Permission::create(['name' => 'delete_doctors', 'readable_name' => 'Удалять врачей']);
 
         $permissionsManagerDoctors = [
             $permissionReadDoctors,
@@ -57,9 +69,10 @@ class RolesSeeder extends Seeder
             $permissionDeleteDoctors
         ];
 
-        $permissionAddReport = Permission::create(['name' => 'add report']);
+        $permissionAddReport = Permission::create(['name' => 'add_report', 'readable_name' => 'Добавлять диагноз']);
 
         $roleAdmin->syncPermissions([
+            ...$permissionsManagerRoles,
             ...$permissionsManagerUsers,
             ...$permissionsManagerPatients,
             $permissionSelectDoctorPatients,
