@@ -67,6 +67,12 @@
                                 {{ patient.doctor }}
                             </td>
                         </tr>
+                        <tr>
+                            <td>Анамнез</td>
+                            <td>
+                                {{ patient.anamnes }}
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
 

@@ -1,11 +1,11 @@
 <template>
     <Head>
-        <title>Список всех пациентов</title>
+        <title>Дерматопатология</title>
     </Head>
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">Список всех пациентов</h1>
+            <h1 class="m-0">Дерматопатология</h1>
         </div>
     </div>
 
