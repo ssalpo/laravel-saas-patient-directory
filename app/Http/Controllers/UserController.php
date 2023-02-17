@@ -15,6 +15,7 @@ class UserController extends Controller
         $this->middleware('can:read_users')->only('index');
         $this->middleware('can:create_users')->only(['create', 'store']);
         $this->middleware('can:edit_users')->only(['edit', 'update']);
+        $this->middleware('can:toggle_activity_users')->only('toggleActivity');
     }
 
     public function index()
@@ -25,6 +26,7 @@ class UserController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'username' => $user->username,
+                'is_active' => $user->is_active,
                 'created_at' => $user->created_at->format('d.m.Y'),
                 'roles' => $user->roles->pluck('readable_name') ?? []
             ]);
@@ -74,5 +76,10 @@ class UserController extends Controller
         });
 
         return redirect()->route('users.index');
+    }
+
+    public function toggleActivity(User $user)
+    {
+        $user->update(['is_active' => !$user->is_active]);
     }
 }

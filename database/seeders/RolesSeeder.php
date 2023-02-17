@@ -36,12 +36,14 @@ class RolesSeeder extends Seeder
         $permissionEditUsers = Permission::create(['name' => 'edit_users', 'readable_name' => 'Редактировать пользователей']);
         $permissionCreateUsers = Permission::create(['name' => 'create_users', 'readable_name' => 'Создавать пользователей']);
         $permissionDeleteUsers = Permission::create(['name' => 'delete_users', 'readable_name' => 'Удалять пользователей']);
+        $permissionToggleActivityUsers = Permission::create(['name' => 'toggle_activity_users', 'readable_name' => 'Изменять активность пользователей']);
 
         $permissionsManagerUsers = [
             $permissionReadUsers,
             $permissionEditUsers,
             $permissionCreateUsers,
             $permissionDeleteUsers,
+            $permissionToggleActivityUsers
         ];
 
         $permissionReadPatients = Permission::create(['name' => 'read_all_patients', 'readable_name' => 'Просматривать всех пациентов']);

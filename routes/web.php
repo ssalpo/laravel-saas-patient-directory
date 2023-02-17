@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(static function () {
+Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static function () {
     // Patients
     Route::get('/', [PatientController::class, 'index'])->name('patients.index');
     Route::get('/patients/all', [PatientController::class, 'all'])->name('patients.all');
@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(static function () {
     Route::resource('doctors', DoctorController::class);
 
     // Users
+    Route::post('/users/{user}/toggle-activity', [UserController::class, 'toggleActivity'])->name('users.toggle_activity');
     Route::resource('users', UserController::class);
 
     // Roles

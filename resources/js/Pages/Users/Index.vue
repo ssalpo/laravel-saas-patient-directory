@@ -23,32 +23,37 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th>Имя</th>
-                            <th>Логин</th>
-                            <th>Дата создания</th>
-                            <th>Роль</th>
-                            <th width="40"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="(user, index) in users.data">
-                            <td>{{ ((users.current_page - 1) * users.per_page) + index + 1 }}</td>
-                            <td>{{ user.name }}</td>
-                            <td>{{ user.username }}</td>
-                            <td>{{ user.created_at }}</td>
-                            <td>{{user.roles.join(', ')}}</td>
-                            <td class="text-center" v-if="$page.props.shared.userPermissions.includes('edit_users')">
-                                <Link :href="route('users.edit', user.id)">
-                                    <i class="fa fa-pencil-alt"></i>
-                                </Link>
-                            </td>
-                        </tr>
+                            <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Имя</th>
+                                <th>Логин</th>
+                                <th>Дата создания</th>
+                                <th>Роль</th>
+                                <th>Активность</th>
+                                <th width="40"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(user, index) in users.data">
+                                <td>{{ ((users.current_page - 1) * users.per_page) + index + 1 }}</td>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.created_at }}</td>
+                                <td>{{ user.roles.join(', ') }}</td>
+                                <td>
+                                    <input type="checkbox" :checked="user.is_active" @change="$page.props.shared.userPermissions.includes('toggle_activity_users') ? toggleActivity(user.id) : null">
+                                </td>
+                                <td class="text-center"
+                                    v-if="$page.props.shared.userPermissions.includes('edit_users')">
+                                    <Link :href="route('users.edit', user.id)">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </Link>
+                                </td>
+                            </tr>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <!-- /.card-body -->
@@ -66,6 +71,11 @@ import Pagination from "../../Shared/Pagination.vue";
 
 export default {
     components: {Pagination, Head, Link},
-    props: ['users']
+    props: ['users'],
+    methods: {
+        toggleActivity(id) {
+            this.$inertia.post(route('users.toggle_activity', id));
+        }
+    }
 }
 </script>
