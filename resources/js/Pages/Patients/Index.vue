@@ -33,8 +33,8 @@
                             <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
-                                <th>Ф.И.О</th>
                                 <th>Номер кейса</th>
+                                <th>Ф.И.О</th>
                                 <th>Статус</th>
                                 <th v-if="$page.props.shared.userPermissions.includes('edit_patients')"></th>
                             </tr>
@@ -42,10 +42,10 @@
                             <tbody>
                             <tr v-for="(patient, index) in patients.data">
                                 <td>{{ ((patients.current_page - 1) * patients.per_page) + index + 1 }}</td>
+                                <td>{{ patient.case_numbers }}</td>
                                 <td>
                                     <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
                                 </td>
-                                <td>{{ patient.case_numbers }}</td>
                                 <td :class="[patient.status === 1 ? 'text-danger' : 'text-success']">
                                     {{ patient.status == 1 ? 'На проверке' : 'Проверено' }}
                                 </td>
