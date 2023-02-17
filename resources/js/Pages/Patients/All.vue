@@ -53,13 +53,9 @@
                                 </td>
                                 <td :class="[patient.status === 1 ? 'text-danger' : 'text-success']">
                                     {{ patient.status == 1 ? 'На проверке' : 'Проверено' }}
-
-                                    <Link :href="route('patients.edit.report', patient.id)">
-                                        ({{ patient.status === 1 ? 'ответить' : 'редактировать ответ' }})
-                                    </Link>
                                 </td>
                                 <td class="text-center">
-                                    <Link :href="route('patients.edit.report', patient.id)">
+                                    <Link :href="route('patients.edit', patient.id)">
                                         <i class="fa fa-pencil-alt"></i>
                                     </Link>
                                 </td>

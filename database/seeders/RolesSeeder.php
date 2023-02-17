@@ -45,13 +45,12 @@ class RolesSeeder extends Seeder
         ];
 
         $permissionReadPatients = Permission::create(['name' => 'read_all_patients', 'readable_name' => 'Просматривать всех пациентов']);
-        $permissionSelectDoctorPatients = Permission::create(['name' => 'select_doctor_patients', 'readable_name' => 'Выбрать врача в списке']);
+        $permissionSelectDoctorPatients = Permission::create(['name' => 'select_doctor_patients', 'readable_name' => 'Выбрать врача в при создании/редактировании']);
         $permissionEditPatients = Permission::create(['name' => 'edit_patients', 'readable_name' => 'Редактировать пациентов']);
         $permissionCreatePatients = Permission::create(['name' => 'create_patients', 'readable_name' => 'Создавать пациентов']);
         $permissionDeletePatients = Permission::create(['name' => 'delete_patients', 'readable_name' => 'Удалять пациентов']);
 
         $permissionsManagerPatients = [
-            $permissionReadPatients,
             $permissionEditPatients,
             $permissionCreatePatients,
             $permissionDeletePatients
@@ -75,6 +74,7 @@ class RolesSeeder extends Seeder
             ...$permissionsManagerRoles,
             ...$permissionsManagerUsers,
             ...$permissionsManagerPatients,
+            $permissionReadPatients,
             $permissionSelectDoctorPatients,
             ...$permissionsManagerDoctors,
             $permissionAddReport

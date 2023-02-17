@@ -89,7 +89,21 @@
                         <tr>
                             <td>Микроскопическое описание</td>
                             <td>
-                                {{ patient.microscopic_description }}
+                                <div v-if="$page.props.shared.userPermissions.includes('add_report')">
+                                    <textarea
+                                        v-if="editBlock === 'microscopic_description' || !patient.microscopic_description"
+                                        class="form-control" v-model="form.microscopic_description"
+                                        @blur="saveReport"></textarea>
+
+                                    <div v-else>
+                                        <div>{{ patient.microscopic_description }}</div>
+
+                                        <a href="" @click.prevent="editBlock = 'microscopic_description'"><small>Редактировать</small></a>
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    {{ patient.microscopic_description }}
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -97,13 +111,39 @@
                                 <b>Диагноз</b>
                             </td>
                             <td>
-                                {{ patient.diagnosis }}
+                                <div v-if="$page.props.shared.userPermissions.includes('add_report')">
+                                    <textarea v-if="editBlock === 'diagnosis' || !patient.diagnosis"
+                                              class="form-control"
+                                              v-model="form.diagnosis"
+                                              @blur="saveReport"></textarea>
+
+                                    <div v-else>
+                                        <div>{{ patient.diagnosis }}</div>
+                                        <a href="" @click.prevent="editBlock = 'diagnosis'"><small>Редактировать</small></a>
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    {{ patient.diagnosis }}
+                                </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Заметка</td>
                             <td>
-                                {{ patient.note }}
+                                <div v-if="$page.props.shared.userPermissions.includes('add_report')">
+                                    <textarea v-if="editBlock === 'note' || !patient.note"
+                                              class="form-control"
+                                              v-model="form.note"
+                                              @blur="saveReport"></textarea>
+
+                                    <div v-else>
+                                        <div>{{ patient.note }}</div>
+                                        <a href="" @click.prevent="editBlock = 'note'"><small>Редактировать</small></a>
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    {{ patient.note }}
+                                </div>
                             </td>
                         </tr>
                         </tbody>
@@ -166,6 +206,7 @@ export default {
             photoLoading: false,
             photoLoadingError: false,
             selectedPhoto: '',
+            editBlock: '',
             form: useForm({
                 microscopic_description: this.patient?.microscopic_description,
                 diagnosis: this.patient?.diagnosis,
@@ -187,11 +228,16 @@ export default {
             this.photoLoadingError = true
         });
 
-        $(document).on('hide.bs.modal', '#photo-view-modal',  () => {
+        $(document).on('hide.bs.modal', '#photo-view-modal', () => {
             this.originalPhotoShowed = false
         });
     },
     methods: {
+        saveReport() {
+            this.form.post(route('patients.save.report', this.patient.id), {preserveState: true, preserveScroll: true})
+
+            this.editBlock = ''
+        },
         showOriginalPhoto() {
             this.selectedPhoto = this.selectedPhoto.replace('/thumb', '');
             this.originalPhotoShowed = true;

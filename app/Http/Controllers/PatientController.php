@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PatientRequest;
-use App\Http\Requests\PatientResultRequest;
+use App\Http\Requests\PatientReportRequest;
 use App\Jobs\ResizePatientPhotos;
 use App\Models\Doctor;
 use App\Models\Patient;
@@ -16,6 +16,7 @@ class PatientController extends Controller
         $this->middleware('can:read_all_patients')->only('all');
         $this->middleware('can:create_patients')->only(['create', 'store']);
         $this->middleware('can:edit_patients,read_all_patients')->only(['edit', 'update']);
+        $this->middleware('can:add_report')->only('saveReport');
     }
 
     public function all()
@@ -142,21 +143,7 @@ class PatientController extends Controller
         return redirect()->route('patients.show', $patient->id);
     }
 
-    public function editReport(Patient $patient)
-    {
-        $patientData = [
-            'id' => $patient->id,
-            'microscopic_description' => $patient->microscopic_description,
-            'diagnosis' => $patient->diagnosis,
-            'note' => $patient->note,
-        ];
-
-        return inertia('Patients/Report', [
-            'patient' => $patientData
-        ]);
-    }
-
-    public function updateReport(Patient $patient, PatientResultRequest $request)
+    public function saveReport(Patient $patient, PatientReportRequest $request)
     {
         $patient->update($request->validated() + ['status' => Patient::STATUS_CHECKED]);
 
