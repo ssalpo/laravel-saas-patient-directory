@@ -15,11 +15,15 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <input type="text" v-model="search.query" class="form-control form-control-sm"
+                            <input type="text"
+                                   @blur="doSearch"
+                                   @keydown.enter="doSearch"
+                                   v-model="search.query"
+                                   class="form-control form-control-sm"
                                    placeholder="Ф.И.О, код"/>
                         </div>
                         <div class="col-6">
-                            <select v-model="search.status" class="form-control form-control-sm">
+                            <select v-model="search.status" @change="doSearch" class="form-control form-control-sm">
                                 <option :value="null">Выберите статус</option>
                                 <option :value="1">На проверке</option>
                                 <option :value="2">Проверено</option>
@@ -42,7 +46,7 @@
                             </thead>
                             <tbody>
                             <tr v-for="(patient, index) in patients.data">
-                                <td>{{ ( (patients.current_page - 1) * patients.per_page ) + index + 1 }}</td>
+                                <td>{{ ((patients.current_page - 1) * patients.per_page) + index + 1 }}</td>
                                 <td>{{ patient.case_numbers }}</td>
                                 <td>
                                     <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
@@ -50,7 +54,9 @@
                                 <td :class="[patient.status === 1 ? 'text-danger' : 'text-success']">
                                     {{ patient.status == 1 ? 'На проверке' : 'Проверено' }}
 
-                                    <Link :href="route('patients.edit.report', patient.id)">({{patient.status === 1 ? 'ответить' : 'редактировать ответ'}})</Link>
+                                    <Link :href="route('patients.edit.report', patient.id)">
+                                        ({{ patient.status === 1 ? 'ответить' : 'редактировать ответ' }})
+                                    </Link>
                                 </td>
                                 <td class="text-center">
                                     <Link :href="route('patients.edit.report', patient.id)">
@@ -87,12 +93,9 @@ export default {
             status: null
         },
     }),
-    watch: {
-        search: {
-            deep: true,
-            handler: throttle(function () {
-                this.$inertia.get('/patients/all', pickBy(this.search), {preserveState: true})
-            }, 700)
+    methods: {
+        doSearch() {
+            this.$inertia.get('/patients/all', pickBy(this.search), {preserveState: true})
         }
     },
 }

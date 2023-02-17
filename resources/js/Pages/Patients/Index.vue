@@ -15,7 +15,11 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                            <input type="text" v-model="search.query" class="form-control form-control-sm"
+                            <input type="text"
+                                   v-model="search.query"
+                                   @blur="doSearch"
+                                   @keydown.enter="doSearch"
+                                   class="form-control form-control-sm"
                                    placeholder="Ф.И.О, код"/>
                         </div>
                         <div class="col-lg-9 col-md-8 col-sm-6 col-12 mt-3 mt-sm-0 text-right"
@@ -84,12 +88,9 @@ export default {
             query: ''
         },
     }),
-    watch: {
-        search: {
-            deep: true,
-            handler: debounce(function () {
-                this.$inertia.get('/', pickBy(this.search), {preserveState: true})
-            }, 700)
+    methods: {
+        doSearch() {
+            this.$inertia.get('/', pickBy(this.search), {preserveState: true})
         }
     },
 }
