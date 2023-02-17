@@ -154,7 +154,7 @@
                         <div class="custom-file">
                             <input type="file" :class="{'is-invalid': errors.photos}"
                                    multiple
-                                   @input="form.photos = $event.target.files"
+                                   @input="resizeImages($event.target.files)"
                                    class="custom-file-input">
                             <label class="custom-file-label">
                                 {{
@@ -171,7 +171,8 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <button type="button" @click="id ? submit() : null" :data-toggle="!id ? 'modal' : ''" :data-target="!id ? '#confirm-modal' : ''" :disabled="form.processing"
+                    <button type="button" @click="id ? submit() : null" :data-toggle="!id ? 'modal' : ''"
+                            :data-target="!id ? '#confirm-modal' : ''" :disabled="form.processing"
                             class="btn btn-primary">
                         <span v-if="form.processing">
                             <i class="fas fa-spinner fa-spin"></i> Сохранение...
@@ -180,7 +181,9 @@
                         <span v-else>{{ id ? 'Сохранить' : 'Добавить' }}</span>
                     </button>
 
-                    <Link :href="route('patients.index')" :class="{disabled: form.processing}" class="btn btn-default ml-2">Отменить</Link>
+                    <Link :href="route('patients.index')" :class="{disabled: form.processing}"
+                          class="btn btn-default ml-2">Отменить
+                    </Link>
                 </div>
             </div>
         </div>
@@ -263,6 +266,7 @@
 <script>
 import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
 import DateTimePicker from "../../Shared/DateTimePicker.vue";
+import resizeImage from "../../utils/resizeImage";
 
 export default {
     props: ['id', 'doctors', 'patient', 'errors'],
@@ -321,6 +325,21 @@ export default {
         toggleNewDoctor() {
             this.newDoctor = !this.newDoctor;
             this.form.doctor = null
+        },
+        resizeImages: async function (values) {
+            let resizedImages = [];
+
+            for (let i = 0; i < values.length; i++) {
+
+                const config = {
+                    file: values[i],
+                    maxSize: 1800
+                };
+
+                resizedImages.push(await resizeImage(config))
+            }
+
+            this.form.photos = resizedImages;
         }
     }
 }

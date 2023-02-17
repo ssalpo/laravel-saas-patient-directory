@@ -194,7 +194,7 @@ class PatientController extends Controller
                 $uploadedPhotos[] = $photo;
             }
 
-            ResizePatientPhotos::dispatch($uploadedPhotos);
+           //  ResizePatientPhotos::dispatch($uploadedPhotos);
         }
     }
 }
