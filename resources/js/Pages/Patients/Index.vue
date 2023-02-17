@@ -18,7 +18,8 @@
                             <input type="text" v-model="search.query" class="form-control form-control-sm"
                                    placeholder="Ф.И.О, код"/>
                         </div>
-                        <div class="col-lg-9 col-md-8 col-sm-6 col-12 mt-3 mt-sm-0 text-right" v-if="$page.props.shared.userPermissions.includes('create_patients')">
+                        <div class="col-lg-9 col-md-8 col-sm-6 col-12 mt-3 mt-sm-0 text-right"
+                             v-if="$page.props.shared.userPermissions.includes('create_patients')">
                             <Link :href="route('patients.create')" class="btn btn-success btn-sm px-3">
                                 Новый пациент
                             </Link>
@@ -31,7 +32,7 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th style="width: 10px">ID</th>
+                                <th style="width: 10px">#</th>
                                 <th>Ф.И.О</th>
                                 <th>Номер кейса</th>
                                 <th>Статус</th>
@@ -39,8 +40,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="patient in patients.data">
-                                <td>{{ patient.id }}</td>
+                            <tr v-for="(patient, index) in patients.data">
+                                <td>{{ ((patients.current_page - 1) * patients.per_page) + index + 1 }}</td>
                                 <td>
                                     <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
                                 </td>

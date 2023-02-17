@@ -119,5 +119,7 @@
     "validation.uploaded": "Загрузка файла не удалась.",
     "validation.uppercase": "Значение этого поля должно быть в верхнем регистре.",
     "validation.url": "Значение поля имеет ошибочный формат URL.",
-    "validation.uuid": "В значении должен быть корректный UUID."
+    "validation.uuid": "В значении должен быть корректный UUID.",
+    "pagination.previous": "&laquo;",
+    "pagination.next": "&raquo;"
 }

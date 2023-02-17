@@ -25,14 +25,14 @@
                         <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th style="width: 10px">ID</th>
+                            <th style="width: 10px">#</th>
                             <th>Имя</th>
                             <th width="40"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="doctor in doctors.data">
-                            <td>{{ doctor.id }}</td>
+                        <tr v-for="(doctor, index) in doctors.data">
+                            <td>{{ ((doctors.current_page - 1) * doctors.per_page) + index + 1 }}</td>
                             <td>{{ doctor.name }}</td>
                             <td class="text-center" v-if="$page.props.shared.userPermissions.includes('edit_doctors')">
                                 <Link :href="route('doctors.edit', doctor.id)">

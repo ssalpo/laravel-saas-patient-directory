@@ -33,7 +33,7 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th style="width: 10px">ID</th>
+                                <th style="width: 10px">#</th>
                                 <th>Ф.И.О</th>
                                 <th>Номер кейса</th>
                                 <th>Статус</th>
@@ -41,8 +41,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="patient in patients.data">
-                                <td>{{ patient.id }}</td>
+                            <tr v-for="(patient, index) in patients.data">
+                                <td>{{ ( (patients.current_page - 1) * patients.per_page ) + index + 1 }}</td>
                                 <td>
                                     <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
                                 </td>
@@ -80,7 +80,7 @@ import pickBy from 'lodash/pickBy'
 
 export default {
     components: {Pagination, Head, Link},
-    props: ['patients'],
+    props: ['patients', 'firstItem'],
     data: () => ({
         search: {
             query: '',

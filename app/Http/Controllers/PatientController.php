@@ -30,7 +30,9 @@ class PatientController extends Controller
                 'case_numbers' => implode(', ', $patient->case_numbers)
             ]);
 
-        return inertia('Patients/All', compact('patients'));
+        $firstItem = $patients->firstItem();
+
+        return inertia('Patients/All', compact('patients', 'firstItem'));
     }
 
     public function index()

@@ -25,7 +25,7 @@
                         <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th style="width: 10px">ID</th>
+                            <th style="width: 10px">#</th>
                             <th>Имя</th>
                             <th>Логин</th>
                             <th>Дата создания</th>
@@ -34,8 +34,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="user in users.data">
-                            <td>{{ user.id }}</td>
+                        <tr v-for="(user, index) in users.data">
+                            <td>{{ ((users.current_page - 1) * users.per_page) + index + 1 }}</td>
                             <td>{{ user.name }}</td>
                             <td>{{ user.username }}</td>
                             <td>{{ user.created_at }}</td>
