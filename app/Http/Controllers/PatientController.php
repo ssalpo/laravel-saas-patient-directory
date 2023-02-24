@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PatientRequest;
 use App\Http\Requests\PatientReportRequest;
-use App\Jobs\ResizePatientPhotos;
 use App\Models\Doctor;
 use App\Models\Patient;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +15,7 @@ class PatientController extends Controller
         $this->middleware('can:read_all_patients')->only('all');
         $this->middleware('can:create_patients')->only(['create', 'store']);
         $this->middleware('can:edit_patients,read_all_patients')->only(['edit', 'update']);
-        $this->middleware('can:add_report')->only('saveReport');
+        $this->middleware('can:add_report')->only(['saveReport', 'submit']);
     }
 
     public function all()
@@ -95,6 +94,7 @@ class PatientController extends Controller
                 'microscopic_description' => $patient->microscopic_description,
                 'diagnosis' => $patient->diagnosis,
                 'note' => $patient->note,
+                'status' => $patient->status,
                 'photos' => $patient->photos->map(
                     fn($photo) => $photo->has_thumb ? 'thumb/' . $photo->url : $photo->url
                 )
@@ -146,6 +146,13 @@ class PatientController extends Controller
     public function saveReport(Patient $patient, PatientReportRequest $request)
     {
         $patient->update($request->validated());
+
+        return redirect()->route('patients.show', $patient->id);
+    }
+
+    public function submit(Patient $patient)
+    {
+        $patient->update(['status' => Patient::STATUS_CHECKED]);
 
         return redirect()->route('patients.show', $patient->id);
     }

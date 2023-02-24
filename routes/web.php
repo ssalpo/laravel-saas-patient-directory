@@ -25,6 +25,7 @@ Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static functio
     Route::get('/patients/all', [PatientController::class, 'all'])->name('patients.all');
     Route::post('/patients/{patient}/report', [PatientController::class, 'saveReport'])->name('patients.save.report');
     Route::get('/patients/{patient}/print', [PatientController::class, 'print'])->name('patients.print');
+    Route::post('/patients/{patient}/submit', [PatientController::class, 'submit'])->name('patients.submit');
     Route::resource('patients', PatientController::class)->except('index');
 
     // Doctors

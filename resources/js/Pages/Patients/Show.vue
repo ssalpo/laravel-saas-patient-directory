@@ -146,6 +146,14 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr v-if="$page.props.shared.userPermissions.includes('add_report') && patient.status === 1">
+                            <td>
+                                <b>Статус проверки</b>
+                            </td>
+                            <td>
+                                <Link :href="route('patients.submit', patient.id)" preserve-scroll class="btn btn-primary" method="post" as="button">Проверено</Link>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
 
