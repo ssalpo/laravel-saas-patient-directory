@@ -38,8 +38,11 @@
                     <div class="form-group">
                         <label>Дата рождения</label>
 
-                        <date-time-picker :class="{'is-invalid': errors.birthday}" v-model="form.birthday"
-                                          :value="form.birthday" :config="birthdayConfig"/>
+                        <input :class="{'is-invalid': errors.birthday}"
+                               class="form-control"
+                               v-maska data-maska="##.##.####"
+                               placeholder="ДД.ММ.ГГГГ"
+                               v-model="form.birthday" />
 
                         <div v-if="errors.birthday" class="error invalid-feedback">
                             {{ errors.birthday }}
@@ -72,8 +75,11 @@
                     <div class="form-group">
                         <label>Дата/время забора образца</label>
 
-                        <date-time-picker :class="{'is-invalid': errors.sampling_date}" v-model="form.sampling_date"
-                                          :value="form.sampling_date" :config="sampleConfig"/>
+                        <input :class="{'is-invalid': errors.sampling_date}"
+                               class="form-control"
+                               v-maska data-maska="##.##.#### ##:##"
+                               placeholder="ДД.ММ.ГГГГ ЧЧ:ММ"
+                               v-model="form.sampling_date" />
 
                         <div v-if="errors.sampling_date" class="error invalid-feedback">
                             {{ errors.sampling_date }}
@@ -82,9 +88,11 @@
                     <div class="form-group">
                         <label>Дата/время получения образца</label>
 
-                        <date-time-picker :class="{'is-invalid': errors.sample_receipt_date}"
-                                          v-model="form.sample_receipt_date" :value="form.sample_receipt_date"
-                                          :config="sampleConfig"/>
+                        <input :class="{'is-invalid': errors.sample_receipt_date}"
+                               class="form-control"
+                               v-maska data-maska="##.##.#### ##:##"
+                               placeholder="ДД.ММ.ГГГГ ЧЧ:ММ"
+                               v-model="form.sample_receipt_date" />
 
                         <div v-if="errors.sample_receipt_date" class="error invalid-feedback">
                             {{ errors.sample_receipt_date }}
