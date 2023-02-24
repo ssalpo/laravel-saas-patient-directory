@@ -62,17 +62,23 @@
             </tr>
             <tr>
                 <td>Микроскопическое описание</td>
-                <td>{{ patient.microscopic_description }}</td>
+                <td>
+                    <span v-if="patient.status === 2">{{ patient.microscopic_description }}</span>
+                </td>
             </tr>
             <tr>
                 <td>
                     <b>Диагноз</b>
                 </td>
-                <td>{{ patient.diagnosis }}</td>
+                <td>
+                    <span v-if="patient.status === 2">{{ patient.diagnosis }}</span>
+                </td>
             </tr>
             <tr>
                 <td>Заметка</td>
-                <td>{{ patient.note }}</td>
+                <td>
+                    <span v-if="patient.status === 2">{{ patient.note }}</span>
+                </td>
             </tr>
             </tbody>
         </table>

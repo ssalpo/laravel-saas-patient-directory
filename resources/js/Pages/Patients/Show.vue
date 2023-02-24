@@ -102,7 +102,7 @@
                                     </div>
                                 </div>
                                 <div v-else>
-                                    {{ patient.microscopic_description }}
+                                    <span v-if="patient.status === 2">{{ patient.microscopic_description }}</span>
                                 </div>
                             </td>
                         </tr>
@@ -123,7 +123,7 @@
                                     </div>
                                 </div>
                                 <div v-else>
-                                    {{ patient.diagnosis }}
+                                    <span v-if="patient.status === 2">{{ patient.diagnosis }}</span>
                                 </div>
                             </td>
                         </tr>
@@ -142,7 +142,7 @@
                                     </div>
                                 </div>
                                 <div v-else>
-                                    {{ patient.note }}
+                                    <span v-if="patient.status === 2">{{ patient.note }}</span>
                                 </div>
                             </td>
                         </tr>

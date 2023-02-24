@@ -145,7 +145,7 @@ class PatientController extends Controller
 
     public function saveReport(Patient $patient, PatientReportRequest $request)
     {
-        $patient->update($request->validated() + ['status' => Patient::STATUS_CHECKED]);
+        $patient->update($request->validated());
 
         return redirect()->route('patients.show', $patient->id);
     }
@@ -170,6 +170,7 @@ class PatientController extends Controller
                 'microscopic_description' => $patient->microscopic_description,
                 'diagnosis' => $patient->diagnosis,
                 'note' => $patient->note,
+                'status' => $patient->status
             ]
         ]);
     }

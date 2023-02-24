@@ -80,8 +80,11 @@
                     </div>
                     <div class="form-group">
                         <label>Анамнез</label>
-                        <input type="text" :class="{'is-invalid': errors.anamnes}" class="form-control"
-                               v-model="form.anamnes">
+
+                        <textarea :class="{'is-invalid': errors.anamnes}"
+                                  class="form-control"
+                                  v-model="form.anamnes"
+                        ></textarea>
 
                         <div v-if="errors.anamnes" class="error invalid-feedback">
                             {{ errors.anamnes }}

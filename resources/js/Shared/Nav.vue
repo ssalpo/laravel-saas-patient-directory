@@ -9,34 +9,45 @@
             <div v-if="$page.props.shared.isAuth" class="collapse navbar-collapse order-3" id="navbarCollapse">
                 <!-- Left navbar links -->
                 <ul class="navbar-nav">
-                    <li class="nav-item">
+                    <li class="nav-item"
+                        :class="{ active : $page.url === '/' }"
+                    >
                         <Link :href="route('patients.index')" class="nav-link">
                             Пациенты
                         </Link>
                     </li>
 
-                    <li class="nav-item" v-if="$page.props.shared.userPermissions.includes('read_all_patients')">
+                    <li class="nav-item"
+                        :class="{ active : $page.url.startsWith('/patients') }"
+                        v-if="$page.props.shared.userPermissions.includes('read_all_patients')">
                         <Link :href="route('patients.all')" class="nav-link">
                             Дерматопатология
                         </Link>
                     </li>
 
                     <li class="nav-item dropdown"
+                        :class="{ active : $page.url.startsWith('/doctors') || $page.url.startsWith('/users') || $page.url.startsWith('/roles') }"
                         v-if="$page.props.shared.userPermissions.includes('read_doctors') || $page.props.shared.userPermissions.includes('read_users') || $page.props.shared.userPermissions.includes('read_roles')"
                     >
                         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Управление</a>
                         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="left: 0px; right: inherit;">
-                            <li v-if="$page.props.shared.userPermissions.includes('read_doctors')">
+                            <li v-if="$page.props.shared.userPermissions.includes('read_doctors')"
+                                :class="{ active : $page.url.startsWith('/doctors')}"
+                            >
                                 <Link :href="route('doctors.index')" class="nav-link">
                                     Врачи
                                 </Link>
                             </li>
-                            <li v-if="$page.props.shared.userPermissions.includes('read_users')">
+                            <li v-if="$page.props.shared.userPermissions.includes('read_users')"
+                                :class="{ active : $page.url.startsWith('/users')}"
+                            >
                                 <Link :href="route('users.index')" class="nav-link">
                                     Пользователи
                                 </Link>
                             </li>
-                            <li v-if="$page.props.shared.userPermissions.includes('read_roles')">
+                            <li v-if="$page.props.shared.userPermissions.includes('read_roles')"
+                                :class="{ active : $page.url.startsWith('/roles')}"
+                            >
                                 <Link :href="route('roles.index')" class="nav-link">
                                     Роли
                                 </Link>
