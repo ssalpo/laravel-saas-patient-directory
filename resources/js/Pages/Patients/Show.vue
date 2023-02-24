@@ -36,6 +36,10 @@
                             <td>{{ patient.name }}</td>
                         </tr>
                         <tr>
+                            <td width="400">Номер телефона</td>
+                            <td>{{ patient.phone }}</td>
+                        </tr>
+                        <tr>
                             <td>Дата рождения</td>
                             <td>{{ patient.birthday }}</td>
                         </tr>

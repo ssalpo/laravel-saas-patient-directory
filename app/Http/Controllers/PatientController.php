@@ -83,6 +83,7 @@ class PatientController extends Controller
             'patient' => [
                 'id' => $patient->id,
                 'name' => $patient->name,
+                'phone' => $patient->phone,
                 'case_numbers' => $patient->case_numbers,
                 'birthday' => $patient->birthday->format('d.m.Y'),
                 'gender' => $patient->gender,
@@ -114,6 +115,7 @@ class PatientController extends Controller
             'patient' => [
                 'id' => $patient->id,
                 'name' => $patient->name,
+                'phone' => $patient->phone,
                 'birthday' => $patient->birthday->format('d.m.Y'),
                 'gender' => $patient->gender,
                 'sampling_date' => $patient->sampling_date->format('d.m.Y H:i'),

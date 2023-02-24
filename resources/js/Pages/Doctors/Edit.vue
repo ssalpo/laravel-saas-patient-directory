@@ -30,6 +30,7 @@
                             <input type="text" class="form-control"
                                    :class="{'is-invalid': errors.phone}"
                                    v-maska data-maska="+992 (##) ###-##-##"
+                                   placeholder="пример: +992 (92) 992-72-33"
                                    v-model.trim="form.phone">
 
                             <div v-if="errors.phone" class="error invalid-feedback">

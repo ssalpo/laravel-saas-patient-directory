@@ -26,6 +26,7 @@ class PatientRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|string|min:1|max:255',
+            'phone' => 'nullable|string|min:1|max:255',
             'birthday' => 'date:Y-m-d',
             'gender' => 'required|boolean',
             'sampling_date' => 'required|date_format:Y-m-d H:i',
@@ -41,7 +42,7 @@ class PatientRequest extends FormRequest
 
         if ($this->user()?->can('select_doctor_patients')) {
             $rules['doctor'] = 'required';
-            $rules['doctor_phone'] = 'nullable|string';
+            $rules['doctor_phone'] = 'nullable|string|min:1|max:255';
         }
 
         return $rules;

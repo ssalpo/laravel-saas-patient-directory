@@ -15,6 +15,7 @@ class Patient extends Model
         'case_numbers',
         'status',
         'name',
+        'phone',
         'birthday',
         'gender',
         'sampling_date',

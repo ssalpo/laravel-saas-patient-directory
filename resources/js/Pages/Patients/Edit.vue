@@ -24,6 +24,18 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label>Номер телефона (необязательно)</label>
+                        <input type="text" class="form-control"
+                               :class="{'is-invalid': errors.phone}"
+                               v-maska data-maska="+992 (##) ###-##-##"
+                               placeholder="пример: +992 (92) 992-72-33"
+                               v-model="form.phone">
+
+                        <div v-if="errors.phone" class="error invalid-feedback">
+                            {{ errors.phone }}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label>Дата рождения</label>
 
                         <date-time-picker :class="{'is-invalid': errors.birthday}" v-model="form.birthday"
@@ -143,7 +155,7 @@
                                    placeholder="Введите имя доктора">
 
                             <input type="text"
-                                   placeholder="Номер телефона (необязательно)"
+                                   placeholder="Номер телефона (необязательно), пример: +992 (92) 992-72-33"
                                    class="form-control form-control-sm mt-2"
                                    v-maska data-maska="+992 (##) ###-##-##"
                                    v-model="form.doctor_phone">
@@ -296,6 +308,7 @@ export default {
             },
             form: useForm({
                 name: this.patient?.name,
+                phone: this.patient?.phone,
                 birthday: this.patient?.birthday || '',
                 gender: this.patient?.gender !== undefined ? this.patient.gender : 1,
                 sampling_date: this.patient?.sampling_date,
