@@ -72,7 +72,7 @@ class PatientController extends Controller
             return $patient;
         });
 
-        return redirect()->route('patients.show', $patient->id);
+        return redirect()->route('patients.show', $patient->id)->with('isCreated', true);
     }
 
     public function show(int $id)

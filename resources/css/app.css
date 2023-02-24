@@ -4,3 +4,20 @@
     font-size: 80%;
     color: #dc3545;
 }
+
+.animate-background {
+    background-color: #ffc107;
+    animation-name: bckanim;
+    animation-fill-mode: forwards;
+    animation-duration: 3s;
+    animation-delay: 2s;
+}
+
+@keyframes bckanim {
+    0% {
+        background-color: orange;
+    }
+    100% {
+        background-color: transparent;
+    }
+}

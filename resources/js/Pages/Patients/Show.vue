@@ -59,7 +59,7 @@
                             <td>Дата/время получения образца</td>
                             <td>{{ patient.sample_receipt_date }}</td>
                         </tr>
-                        <tr>
+                        <tr :class="{'animate-background': $page.props.flash.isCreated === true}">
                             <td>Номер кейса</td>
                             <td>
                                 <div v-for="case_number in patient.case_numbers">{{ case_number }}</div>

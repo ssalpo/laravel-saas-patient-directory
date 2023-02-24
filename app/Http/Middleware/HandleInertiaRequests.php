@@ -42,7 +42,10 @@ class HandleInertiaRequests extends Middleware
                 'userId' => auth()->id(),
                 'userRoles' => $request->user()?->roles->pluck('name') ?? [],
                 'userPermissions' => $request->user()?->getPermissionsViaRoles()->pluck('name') ?? [],
-            ]
+            ],
+            'flash' => [
+                'isCreated' => fn () => $request->session()->get('isCreated')
+            ],
         ]);
     }
 }
