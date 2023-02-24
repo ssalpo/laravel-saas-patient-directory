@@ -33,7 +33,8 @@
                                           preserve-scroll
                                           v-if="doctor.not_paid_patients_count > 0"
                                           method="post" as="button"
-                                          type="button" class="btn btn-primary mr-2">Оплачено
+                                          type="button" class="btn btn-primary mr-2">
+                                        Оплатить
                                     </Link>
 
                                     <Link :href="route('payments.show', doctor.id)"
