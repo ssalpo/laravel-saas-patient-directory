@@ -86,6 +86,11 @@ class Patient extends Model
         return $this->morphMany(Photo::class, 'photoable');
     }
 
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
+
     public function generateCaseNumbers(): array
     {
         $caseNumbers = [];

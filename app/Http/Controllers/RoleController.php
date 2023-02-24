@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
+use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -60,7 +61,11 @@ class RoleController extends Controller
 
     public function update(RoleRequest $request, Role $role)
     {
-        $role->update($request->validated());
+        $role->update(
+            $request->user()->hasRole('admin')
+                ? Arr::except($request->validated(), 'name')
+                : $request->validated()
+        );
 
         $role->syncPermissions(Permission::whereIn('id', $request->permissions)->pluck('name'));
 

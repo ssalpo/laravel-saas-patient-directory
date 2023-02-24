@@ -11,4 +11,14 @@ class Doctor extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = ['name', 'phone'];
+
+    public function patients()
+    {
+        return $this->hasMany(Patient::class);
+    }
+
+    public function notPaidPatients()
+    {
+        return $this->patients()->whereDoesntHave('payment');
+    }
 }

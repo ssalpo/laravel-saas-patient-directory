@@ -16,7 +16,7 @@ class RolesSeeder extends Seeder
      */
     public function run()
     {
-        $roleAdmin = Role::create(['name' => 'admin', 'readable_name' => 'Администратор']);
+        $roleAdmin = Role::create(['name' => 'admin', 'readable_name' => 'Администратор системы']);
         $roleResident = Role::create(['name' => 'resident', 'readable_name' => 'Ординатор']);
         $roleDoctor = Role::create(['name' => 'doctor', 'readable_name' => 'Доктор']);
 
@@ -72,15 +72,15 @@ class RolesSeeder extends Seeder
 
         $permissionAddReport = Permission::create(['name' => 'add_report', 'readable_name' => 'Добавлять диагноз']);
 
-        $roleAdmin->syncPermissions([
-            ...$permissionsManagerRoles,
-            ...$permissionsManagerUsers,
-            ...$permissionsManagerPatients,
-            $permissionReadPatients,
-            $permissionSelectDoctorPatients,
-            ...$permissionsManagerDoctors,
-            $permissionAddReport
-        ]);
+//        $roleAdmin->syncPermissions([
+//            ...$permissionsManagerRoles,
+//            ...$permissionsManagerUsers,
+//            ...$permissionsManagerPatients,
+//            $permissionReadPatients,
+//            $permissionSelectDoctorPatients,
+//            ...$permissionsManagerDoctors,
+//            $permissionAddReport
+//        ]);
 
         $roleDoctor->syncPermissions([
             ...$permissionsManagerPatients

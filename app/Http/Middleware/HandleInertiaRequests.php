@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Spatie\Permission\Models\Permission;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -36,15 +37,21 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $userPermissions = $request->user()?->getPermissionsViaRoles()->pluck('name') ?? [];
+
+        if (auth()->check() && $request->user()->hasRole('admin')) {
+            $userPermissions = Permission::pluck('name');
+        }
+
         return array_merge(parent::share($request), [
             'shared' => [
                 'isAuth' => auth()->check(),
                 'userId' => auth()->id(),
                 'userRoles' => $request->user()?->roles->pluck('name') ?? [],
-                'userPermissions' => $request->user()?->getPermissionsViaRoles()->pluck('name') ?? [],
+                'userPermissions' => $userPermissions,
             ],
             'flash' => [
-                'isCreated' => fn () => $request->session()->get('isCreated')
+                'isCreated' => fn() => $request->session()->get('isCreated')
             ],
         ]);
     }

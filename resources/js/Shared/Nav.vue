@@ -25,6 +25,14 @@
                         </Link>
                     </li>
 
+                    <li class="nav-item"
+                        :class="{ active : $page.url.startsWith('/payments') }"
+                        v-if="$page.props.shared.userPermissions.includes('payments_manage')">
+                        <Link :href="route('payments.index')" class="nav-link">
+                            Выплаты
+                        </Link>
+                    </li>
+
                     <li class="nav-item dropdown"
                         :class="{ active : $page.url.startsWith('/doctors') || $page.url.startsWith('/users') || $page.url.startsWith('/roles') }"
                         v-if="$page.props.shared.userPermissions.includes('read_doctors') || $page.props.shared.userPermissions.includes('read_users') || $page.props.shared.userPermissions.includes('read_roles')"
