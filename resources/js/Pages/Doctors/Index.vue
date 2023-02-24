@@ -27,6 +27,7 @@
                         <tr>
                             <th style="width: 10px">#</th>
                             <th>Имя</th>
+                            <th>Номер телефона</th>
                             <th width="40"></th>
                         </tr>
                         </thead>
@@ -34,6 +35,7 @@
                         <tr v-for="(doctor, index) in doctors.data">
                             <td>{{ ((doctors.current_page - 1) * doctors.per_page) + index + 1 }}</td>
                             <td>{{ doctor.name }}</td>
+                            <td>{{ doctor.phone }}</td>
                             <td class="text-center" v-if="$page.props.shared.userPermissions.includes('edit_doctors')">
                                 <Link :href="route('doctors.edit', doctor.id)">
                                     <i class="fa fa-pencil-alt"></i>

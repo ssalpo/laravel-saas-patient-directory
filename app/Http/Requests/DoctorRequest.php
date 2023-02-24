@@ -26,7 +26,8 @@ class DoctorRequest extends FormRequest
         $id = ($this->doctor?->id ? ',' . $this->doctor->id . ',id' : '');
 
         return [
-            'name' => 'required|min:2|max:255|unique:doctors,name' . $id
+            'name' => 'required|min:2|max:255|unique:doctors,name' . $id,
+            'phone' => 'nullable|string'
         ];
     }
 }

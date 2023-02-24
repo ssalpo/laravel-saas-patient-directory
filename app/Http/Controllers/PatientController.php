@@ -63,7 +63,7 @@ class PatientController extends Controller
         $patient = DB::transaction(function () use ($request) {
             $doctor = $request->getDoctor();
 
-            $patient = Patient::create($request->validated() + ['doctor_id' => $this->findDoctorOrCreateByName($doctor)]);
+            $patient = Patient::create($request->validated() + ['doctor_id' => $this->findDoctorOrCreateByName($doctor, $request->doctor_phone)]);
 
             $patient->generateCaseNumbers();
 
@@ -131,7 +131,7 @@ class PatientController extends Controller
 
             $doctor = $request->getDoctor();
 
-            $patient->update($request->validated() + ['doctor_id' => $this->findDoctorOrCreateByName($doctor)]);
+            $patient->update($request->validated() + ['doctor_id' => $this->findDoctorOrCreateByName($doctor, $request->doctor_phone)]);
 
             $patient->generateCaseNumbers();
 
@@ -182,13 +182,17 @@ class PatientController extends Controller
         ]);
     }
 
-    private function findDoctorOrCreateByName(int|string $doctor)
+    private function findDoctorOrCreateByName(int|string $nameOrId, ?string $phone = null)
     {
-        if (is_numeric($doctor)) {
-            return Doctor::findOrFail($doctor)->id;
+        if (is_numeric($nameOrId)) {
+            return Doctor::findOrFail($nameOrId)->id;
         }
 
-        return Doctor::where('name', 'LIKE', '%' . $doctor . '%')->firstOrCreate(['name' => $doctor])->id;
+        if($doctor = Doctor::where('name', 'LIKE', '%' . $nameOrId . '%')->first()) {
+            return $doctor->id;
+        }
+
+        return Doctor::create(['name' => $nameOrId, 'phone' => $phone])->id;
     }
 
     private function uploadPhotos($patient, $request)

@@ -16,7 +16,7 @@
                 <form @submit.prevent="submit">
                     <div class="card-body">
                         <div class="form-group">
-                            <label>Название</label>
+                            <label>Имя</label>
                             <input type="text" class="form-control"
                                    :class="{'is-invalid': errors.name}"
                                    v-model.trim="form.name">
@@ -25,8 +25,18 @@
                                 {{ errors.name }}
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label>Номер телефона (необязательно)</label>
+                            <input type="text" class="form-control"
+                                   :class="{'is-invalid': errors.phone}"
+                                   v-maska data-maska="+992 (##) ###-##-##"
+                                   v-model.trim="form.phone">
+
+                            <div v-if="errors.phone" class="error invalid-feedback">
+                                {{ errors.phone }}
+                            </div>
+                        </div>
                     </div>
-                    <!-- /.card-body -->
 
                     <div class="card-footer">
                         <button type="submit" :disabled="form.processing" class="btn btn-primary">
@@ -45,14 +55,17 @@
 </template>
 <script>
 import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
+import { vMaska } from "maska"
 
 export default {
     props: ['doctor', 'errors'],
     components: {Head, Link},
+    directives: { maska: vMaska },
     data() {
         return {
             form: useForm({
-                name: this.doctor?.name
+                name: this.doctor?.name,
+                phone: this.doctor?.phone,
             }),
         }
     },

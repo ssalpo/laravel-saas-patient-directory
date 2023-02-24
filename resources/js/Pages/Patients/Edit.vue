@@ -139,8 +139,14 @@
                         <div v-else>
                             <input type="text"
                                    v-model.trim="form.doctor"
-                                   class="form-control"
+                                   class="form-control form-control-sm"
                                    placeholder="Введите имя доктора">
+
+                            <input type="text"
+                                   placeholder="Номер телефона (необязательно)"
+                                   class="form-control form-control-sm mt-2"
+                                   v-maska data-maska="+992 (##) ###-##-##"
+                                   v-model="form.doctor_phone">
 
                             <button @click="toggleNewDoctor" type="button" class="btn btn-sm btn-link">
                                 Выбрать из списка
@@ -268,12 +274,14 @@
 </template>
 <script>
 import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
+import { vMaska } from "maska"
 import DateTimePicker from "../../Shared/DateTimePicker.vue";
 import resizeImage from "../../utils/resizeImage";
 
 export default {
     props: ['id', 'doctors', 'patient', 'errors'],
     components: {DateTimePicker, Head, Link},
+    directives: { maska: vMaska },
     data() {
         return {
             newDoctor: false,
@@ -294,6 +302,7 @@ export default {
                 sample_receipt_date: this.patient?.sample_receipt_date,
                 anamnes: this.patient?.anamnes,
                 doctor: this.patient?.doctor || null,
+                doctor_phone: this.patient?.doctor_phone || null,
                 categories: this.patient?.categories || [],
                 photos: this.patient?.photos || [],
             }),
@@ -328,6 +337,7 @@ export default {
         toggleNewDoctor() {
             this.newDoctor = !this.newDoctor;
             this.form.doctor = null
+            this.form.doctor_phone = null
         },
         resizeImages: async function (values) {
             let resizedImages = [];

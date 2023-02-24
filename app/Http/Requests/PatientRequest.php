@@ -41,6 +41,7 @@ class PatientRequest extends FormRequest
 
         if ($this->user()?->can('select_doctor_patients')) {
             $rules['doctor'] = 'required';
+            $rules['doctor_phone'] = 'nullable|string';
         }
 
         return $rules;

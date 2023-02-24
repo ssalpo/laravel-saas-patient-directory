@@ -402,6 +402,11 @@ magic-string@^0.25.7:
   dependencies:
     sourcemap-codec "^1.4.8"
 
+maska@^2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/maska/-/maska-2.1.7.tgz#225a1124b311ccd603379cdf3d18920fbee27c54"
+  integrity sha512-WMQzwCgFN2lQf8opJwHwdik7YQ1F8IggGEPdky6qyaaKaE9fUCc8wfbx0U4SfnFiPTsE3/5PzI0Qka4xTBczrw==
+
 mime-db@1.52.0:
   version "1.52.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.52.0.tgz#bbabcdc02859f4987301c856e3387ce5ec43bf70"
