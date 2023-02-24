@@ -26,5 +26,8 @@ createInertiaApp({
             .use(plugin)
             .use(VueLazyload)
             .mount(el)
+
+        // Hide preloader after app setup
+        document.getElementById('preloader-custom').style.display = 'none'
     },
 });

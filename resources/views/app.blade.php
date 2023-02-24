@@ -22,6 +22,10 @@
 </head>
 <body class="hold-transition layout-top-nav">
 
+<div id="preloader-custom">
+    <div class="spinner-custom"></div>
+</div>
+
 @inertia
 
 <!-- jQuery -->
