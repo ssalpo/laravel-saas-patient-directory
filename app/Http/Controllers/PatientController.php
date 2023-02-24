@@ -6,7 +6,9 @@ use App\Http\Requests\PatientRequest;
 use App\Http\Requests\PatientReportRequest;
 use App\Models\Doctor;
 use App\Models\Patient;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PatientController extends Controller
 {
@@ -164,9 +166,11 @@ class PatientController extends Controller
         $patient->load('doctor');
 
         return inertia('Patients/Print', [
-            'currentDate' => date('d.m.Y'),
+            'currentDate' => $patient->created_at->format('d.m.Y'),
+            'qrCode' => (string) QrCode::size(100)->generate(route('patients.public_show', $patient->hashid)),
             'patient' => [
                 'id' => $patient->id,
+                'hashid' => $patient->hashid,
                 'name' => $patient->name,
                 'birthday' => $patient->birthday->format('d.m.Y'),
                 'gender' => $patient->gender,
@@ -190,11 +194,20 @@ class PatientController extends Controller
             return Doctor::findOrFail($nameOrId)->id;
         }
 
-        if($doctor = Doctor::where('name', 'LIKE', '%' . $nameOrId . '%')->first()) {
+        if ($doctor = Doctor::where('name', 'LIKE', '%' . $nameOrId . '%')->first()) {
             return $doctor->id;
         }
 
         return Doctor::create(['name' => $nameOrId, 'phone' => $phone])->id;
+    }
+
+    public function publicShow(string $hash)
+    {
+        $patient = Patient::where('hashid', $hash)->firstOrFail();
+
+        return Pdf::loadView(
+            'pdf.patient', compact('patient')
+        )->stream();
     }
 
     private function uploadPhotos($patient, $request)
@@ -208,7 +221,7 @@ class PatientController extends Controller
                 $uploadedPhotos[] = $photo;
             }
 
-           //  ResizePatientPhotos::dispatch($uploadedPhotos);
+            //  ResizePatientPhotos::dispatch($uploadedPhotos);
         }
     }
 }

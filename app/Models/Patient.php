@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\CurrentUser;
+use Hashids\Hashids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,6 +13,7 @@ class Patient extends Model
     use HasFactory, CurrentUser, SoftDeletes;
 
     protected $fillable = [
+        'hashid',
         'case_numbers',
         'status',
         'name',
@@ -36,6 +38,13 @@ class Patient extends Model
         'sampling_date' => 'datetime',
         'sample_receipt_date' => 'datetime',
     ];
+
+    protected static function booted(): void
+    {
+        static::created(function (Patient $patient) {
+            $patient->update(['hashid' => (new Hashids())->encode($patient->id)]);
+        });
+    }
 
     public const STATUS_CHECKING = 1;
     public const STATUS_CHECKED = 2;

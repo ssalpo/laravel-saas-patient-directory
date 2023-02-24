@@ -1,23 +1,11 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static function () {
     // Patients
@@ -45,3 +33,5 @@ Route::controller(LoginController::class)->group(static function () {
     Route::post('login', 'store')->middleware('guest');
     Route::delete('logout', 'destroy')->name('logout');
 });
+
+Route::get('/{hash}', [PatientController::class, 'publicShow'])->name('patients.public_show');
