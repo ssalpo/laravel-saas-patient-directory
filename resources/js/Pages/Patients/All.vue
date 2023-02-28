@@ -37,7 +37,6 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th style="width: 10px">#</th>
                                 <th>Номер кейса</th>
                                 <th>Ф.И.О</th>
                                 <th>Статус</th>
@@ -46,7 +45,6 @@
                             </thead>
                             <tbody>
                             <tr v-for="(patient, index) in patients.data">
-                                <td>{{ ((patients.current_page - 1) * patients.per_page) + index + 1 }}</td>
                                 <td>{{ patient.case_numbers }}</td>
                                 <td>
                                     <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
