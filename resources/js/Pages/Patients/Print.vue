@@ -63,7 +63,7 @@
             <tr>
                 <td>Микроскопическое описание</td>
                 <td>
-                    <span v-if="patient.status === 2">{{ patient.microscopic_description }}</span>
+                    <span v-if="patient.status === 2" v-html="patient.microscopic_description" class="editor-content" />
                 </td>
             </tr>
             <tr>
@@ -71,13 +71,13 @@
                     <b>Диагноз</b>
                 </td>
                 <td>
-                    <span v-if="patient.status === 2">{{ patient.diagnosis }}</span>
+                    <span v-if="patient.status === 2" v-html="patient.diagnosis" class="editor-content" />
                 </td>
             </tr>
             <tr>
                 <td>Заметка</td>
                 <td>
-                    <span v-if="patient.status === 2">{{ patient.note }}</span>
+                    <span v-if="patient.status === 2" v-html="patient.note" class="editor-content" />
                 </td>
             </tr>
             <tr>

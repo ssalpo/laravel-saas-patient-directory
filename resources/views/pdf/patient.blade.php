@@ -13,6 +13,13 @@
 
         .table.table-bordered td {
             border: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+
+        .editor-content p {
+            margin-top: 0;
+            margin-bottom: 7px;
+            line-height: 16px;
         }
     </style>
 </head>
@@ -79,25 +86,25 @@
     </tr>
     <tr>
         <td>Микроскопическое описание</td>
-        <td>
+        <td class="editor-content">
             @if($patient->status === 2)
-                {{$patient->microscopic_description}}
+                {!! $patient->microscopic_description !!}
             @endif
         </td>
     </tr>
     <tr>
         <td><b>Диагноз</b></td>
-        <td>
+        <td class="editor-content">
             @if($patient->status === 2)
-                {{$patient->diagnosis}}
+                {!! $patient->diagnosis !!}
             @endif
         </td>
     </tr>
     <tr>
         <td>Заметка</td>
-        <td>
+        <td class="editor-content">
             @if($patient->status === 2)
-                {{$patient->note}}
+                {!! $patient->note !!}
             @endif
         </td>
     </tr>

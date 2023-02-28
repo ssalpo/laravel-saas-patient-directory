@@ -69,3 +69,8 @@
         transform: rotate(1turn);
     }
 }
+
+.editor-content p {
+    margin-bottom: 7px;
+    line-height: 25px;
+}

@@ -93,14 +93,18 @@
                         <tr>
                             <td>Микроскопическое описание</td>
                             <td>
+
                                 <div v-if="$page.props.shared.userPermissions.includes('add_report')">
-                                    <textarea
-                                        v-if="editBlock === 'microscopic_description' || !patient.microscopic_description"
-                                        class="form-control" v-model="form.microscopic_description"
-                                        @blur="saveReport"></textarea>
+                                    <QuillEditor theme="snow"
+                                                 @blur="saveReport"
+                                                 @ready="focusOnReady"
+                                                 v-if="editBlock === 'microscopic_description' || !patient.microscopic_description"
+                                                 contentType="html"
+                                                 :toolbar="['bold', 'italic', 'underline']"
+                                                 v-model:content="form.microscopic_description" />
 
                                     <div v-else>
-                                        <div>{{ patient.microscopic_description }}</div>
+                                        <div class="editor-content" v-html="form.microscopic_description"></div>
 
                                         <a href="" @click.prevent="editBlock = 'microscopic_description'"><small>Редактировать</small></a>
                                     </div>
@@ -116,13 +120,16 @@
                             </td>
                             <td>
                                 <div v-if="$page.props.shared.userPermissions.includes('add_report')">
-                                    <textarea v-if="editBlock === 'diagnosis' || !patient.diagnosis"
-                                              class="form-control"
-                                              v-model="form.diagnosis"
-                                              @blur="saveReport"></textarea>
+                                    <QuillEditor theme="snow"
+                                                 @blur="saveReport"
+                                                 @ready="focusOnReady"
+                                                 v-if="editBlock === 'diagnosis' || !patient.diagnosis"
+                                                 contentType="html"
+                                                 :toolbar="['bold', 'italic', 'underline']"
+                                                 v-model:content="form.diagnosis" />
 
                                     <div v-else>
-                                        <div>{{ patient.diagnosis }}</div>
+                                        <div class="editor-content" v-html="patient.diagnosis"></div>
                                         <a href="" @click.prevent="editBlock = 'diagnosis'"><small>Редактировать</small></a>
                                     </div>
                                 </div>
@@ -135,13 +142,16 @@
                             <td>Заметка</td>
                             <td>
                                 <div v-if="$page.props.shared.userPermissions.includes('add_report')">
-                                    <textarea v-if="editBlock === 'note' || !patient.note"
-                                              class="form-control"
-                                              v-model="form.note"
-                                              @blur="saveReport"></textarea>
+                                    <QuillEditor theme="snow"
+                                                 @blur="saveReport"
+                                                 @ready="focusOnReady"
+                                                 v-if="editBlock === 'note' || !patient.note"
+                                                 contentType="html"
+                                                 :toolbar="['bold', 'italic', 'underline']"
+                                                 v-model:content="form.note" />
 
                                     <div v-else>
-                                        <div>{{ patient.note }}</div>
+                                        <div class="editor-content" v-html="patient.note"></div>
                                         <a href="" @click.prevent="editBlock = 'note'"><small>Редактировать</small></a>
                                     </div>
                                 </div>
@@ -208,9 +218,11 @@
 </template>
 <script>
 import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
+import { QuillEditor } from '@vueup/vue-quill';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 export default {
-    components: {Head, Link},
+    components: {Head, Link, QuillEditor},
     props: ['patient'],
     data: function () {
         return {
@@ -219,10 +231,11 @@ export default {
             photoLoadingError: false,
             selectedPhoto: '',
             editBlock: '',
+            someData: '',
             form: useForm({
-                microscopic_description: this.patient?.microscopic_description,
-                diagnosis: this.patient?.diagnosis,
-                note: this.patient?.note
+                microscopic_description: this.patient?.microscopic_description || '',
+                diagnosis: this.patient?.diagnosis || '',
+                note: this.patient?.note || ''
             })
         }
     },
@@ -253,6 +266,9 @@ export default {
         showOriginalPhoto() {
             this.selectedPhoto = this.selectedPhoto.replace('/thumb', '');
             this.originalPhotoShowed = true;
+        },
+        focusOnReady(editor) {
+            editor.focus();
         }
     }
 }
