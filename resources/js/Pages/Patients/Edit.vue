@@ -34,7 +34,7 @@
                         <div v-if="errors.phone" class="error invalid-feedback">
                             {{ errors.phone }}
                         </div>
-                    </div>992929927233
+                    </div>
                     <div class="form-group">
                         <label class="form-asterisk">Дата рождения</label>
 
