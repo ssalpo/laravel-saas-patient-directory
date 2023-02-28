@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/external/admin-lte/css/adminlte.min.css">
 
     @routes
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @inertiaHead
 </head>
 <body class="hold-transition layout-top-nav">

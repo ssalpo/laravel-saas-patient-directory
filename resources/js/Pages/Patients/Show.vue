@@ -219,7 +219,6 @@
 <script>
 import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
 import { QuillEditor } from '@vueup/vue-quill';
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 export default {
     components: {Head, Link, QuillEditor},
