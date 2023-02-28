@@ -27,14 +27,14 @@
                         <label>Номер телефона</label>
                         <input type="text" class="form-control"
                                :class="{'is-invalid': errors.phone}"
-                               v-maska data-maska="+#############"
+                               v-maska data-maska="+############"
                                placeholder="пример: +992 (92) 992-72-33"
                                v-model="form.phone">
 
                         <div v-if="errors.phone" class="error invalid-feedback">
                             {{ errors.phone }}
                         </div>
-                    </div>
+                    </div>992929927233
                     <div class="form-group">
                         <label class="form-asterisk">Дата рождения</label>
 

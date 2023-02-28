@@ -27,10 +27,10 @@ class PatientRequest extends FormRequest
         $rules = [
             'name' => 'required|string|min:1|max:255',
             'phone' => 'nullable|string|min:1|max:255',
-            'birthday' => 'date_format:d.m.Y',
+            'birthday' => 'date:Y-m-d',
             'gender' => 'required|boolean',
-            'sampling_date' => 'required|date_format:d.m.Y H:i',
-            'sample_receipt_date' => 'required|date_format:d.m.Y H:i',
+            'sampling_date' => 'required|date_format:Y-m-d H:i',
+            'sample_receipt_date' => 'required|date_format:Y-m-d H:i',
             'anamnes' => 'nullable|string',
             'categories' => 'required|array',
             'categories.*.code' => 'required|string|min:2|max:5',
