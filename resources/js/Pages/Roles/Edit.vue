@@ -16,7 +16,7 @@
                 <form @submit.prevent="submit">
                     <div class="card-body">
                         <div class="form-group">
-                            <label>Ключ</label>
+                            <label class="form-asterisk">Ключ</label>
                             <input type="text" class="form-control"
                                    :class="{'is-invalid': errors.name}"
                                    v-model.trim="form.name">
@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Название</label>
+                            <label class="form-asterisk">Название</label>
                             <input type="text" class="form-control"
                                    :class="{'is-invalid': errors.readable_name}"
                                    v-model.trim="form.readable_name" placeholder="Ключ на английском, например: admin, doctor">
@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="form-group" v-if="form.name !== 'admin'">
-                            <label>Права</label>
+                            <label class="form-asterisk">Права</label>
 
                             <div class="custom-control custom-checkbox" v-for="(permission, id) in permissions">
                                 <input class="custom-control-input"  v-model="form.permissions" :value="id" type="checkbox" :id="`permissionCheckbox${id}`">

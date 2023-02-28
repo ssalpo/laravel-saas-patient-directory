@@ -16,7 +16,7 @@
                 <form @submit.prevent="submit">
                     <div class="card-body">
                         <div class="form-group">
-                            <label>Имя</label>
+                            <label class="form-asterisk">Имя</label>
                             <input type="text" class="form-control"
                                    :class="{'is-invalid': errors.name}"
                                    v-model.trim="form.name">
@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Логин для входа</label>
+                            <label class="form-asterisk">Логин для входа</label>
                             <input type="text" class="form-control"
                                    :class="{'is-invalid': errors.username}"
                                    v-model.trim="form.username">
@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Роль</label>
+                            <label class="form-asterisk">Роль</label>
                             <select class="form-control"
                                    :class="{'is-invalid': errors.role}"
                                    v-model.trim="form.role">
@@ -51,7 +51,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Пароль</label>
+                            <label class="form-asterisk">Пароль</label>
                             <input type="password" class="form-control"
                                    :class="{'is-invalid': errors.password}"
                                    v-model.trim="form.password">

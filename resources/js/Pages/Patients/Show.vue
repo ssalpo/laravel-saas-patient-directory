@@ -165,7 +165,7 @@
                                 <b>Статус проверки</b>
                             </td>
                             <td>
-                                <Link :href="route('patients.submit', patient.id)" preserve-scroll class="btn btn-primary" method="post" as="button">Проверено</Link>
+                                <Link :href="route('patients.submit', patient.id)" preserve-scroll class="btn btn-primary" method="post" as="button">Submit</Link>
                             </td>
                         </tr>
                         </tbody>

@@ -16,7 +16,7 @@
                 <form @submit.prevent="submit">
                     <div class="card-body">
                         <div class="form-group">
-                            <label>Имя</label>
+                            <label class="form-asterisk">Имя</label>
                             <input type="text" class="form-control"
                                    :class="{'is-invalid': errors.name}"
                                    v-model.trim="form.name">
@@ -26,7 +26,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Номер телефона (необязательно)</label>
+                            <label>Номер телефона</label>
                             <input type="text" class="form-control"
                                    :class="{'is-invalid': errors.phone}"
                                    v-maska data-maska="+992 (##) ###-##-##"

@@ -14,7 +14,7 @@
             <div class="card card-primary">
                 <div class="card-body">
                     <div class="form-group">
-                        <label>Ф.И.О</label>
+                        <label class="form-asterisk">Ф.И.О</label>
                         <input type="text" class="form-control"
                                :class="{'is-invalid': errors.name}"
                                v-model="form.name">
@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Номер телефона (необязательно)</label>
+                        <label>Номер телефона</label>
                         <input type="text" class="form-control"
                                :class="{'is-invalid': errors.phone}"
                                v-maska data-maska="+992 (##) ###-##-##"
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Дата рождения</label>
+                        <label class="form-asterisk">Дата рождения</label>
 
                         <input :class="{'is-invalid': errors.birthday}"
                                class="form-control"
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Дата/время забора образца</label>
+                        <label class="form-asterisk">Дата/время забора образца</label>
 
                         <input :class="{'is-invalid': errors.sampling_date}"
                                class="form-control"
@@ -86,7 +86,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Дата/время получения образца</label>
+                        <label class="form-asterisk">Дата/время получения образца</label>
 
                         <input :class="{'is-invalid': errors.sample_receipt_date}"
                                class="form-control"
@@ -111,7 +111,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Тип/Место забора образца</label>
+                        <label class="form-asterisk">Тип/Место забора образца</label>
                         <div class="row mt-2" v-for="(category, index) in form.categories">
                             <div class="col-4">
                                 <input type="text" v-model="category.code" class="form-control form-control-sm"
@@ -129,20 +129,20 @@
                             </div>
                         </div>
 
-                        <div v-if="errors['categories.0.code'] || errors['categories.0.code']"
-                             class="invalid-feedback-simple">
-                            {{ errors['categories.0.code'] || errors['categories.0.code'] }}
-                        </div>
-
                         <div>
                             <button type="button" @click="addCategory" class="btn btn-sm btn-info mt-2">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
+
+                        <div v-if="errors['categories'] || errors['categories.0.code'] || errors['categories.0.code']"
+                             class="invalid-feedback-simple">
+                            {{ errors['categories'] || errors['categories.0.code'] || errors['categories.0.code'] }}
+                        </div>
                     </div>
                     <div class="form-group"
                          v-if="$page.props.shared.userPermissions.includes('select_doctor_patients')">
-                        <label>Направивший врач</label>
+                        <label class="form-asterisk">Направивший врач</label>
 
                         <div v-if="!newDoctor">
                             <select class="form-control" :class="{'is-invalid': errors.doctor}"

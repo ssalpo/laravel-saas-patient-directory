@@ -77,3 +77,8 @@
     margin-bottom: 7px;
     line-height: 25px;
 }
+
+.form-asterisk:after {
+    content:" *";
+    color: red;
+}
