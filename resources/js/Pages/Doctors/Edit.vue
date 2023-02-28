@@ -29,7 +29,7 @@
                             <label>Номер телефона</label>
                             <input type="text" class="form-control"
                                    :class="{'is-invalid': errors.phone}"
-                                   v-maska data-maska="+###########"
+                                   v-maska data-maska="+############"
                                    placeholder="пример: +992 (92) 992-72-33"
                                    v-model.trim="form.phone">
 

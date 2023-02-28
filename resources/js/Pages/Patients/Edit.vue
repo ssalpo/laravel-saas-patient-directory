@@ -27,7 +27,7 @@
                         <label>Номер телефона</label>
                         <input type="text" class="form-control"
                                :class="{'is-invalid': errors.phone}"
-                               v-maska data-maska="+###########"
+                               v-maska data-maska="+#############"
                                placeholder="пример: +992 (92) 992-72-33"
                                v-model="form.phone">
 
@@ -165,7 +165,7 @@
                             <input type="text"
                                    placeholder="Номер телефона (необязательно), пример: +992 (92) 992-72-33"
                                    class="form-control form-control-sm mt-2"
-                                   v-maska data-maska="+###########"
+                                   v-maska data-maska="+############"
                                    v-model="form.doctor_phone">
 
                             <button @click="toggleNewDoctor" type="button" class="btn btn-sm btn-link">
