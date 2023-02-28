@@ -28,6 +28,7 @@ class Patient extends Model
         'microscopic_description',
         'diagnosis',
         'note',
+        'print_date',
         'created_by'
     ];
 
@@ -35,6 +36,7 @@ class Patient extends Model
         'case_numbers' => 'array',
         'categories' => 'array',
         'birthday' => 'date',
+        'print_date' => 'date',
         'sampling_date' => 'datetime',
         'sample_receipt_date' => 'datetime',
     ];

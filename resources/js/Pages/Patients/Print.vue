@@ -63,7 +63,7 @@
             <tr>
                 <td>Микроскопическое описание</td>
                 <td>
-                    <span v-if="patient.status === 2" v-html="patient.microscopic_description" class="editor-content" />
+                    <span v-if="patient.status === 2" v-html="patient.microscopic_description" class="editor-content"/>
                 </td>
             </tr>
             <tr>
@@ -71,53 +71,80 @@
                     <b>Диагноз</b>
                 </td>
                 <td>
-                    <span v-if="patient.status === 2" v-html="patient.diagnosis" class="editor-content" />
+                    <span v-if="patient.status === 2" v-html="patient.diagnosis" class="editor-content"/>
                 </td>
             </tr>
             <tr>
                 <td>Заметка</td>
                 <td>
-                    <span v-if="patient.status === 2" v-html="patient.note" class="editor-content" />
+                    <span v-if="patient.status === 2" v-html="patient.note" class="editor-content"/>
                 </td>
             </tr>
             <tr>
                 <td rowspan="2" class="align-middle text-bold">Ссылка карточки пациента</td>
                 <td>
-                    {{route('patients.public_show', patient.hashid)}}
+                    {{ route('patients.public_show', patient.hashid) }}
                 </td>
             </tr>
             <tr>
-                <td v-html="qrCode" />
+                <td v-html="qrCode"/>
             </tr>
             </tbody>
         </table>
 
-        <div class="row sign-block mt-5">
-            <div class="col-6">
-                Врач дерматопатолог:
-            </div>
-            <div class="col-6">
-                Султонов Р. А.
-            </div>
-        </div>
+        <table class="sign-block mt-5 mb-5" width="100%">
+            <tr>
+                <td width="50%" class="text-right">Врач дерматопатолог:</td>
+                <td width="15%"></td>
+                <td width="50%">Султонов Р. А.</td>
+            </tr>
+            <tr>
+                <td class="text-right">Дата:</td>
+                <td></td>
+                <td>
+                    <input v-if="isDateEdit"
+                           v-maska data-maska="##.##.####"
+                           placeholder="формат даты: ДД.ММ.ГГГГ"
+                           v-model="form.print_date"
+                           @keydown.enter="savePrintDate"
+                           @blur="savePrintDate"
+                           type="text" class="form-control form-control-sm"/>
 
-        <div class="row sign-block mt-3 mb-5">
-            <div class="col-6">
-                Дата:
-            </div>
-            <div class="col-6">{{currentDate}}</div>
-        </div>
+                    <span v-else>
+                        {{ patient.print_date || patient.created_at }}
+                        <small class="btn btn-link btn-sm edit-btn" @click="isDateEdit = !isDateEdit">ред.</small>
+                    </span>
+                </td>
+            </tr>
+        </table>
     </div>
 </template>
 
 <script>
-import {Head, Link} from "@inertiajs/inertia-vue3";
+import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
 import AuthLayout from "../../Layouts/AuthLayout.vue";
+import {vMaska} from "maska"
 
 export default {
     components: {Head, Link},
     props: ['patient', 'currentDate', 'qrCode'],
-    layout: AuthLayout
+    layout: AuthLayout,
+    directives: {maska: vMaska},
+    data: function () {
+        return {
+            isDateEdit: false,
+            form: useForm({
+                print_date: this.patient.print_date
+            })
+        }
+    },
+    methods: {
+        savePrintDate() {
+            this.form.post(route('patients.edit_print_date', this.patient.id), {preserveState: true, preserveScroll: true});
+
+            this.isDateEdit = false;
+        }
+    }
 }
 </script>
 
@@ -147,6 +174,10 @@ export default {
 
 @media print {
     .back-to-show {
+        display: none;
+    }
+
+    .edit-btn {
         display: none;
     }
 }

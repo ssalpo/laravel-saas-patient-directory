@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PatientRequest;
 use App\Http\Requests\PatientReportRequest;
+use App\Http\Requests\PrintDateRequest;
 use App\Models\Doctor;
 use App\Models\Patient;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -183,7 +185,9 @@ class PatientController extends Controller
                 'microscopic_description' => $patient->microscopic_description,
                 'diagnosis' => $patient->diagnosis,
                 'note' => $patient->note,
-                'status' => $patient->status
+                'status' => $patient->status,
+                'print_date' => $patient->print_date?->format('d.m.Y'),
+                'created_at' => $patient->created_at->format('d.m.Y'),
             ]
         ]);
     }
@@ -208,6 +212,13 @@ class PatientController extends Controller
         return Pdf::loadView(
             'pdf.patient', compact('patient')
         )->stream();
+    }
+
+    public function editPrintDate(Patient $patient, PrintDateRequest $request)
+    {
+        $patient->update($request->validated());
+
+        return back();
     }
 
     private function uploadPhotos($patient, $request)

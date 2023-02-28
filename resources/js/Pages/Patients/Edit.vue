@@ -295,12 +295,11 @@
 <script>
 import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
 import { vMaska } from "maska"
-import DateTimePicker from "../../Shared/DateTimePicker.vue";
 import resizeImage from "../../utils/resizeImage";
 
 export default {
     props: ['id', 'doctors', 'patient', 'errors'],
-    components: {DateTimePicker, Head, Link},
+    components: {Head, Link},
     directives: { maska: vMaska },
     data() {
         return {

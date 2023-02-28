@@ -113,12 +113,14 @@
 
 <table style="margin-top: 30px" width="100%">
     <tr>
-        <td>Врач дерматопатолог:</td>
-        <td>Султонов Р. А.</td>
+        <td width="50%" style="text-align: right">Врач дерматопатолог:</td>
+        <td width="15%"></td>
+        <td width="50%">Султонов Р. А.</td>
     </tr>
     <tr>
-        <td>Дата:</td>
-        <td>{{$patient->created_at->format('d.m.Y')}}</td>
+        <td style="text-align: right">Дата:</td>
+        <td></td>
+        <td>{{$patient->print_date?->format('d.m.Y') ?? $patient->created_at->format('d.m.Y')}}</td>
     </tr>
 </table>
 
