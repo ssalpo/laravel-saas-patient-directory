@@ -267,7 +267,7 @@ export default {
             this.originalPhotoShowed = true;
         },
         focusOnReady(editor) {
-            editor.focus();
+            if(this.editBlock) editor.focus();
         }
     }
 }

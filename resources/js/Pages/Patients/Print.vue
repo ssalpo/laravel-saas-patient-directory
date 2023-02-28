@@ -102,7 +102,7 @@
                 <td class="text-right">Дата:</td>
                 <td></td>
                 <td>
-                    <input v-if="isDateEdit"
+                    <input v-if="isDateEdit && $page.props.shared.userPermissions.includes('add_report')"
                            v-maska data-maska="##.##.####"
                            placeholder="формат даты: ДД.ММ.ГГГГ"
                            v-model="form.print_date"
