@@ -101,7 +101,7 @@
                                                  v-if="editBlock === 'microscopic_description' || !patient.microscopic_description"
                                                  contentType="html"
                                                  :toolbar="['bold', 'italic', 'underline']"
-                                                 v-model:content="form.microscopic_description" />
+                                                 v-model:content="form.microscopic_description"/>
 
                                     <div v-else>
                                         <div class="editor-content" v-html="form.microscopic_description"></div>
@@ -126,7 +126,7 @@
                                                  v-if="editBlock === 'diagnosis' || !patient.diagnosis"
                                                  contentType="html"
                                                  :toolbar="['bold', 'italic', 'underline']"
-                                                 v-model:content="form.diagnosis" />
+                                                 v-model:content="form.diagnosis"/>
 
                                     <div v-else>
                                         <div class="editor-content" v-html="patient.diagnosis"></div>
@@ -148,7 +148,7 @@
                                                  v-if="editBlock === 'note' || !patient.note"
                                                  contentType="html"
                                                  :toolbar="['bold', 'italic', 'underline']"
-                                                 v-model:content="form.note" />
+                                                 v-model:content="form.note"/>
 
                                     <div v-else>
                                         <div class="editor-content" v-html="patient.note"></div>
@@ -165,7 +165,9 @@
                                 <b>Статус проверки</b>
                             </td>
                             <td>
-                                <Link :href="route('patients.submit', patient.id)" preserve-scroll class="btn btn-primary" method="post" as="button">Submit</Link>
+                                <Link :href="route('patients.submit', patient.id)" preserve-scroll
+                                      class="btn btn-primary" method="post" as="button">Submit
+                                </Link>
                             </td>
                         </tr>
                         </tbody>
@@ -173,11 +175,19 @@
 
                     <h4 class="mt-5 mb-3" v-show="patient.photos.length > 0">Прикрепленные фотография</h4>
 
-                    <div class="btn btn-default mr-2"
-                         @click="selectedPhoto = `/storage/${photo}`"
-                         data-toggle="modal" data-target="#photo-view-modal"
-                         v-for="(photo, index) in patient.photos">
-                        Фото {{ index + 1 }}
+                    <div v-for="(photo, index) in patient.photos"
+                         class="btn-group btn-group-sm" role="group">
+                        <button type="button"
+                                @click="selectedPhoto = `/storage/${photo.url}`"
+                                data-toggle="modal" data-target="#photo-view-modal"
+                                class="btn btn-default btn-sm mr-1">Фото {{ index + 1 }}
+                        </button>
+                        <button type="button"
+                                v-if="$page.props.shared.userPermissions.includes('edit_patients')"
+
+                                class="btn btn-danger btn-sm mr-1" @click="deletePhoto(photo.id)">
+                            <span class="fa fa-trash"></span>
+                        </button>
                     </div>
 
                     <div class="modal fade" id="photo-view-modal">
@@ -218,7 +228,7 @@
 </template>
 <script>
 import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
-import { QuillEditor } from '@vueup/vue-quill';
+import {QuillEditor} from '@vueup/vue-quill';
 
 export default {
     components: {Head, Link, QuillEditor},
@@ -262,12 +272,17 @@ export default {
 
             this.editBlock = ''
         },
+        deletePhoto(photo) {
+            if(!confirm('Вы уверены что хотите удалить фотографию?')) return;
+
+            this.form.delete(route('patients.photos.delete', {patient: this.patient.id, photo}), {preserveState: true, preserveScroll: true})
+        },
         showOriginalPhoto() {
             this.selectedPhoto = this.selectedPhoto.replace('/thumb', '');
             this.originalPhotoShowed = true;
         },
         focusOnReady(editor) {
-            if(this.editBlock) editor.focus();
+            if (this.editBlock) editor.focus();
         }
     }
 }

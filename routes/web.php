@@ -16,6 +16,7 @@ Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static functio
     Route::get('/patients/{patient}/print', [PatientController::class, 'print'])->name('patients.print');
     Route::post('/patients/{patient}/submit', [PatientController::class, 'submit'])->name('patients.submit');
     Route::post('/patients/{patient}/edit-print-date', [PatientController::class, 'editPrintDate'])->name('patients.edit_print_date');
+    Route::delete('/patients/{patient}/photos/{photo}/delete', [PatientController::class, 'deletePhoto'])->name('patients.photos.delete');
     Route::resource('patients', PatientController::class)->except('index');
 
     // Doctors

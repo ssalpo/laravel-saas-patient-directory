@@ -10,6 +10,7 @@ use App\Models\Patient;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PatientController extends Controller
@@ -19,6 +20,7 @@ class PatientController extends Controller
         $this->middleware('can:read_all_patients')->only('all');
         $this->middleware('can:create_patients')->only(['create', 'store']);
         $this->middleware('can:edit_patients,read_all_patients')->only(['edit', 'update']);
+        $this->middleware('can:edit_patients')->only('deletePhoto');
         $this->middleware('can:add_report')->only(['saveReport', 'submit']);
     }
 
@@ -100,9 +102,10 @@ class PatientController extends Controller
                 'diagnosis' => $patient->diagnosis,
                 'note' => $patient->note,
                 'status' => $patient->status,
-                'photos' => $patient->photos->map(
-                    fn($photo) => $photo->has_thumb ? 'thumb/' . $photo->url : $photo->url
-                )
+                'photos' => $patient->photos->transform(fn ($photo) => [
+                    'id' => $photo->id,
+                    'url' => $photo->url
+                ])
             ]
         ]);
     }
@@ -217,6 +220,17 @@ class PatientController extends Controller
     public function editPrintDate(Patient $patient, PrintDateRequest $request)
     {
         $patient->update($request->validated());
+
+        return back();
+    }
+
+    public function deletePhoto(Patient $patient, int $photo)
+    {
+        $photo = $patient->photos()->whereId($photo)->firstOrFail();
+
+        $photo->delete();
+
+        Storage::disk('public')->delete($photo->url ?? '');
 
         return back();
     }
