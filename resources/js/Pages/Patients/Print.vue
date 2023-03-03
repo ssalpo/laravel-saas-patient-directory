@@ -119,6 +119,8 @@
         </table>
 
         <div class="only-int-print" v-if="patient.note_text_count >= 235">
+            <div class="pagebreak"></div>
+
             <table class="table table-bordered">
                 <tbody>
                 <tr>
