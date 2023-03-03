@@ -9,10 +9,10 @@
 
         <div class="row mb-5 page-title">
             <div class="col-6 text-center">
-                Городской клинический центр <br> кожных болезней
+                Городской клинический центр <br /> кожных болезней
             </div>
             <div class="col-6 text-center">
-                Маркази клиникавии шахрии <br> беморихои пуст
+                Маркази клиникавии шахрии <br /> беморихои пуст
             </div>
         </div>
         <table class="table table-bordered">
@@ -50,7 +50,7 @@
             </tbody>
         </table>
 
-        <h4 class="mt-5 mb-3">Гистопатологическое заключение</h4>
+        <div class="mt-5 mb-3 page-title-second">Гистопатологическое заключение</div>
 
         <table class="table table-bordered">
             <tbody>
@@ -74,7 +74,7 @@
                     <span v-if="patient.status === 2" v-html="patient.diagnosis" class="editor-content"/>
                 </td>
             </tr>
-            <tr>
+            <tr :class="{'hide-from-print': patient.note_text_count > 235}">
                 <td>Заметка</td>
                 <td>
                     <span v-if="patient.status === 2" v-html="patient.note" class="editor-content"/>
@@ -117,6 +117,32 @@
                 </td>
             </tr>
         </table>
+
+        <div class="only-int-print" v-if="patient.note_text_count >= 235">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td width="300">Заметка</td>
+                    <td v-html="patient.note"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="sign-block mt-5 mb-5" width="100%">
+                <tr>
+                    <td width="50%" class="text-right">Врач дерматопатолог:</td>
+                    <td width="15%"></td>
+                    <td width="50%">Султонов Р. А.</td>
+                </tr>
+                <tr>
+                    <td class="text-right">Дата:</td>
+                    <td></td>
+                    <td>
+                        {{ patient.print_date || patient.created_at }}
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -140,7 +166,10 @@ export default {
     },
     methods: {
         savePrintDate() {
-            this.form.post(route('patients.edit_print_date', this.patient.id), {preserveState: true, preserveScroll: true});
+            this.form.post(route('patients.edit_print_date', this.patient.id), {
+                preserveState: true,
+                preserveScroll: true
+            });
 
             this.isDateEdit = false;
         }
@@ -150,13 +179,19 @@ export default {
 
 <style scoped>
 @page {
-    size: auto;
-    margin: 0 50px;
+    size: A4;
+}
+
+.only-int-print {
+    display: none;
 }
 
 .page-title {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 600;
+}
+.page-title-second {
+    font-size: 22px;
 }
 
 .container {
@@ -173,12 +208,42 @@ export default {
 }
 
 @media print {
+    .hide-from-print {
+        display: none;
+    }
+
     .back-to-show {
         display: none;
     }
 
+    .page-title {
+        font-size: 18pt;
+    }
+
+    .page-title-second {
+        font-size: 16pt;
+        font-weight: 600;
+    }
+
+    table {
+        font-size: 16pt;
+    }
+
     .edit-btn {
         display: none;
+    }
+
+    .pagebreak {
+        page-break-before: always;
+        margin-top: 60px;
+    }
+
+    .container {
+        margin-top: 0;
+    }
+
+    .only-int-print {
+        display: block;
     }
 }
 </style>

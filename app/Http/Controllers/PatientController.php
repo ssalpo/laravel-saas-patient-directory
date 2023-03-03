@@ -188,6 +188,7 @@ class PatientController extends Controller
                 'microscopic_description' => $patient->microscopic_description,
                 'diagnosis' => $patient->diagnosis,
                 'note' => $patient->note,
+                'note_text_count' => strlen(strip_tags($patient->note ?? '')),
                 'status' => $patient->status,
                 'print_date' => $patient->print_date?->format('d.m.Y'),
                 'created_at' => $patient->created_at->format('d.m.Y'),
