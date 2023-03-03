@@ -9,7 +9,7 @@
 
         <div class="row mb-5 page-title">
             <div class="col-6 text-center">
-                Городской клинический центр <br> дерматовенерологии
+                Городской клинический центр <br> кожных болезней
             </div>
             <div class="col-6 text-center">
                 Маркази клиникавии шахрии <br> беморихои пуст

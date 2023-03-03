@@ -29,7 +29,7 @@
     <tr>
         <td width="50%" style="text-align: center; font-size: 16px">
             Городской клинический центр <br>
-            дерматовенерологии
+            кожных болезней
         </td>
         <td style="text-align: center; font-size: 16px">
             Маркази клиникавии шахрии <br> беморихои пуст
