@@ -40,7 +40,7 @@
                                 <th>Номер кейса</th>
                                 <th>Ф.И.О</th>
                                 <th>Статус</th>
-                                <th></th>
+<!--                                <th></th>-->
                             </tr>
                             </thead>
                             <tbody>
@@ -52,11 +52,11 @@
                                 <td :class="[patient.status === 1 ? 'text-danger' : 'text-success']">
                                     {{ patient.status == 1 ? 'На проверке' : 'Проверено' }}
                                 </td>
-                                <td class="text-center">
+<!--                                <td class="text-center">
                                     <Link :href="route('patients.edit', patient.id)">
                                         <i class="fa fa-pencil-alt"></i>
                                     </Link>
-                                </td>
+                                </td>-->
                             </tr>
 
                             </tbody>

@@ -170,6 +170,15 @@
                                 </Link>
                             </td>
                         </tr>
+                        <tr>
+                            <td rowspan="2" class="align-middle text-bold">Ссылка карточки пациента</td>
+                            <td>
+                                {{ route('patients.public_show', patient.hashid) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td v-html="qrCode"/>
+                        </tr>
                         </tbody>
                     </table>
 
@@ -208,10 +217,10 @@
                                         открыть в новом окне
                                     </a>
 
-                                    <button v-if="!photoLoading && !photoLoading && !originalPhotoShowed"
+<!--                                    <button v-if="!photoLoading && !photoLoading && !originalPhotoShowed"
                                             @click="showOriginalPhoto" class="btn btn-sm btn-primary mb-3">
                                         показать оригинал
-                                    </button>
+                                    </button>-->
 
                                     <img v-lazy="selectedPhoto" style="max-width: 100%; height: 100%">
                                 </div>
@@ -232,7 +241,7 @@ import {QuillEditor} from '@vueup/vue-quill';
 
 export default {
     components: {Head, Link, QuillEditor},
-    props: ['patient'],
+    props: ['patient', 'qrCode'],
     data: function () {
         return {
             originalPhotoShowed: false,

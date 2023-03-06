@@ -86,6 +86,7 @@ class PatientController extends Controller
         $patient = Patient::myByPermission()->findOrFail($id);
 
         return inertia('Patients/Show', [
+            'qrCode' => (string) QrCode::size(100)->generate(route('patients.public_show', $patient->hashid)),
             'patient' => [
                 'id' => $patient->id,
                 'name' => $patient->name,
@@ -105,7 +106,8 @@ class PatientController extends Controller
                 'photos' => $patient->photos->transform(fn ($photo) => [
                     'id' => $photo->id,
                     'url' => $photo->url
-                ])
+                ]),
+                'hashid' => $patient->hashid
             ]
         ]);
     }
@@ -172,7 +174,6 @@ class PatientController extends Controller
 
         return inertia('Patients/Print', [
             'currentDate' => $patient->created_at->format('d.m.Y'),
-            'qrCode' => (string) QrCode::size(100)->generate(route('patients.public_show', $patient->hashid)),
             'patient' => [
                 'id' => $patient->id,
                 'hashid' => $patient->hashid,

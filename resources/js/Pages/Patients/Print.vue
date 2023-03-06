@@ -80,15 +80,6 @@
                     <span v-if="patient.status === 2" v-html="patient.note" class="editor-content"/>
                 </td>
             </tr>
-            <tr>
-                <td rowspan="2" class="align-middle text-bold">Ссылка карточки пациента</td>
-                <td>
-                    {{ route('patients.public_show', patient.hashid) }}
-                </td>
-            </tr>
-            <tr>
-                <td v-html="qrCode"/>
-            </tr>
             </tbody>
         </table>
 
@@ -155,7 +146,7 @@ import {vMaska} from "maska"
 
 export default {
     components: {Head, Link},
-    props: ['patient', 'currentDate', 'qrCode'],
+    props: ['patient', 'currentDate'],
     layout: AuthLayout,
     directives: {maska: vMaska},
     data: function () {
