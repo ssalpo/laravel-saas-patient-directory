@@ -74,8 +74,16 @@
                     <span v-if="patient.status === 2" v-html="patient.diagnosis" class="editor-content"/>
                 </td>
             </tr>
-            <tr :class="{'hide-from-print': patient.note_text_count > 235}">
-                <td>Заметка</td>
+            <tr :class="{'hide-from-print': movedNoteToNewPage}">
+                <td>
+                    Заметка
+
+                    <div>
+                        <a href="#" class="hide-from-print" @click.prevent="movedNoteToNewPage = !movedNoteToNewPage">
+                            {{movedNoteToNewPage ? 'Перенесено' : 'Перенести'}} на новую страницу
+                        </a>
+                    </div>
+                </td>
                 <td>
                     <span v-if="patient.status === 2" v-html="patient.note" class="editor-content"/>
                 </td>
@@ -109,7 +117,7 @@
             </tr>
         </table>
 
-        <div class="only-int-print" v-if="patient.note_text_count >= 235">
+        <div class="only-int-print" v-if="movedNoteToNewPage">
             <div class="pagebreak"></div>
 
             <table class="table table-bordered">
@@ -151,6 +159,7 @@ export default {
     directives: {maska: vMaska},
     data: function () {
         return {
+            movedNoteToNewPage: false,
             isDateEdit: false,
             form: useForm({
                 print_date: this.patient.print_date
