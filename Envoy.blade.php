@@ -6,7 +6,7 @@
 
     $env = isset($env) ? $env : 'local';
 
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '.env.deploy');
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '.env.deploy.' . $env);
     $dotenv->load();
 
     $releaseRotate = 4;
