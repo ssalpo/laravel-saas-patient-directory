@@ -5,7 +5,8 @@
 /storage/*.key
 /vendor
 .env
-.env.deploy
+.env.deploy.local
+.env.deploy.prod
 .env.backup
 .env.production
 .phpunit.result.cache

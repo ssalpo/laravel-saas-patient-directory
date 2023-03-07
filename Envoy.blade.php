@@ -4,21 +4,21 @@
 
 @setup
 
-$env = isset($env) ? $env : 'local';
+    $env = isset($env) ? $env : 'local';
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '.env.deploy');
-$dotenv->load();
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '.env.deploy');
+    $dotenv->load();
 
-$releaseRotate = 4;
-$gitBranch = 'main';
-$gitRepository = $_ENV['DEPLOY_REPOSITORY'];
-$currentReleaseHash = md5(time());
+    $releaseRotate = 4;
+    $gitBranch = 'main';
+    $gitRepository = $_ENV['DEPLOY_REPOSITORY'];
+    $currentReleaseHash = md5(time());
 
-$dirBase = $_ENV['DEPLOY_BASE_DIR'] . $gitBranch;
-$dirReleases = $dirBase . '/releases';
-$dirShared = $dirBase . '/shared';
-$dirCurrent = $dirBase . '/current';
-$dirCurrentRelease = $dirReleases . '/' . $currentReleaseHash
+    $dirBase = $_ENV['DEPLOY_BASE_DIR'] . $gitBranch;
+    $dirReleases = $dirBase . '/releases';
+    $dirShared = $dirBase . '/shared';
+    $dirCurrent = $dirBase . '/current';
+    $dirCurrentRelease = $dirReleases . '/' . $currentReleaseHash
 @endsetup
 
 @story('deploy', ['on' => ['local']])
