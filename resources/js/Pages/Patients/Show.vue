@@ -229,7 +229,7 @@
                                     </button>-->
 
                                     <div>
-                                        <img v-lazy="selectedPhoto" style="width: auto; max-height: 600px; display: block; margin: 0 auto;">
+                                        <img v-lazy="selectedPhoto" style="width: auto; max-width: 100%; max-height: 600px; display: block; margin: 0 auto;">
                                     </div>
 
                                     <div class="mt-3" v-if="patient.photos.length > 1">
