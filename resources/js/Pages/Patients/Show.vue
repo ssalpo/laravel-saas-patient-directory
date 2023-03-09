@@ -216,11 +216,21 @@
                                     <span
                                         v-if="photoLoadingError">Ошибка загрузки фотографии, попробуйте еще раз.</span>
 
-                                    <div>
-                                        <a :href="selectedPhoto" target="_blank" v-if="!photoLoading && !photoLoading"
-                                           class="btn btn-sm btn-default mb-3 mr-3">
-                                            открыть в новом окне
-                                        </a>
+                                    <div class="row">
+                                        <div class="col-6 text-sm-left text-md-right">
+                                            <a :href="selectedPhoto" target="_blank" v-if="!photoLoading && !photoLoading"
+                                               class="btn btn-sm btn-info mb-3 mr-3">
+                                                оригинал
+                                            </a>
+                                        </div>
+                                        <div class="col-6 text-sm-right text-md-left" v-if="patient.photos.length > 1">
+                                            <a href="#" @click.prevent="slidePhoto('prev')" class="btn btn-default btn-sm mr-2">
+                                                <i class="fa fa-arrow-left"></i>
+                                            </a>
+                                            <a href="#" @click.prevent="slidePhoto('next')" class="btn btn-default btn-sm">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </a>
+                                        </div>
                                     </div>
 
 <!--                                    <button v-if="!photoLoading && !photoLoading && !originalPhotoShowed"
@@ -230,15 +240,6 @@
 
                                     <div>
                                         <img v-lazy="selectedPhoto" style="width: auto; max-width: 100%; max-height: 600px; display: block; margin: 0 auto;">
-                                    </div>
-
-                                    <div class="mt-3" v-if="patient.photos.length > 1">
-                                        <a href="#" @click.prevent="slidePhoto('prev')" class="btn btn-default btn-sm mr-2">
-                                            <i class="fa fa-arrow-left"></i>
-                                        </a>
-                                        <a href="#" @click.prevent="slidePhoto('next')" class="btn btn-default btn-sm">
-                                            <i class="fa fa-arrow-right"></i>
-                                        </a>
                                     </div>
                                 </div>
                             </div>
