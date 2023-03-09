@@ -212,13 +212,10 @@
                                     </button>
                                 </div>
                                 <div class="modal-body text-center">
-                                    <span v-if="photoLoading">Фотография загружается...</span>
-                                    <span
-                                        v-if="photoLoadingError">Ошибка загрузки фотографии, попробуйте еще раз.</span>
 
                                     <div class="row">
                                         <div class="col-6 text-sm-left text-md-right">
-                                            <a :href="selectedPhoto" target="_blank" v-if="!photoLoading && !photoLoading"
+                                            <a :href="selectedPhoto" target="_blank"
                                                class="btn btn-sm btn-info mb-3 mr-3">
                                                 оригинал
                                             </a>
@@ -233,10 +230,10 @@
                                         </div>
                                     </div>
 
-<!--                                    <button v-if="!photoLoading && !photoLoading && !originalPhotoShowed"
-                                            @click="showOriginalPhoto" class="btn btn-sm btn-primary mb-3">
-                                        показать оригинал
-                                    </button>-->
+                                    <span class="mt-2" v-if="photoLoading">Фотография загружается...</span>
+                                    <span class="mt-2" v-if="photoLoadingError">
+                                        Ошибка загрузки фотографии, попробуйте еще раз.
+                                    </span>
 
                                     <div>
                                         <img v-lazy="selectedPhoto" style="width: auto; max-width: 100%; max-height: 600px; display: block; margin: 0 auto;">
