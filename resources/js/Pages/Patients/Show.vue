@@ -29,7 +29,8 @@
                 <div class="card-body">
                     <h4 class="mt-2 mb-3">Общие данные</h4>
 
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
                         <tbody>
                         <tr>
                             <td width="400">ФИО пациента</td>
@@ -79,10 +80,12 @@
                         </tr>
                         </tbody>
                     </table>
+                    </div>
 
                     <h4 class="mt-5 mb-3">Гистопатологическое заключение</h4>
 
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
                         <tbody>
                         <tr>
                             <td width="400">Тип/место забора образца</td>
@@ -181,13 +184,14 @@
                         </tr>
                         </tbody>
                     </table>
+                    </div>
 
                     <h4 class="mt-5 mb-3" v-show="patient.photos.length > 0">Прикрепленные фотография</h4>
 
                     <div v-for="(photo, index) in patient.photos"
                          class="btn-group btn-group-sm" role="group">
                         <button type="button"
-                                @click="selectedPhoto = `/storage/${photo.url}`"
+                                @click="selectPhoto(photo.url, index)"
                                 data-toggle="modal" data-target="#photo-view-modal"
                                 class="btn btn-default btn-sm mr-1">Фото {{ index + 1 }}
                         </button>
@@ -212,17 +216,30 @@
                                     <span
                                         v-if="photoLoadingError">Ошибка загрузки фотографии, попробуйте еще раз.</span>
 
-                                    <a :href="selectedPhoto" target="_blank" v-if="!photoLoading && !photoLoading"
-                                       class="btn btn-sm btn-default mb-3 mr-3">
-                                        открыть в новом окне
-                                    </a>
+                                    <div>
+                                        <a :href="selectedPhoto" target="_blank" v-if="!photoLoading && !photoLoading"
+                                           class="btn btn-sm btn-default mb-3 mr-3">
+                                            открыть в новом окне
+                                        </a>
+                                    </div>
 
 <!--                                    <button v-if="!photoLoading && !photoLoading && !originalPhotoShowed"
                                             @click="showOriginalPhoto" class="btn btn-sm btn-primary mb-3">
                                         показать оригинал
                                     </button>-->
 
-                                    <img v-lazy="selectedPhoto" style="max-width: 100%; height: 100%">
+                                    <div>
+                                        <img v-lazy="selectedPhoto" style="width: auto; max-height: 600px; display: block; margin: 0 auto;">
+                                    </div>
+
+                                    <div class="mt-3" v-if="patient.photos.length > 1">
+                                        <a href="#" @click.prevent="slidePhoto('prev')" class="btn btn-default btn-sm mr-2">
+                                            <i class="fa fa-arrow-left"></i>
+                                        </a>
+                                        <a href="#" @click.prevent="slidePhoto('next')" class="btn btn-default btn-sm">
+                                            <i class="fa fa-arrow-right"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                             <!-- /.modal-content -->
@@ -248,6 +265,7 @@ export default {
             photoLoading: false,
             photoLoadingError: false,
             selectedPhoto: '',
+            selectedPhotoIndex: null,
             editBlock: '',
             someData: '',
             form: useForm({
@@ -292,6 +310,29 @@ export default {
         },
         focusOnReady(editor) {
             if (this.editBlock) editor.focus();
+        },
+        selectPhoto(url, index){
+            this.selectedPhoto = `/storage/${url}`
+            this.selectedPhotoIndex = index
+        },
+        slidePhoto(type) {
+            if(type === 'next') {
+                this.selectedPhotoIndex += 1;
+
+                if(this.selectedPhotoIndex > this.patient.photos.length - 1) {
+                    this.selectedPhotoIndex = 0;
+                }
+            }
+
+            if(type === 'prev') {
+                this.selectedPhotoIndex -= 1;
+
+                if(this.selectedPhotoIndex < 0) {
+                    this.selectedPhotoIndex = this.patient.photos.length - 1;
+                }
+            }
+
+            this.selectedPhoto = `/storage/${this.patient.photos.find((_, i) => i === this.selectedPhotoIndex).url}`;
         }
     }
 }
