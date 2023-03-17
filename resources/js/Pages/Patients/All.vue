@@ -37,10 +37,10 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th>Номер кейса</th>
-                                <th width="200">Ф.И.О</th>
+                                <th width="150">Номер кейса</th>
+                                <th width="250">Ф.И.О</th>
                                 <th>Диагноз</th>
-                                <th>Статус</th>
+                                <th width="130">Статус</th>
 <!--                                <th></th>-->
                             </tr>
                             </thead>
