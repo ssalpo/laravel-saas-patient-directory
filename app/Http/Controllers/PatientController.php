@@ -33,6 +33,7 @@ class PatientController extends Controller
                 'id' => $patient->id,
                 'name' => $patient->name,
                 'status' => $patient->status,
+                'diagnosis' => $patient->diagnosis,
                 'case_numbers' => implode(', ', $patient->case_numbers)
             ]);
 

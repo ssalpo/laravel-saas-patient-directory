@@ -56,6 +56,7 @@ class Patient extends Model
         $q->when(
             request('query'),
             fn($q, $search) => $q->where('name', 'LIKE', '%' . $search . '%')
+                ->orWhere('diagnosis', 'LIKE', '%' . $search . '%')
                 ->orWhereRaw("JSON_SEARCH(case_numbers, 'all', ?) IS NOT NULL", ["%{$search}%"])
         );
 

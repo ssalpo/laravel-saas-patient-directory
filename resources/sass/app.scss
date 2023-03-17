@@ -82,3 +82,15 @@
     content:" *";
     color: red;
 }
+
+.diagnosis-table {
+    font-size: 14px;
+
+    &, strong {
+        font-weight: 400;
+    }
+
+    p {
+        margin-bottom: 0;
+    }
+}

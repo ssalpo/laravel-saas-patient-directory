@@ -20,7 +20,7 @@
                                    @keydown.enter="doSearch"
                                    v-model="search.query"
                                    class="form-control form-control-sm"
-                                   placeholder="Ф.И.О, код"/>
+                                   placeholder="Ф.И.О, код, диагноз"/>
                         </div>
                         <div class="col-6">
                             <select v-model="search.status" @change="doSearch" class="form-control form-control-sm">
@@ -38,7 +38,8 @@
                             <thead>
                             <tr>
                                 <th>Номер кейса</th>
-                                <th>Ф.И.О</th>
+                                <th width="200">Ф.И.О</th>
+                                <th>Диагноз</th>
                                 <th>Статус</th>
 <!--                                <th></th>-->
                             </tr>
@@ -48,6 +49,9 @@
                                 <td>{{ patient.case_numbers }}</td>
                                 <td>
                                     <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
+                                </td>
+                                <td>
+                                    <div class="diagnosis-table" v-html="patient.diagnosis"></div>
                                 </td>
                                 <td :class="[patient.status === 1 ? 'text-danger' : 'text-success']">
                                     {{ patient.status == 1 ? 'На проверке' : 'Проверено' }}
