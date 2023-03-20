@@ -17,7 +17,7 @@ class PatientController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:read_all_patients')->only('all');
+        $this->middleware('can:read_all_patients')->only(['all', 'fullRecords']);
         $this->middleware('can:create_patients')->only(['create', 'store']);
         $this->middleware('can:edit_patients,read_all_patients')->only(['edit', 'update']);
         $this->middleware('can:edit_patients')->only('deletePhoto');
