@@ -5,7 +5,17 @@
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">Дерматопатология</h1>
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Дерматопатология</h1>
+                </div>
+
+                <div class="col-sm-6 text-right">
+                    <Link class="btn btn-warning mr-2" :href="route('patients.full_records')">
+                        <i class="fa fa-list"></i>
+                    </Link>
+                </div>
+            </div>
         </div>
     </div>
 

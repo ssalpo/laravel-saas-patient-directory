@@ -42,6 +42,37 @@ class PatientController extends Controller
         return inertia('Patients/All', compact('patients', 'firstItem'));
     }
 
+    public function fullRecords()
+    {
+        $patients = Patient::orderBy('created_at', 'DESC')
+            ->get()
+            ->transform(fn($patient) => [
+                'id' => $patient->id,
+                'name' => $patient->name,
+                'phone' => $patient->phone,
+                'case_numbers' => implode(', ', $patient->case_numbers),
+                'birthday' => $patient->birthday->format('d.m.Y'),
+                'age' => now()->diff($patient->birthday)->format('%y'),
+                'gender' => $patient->gender,
+                'sampling_date' => $patient->sampling_date->format('d.m.Y H:i'),
+                'sample_receipt_date' => $patient->sample_receipt_date->format('d.m.Y H:i'),
+                'anamnes' => $patient->anamnes,
+                'doctor' => $patient->doctor->name,
+                'categories' => implode(', ', $patient->categories_formatted),
+                'microscopic_description' => $patient->microscopic_description,
+                'diagnosis' => $patient->diagnosis,
+                'note' => $patient->note,
+                'status' => $patient->status,
+                'photos' => $patient->photos->transform(fn ($photo) => [
+                    'id' => $photo->id,
+                    'url' => $photo->url
+                ]),
+                'hashid' => $patient->hashid
+            ]);
+
+        return inertia('Patients/FullRecords', compact('patients'));
+    }
+
     public function index()
     {
         $patients = Patient::my('created_by')

@@ -137,7 +137,7 @@
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <span v-if="patient.status === 2">{{ patient.diagnosis }}</span>
+                                    <span v-if="patient.status === 2" v-html="patient.diagnosis"></span>
                                 </div>
                             </td>
                         </tr>
