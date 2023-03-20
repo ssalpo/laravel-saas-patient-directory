@@ -148,7 +148,7 @@
                             <select class="form-control" :class="{'is-invalid': errors.doctor}"
                                     v-model="form.doctor">
                                 <option :value="null">Не выбран</option>
-                                <option v-for="(name, id) in doctors" :value="id">{{ name }}</option>
+                                <option v-for="doctor in doctors" :value="doctor.id">{{ doctor.name }}</option>
                             </select>
 
                             <button @click="toggleNewDoctor" type="button" class="btn btn-sm btn-link">

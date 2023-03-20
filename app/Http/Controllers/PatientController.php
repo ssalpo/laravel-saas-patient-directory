@@ -60,7 +60,7 @@ class PatientController extends Controller
 
     public function create()
     {
-        $doctors = Doctor::pluck('name', 'id');
+        $doctors = Doctor::orderBy('name', 'ASC')->get(['id', 'name']);
 
         return inertia('Patients/Edit', compact('doctors'));
     }
@@ -117,7 +117,7 @@ class PatientController extends Controller
     {
         $patient = Patient::myByPermission()->findOrFail($id);
 
-        $doctors = Doctor::pluck('name', 'id');
+        $doctors = Doctor::orderBy('name', 'DESC')->get(['id', 'name']);
 
         return inertia('Patients/Edit', [
             'id' => $patient->id,
