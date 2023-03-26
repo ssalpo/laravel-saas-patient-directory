@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PatientCommentRequest;
 use App\Http\Requests\PatientRequest;
 use App\Http\Requests\PatientReportRequest;
 use App\Http\Requests\PrintDateRequest;
@@ -134,6 +135,7 @@ class PatientController extends Controller
                 'microscopic_description' => $patient->microscopic_description,
                 'diagnosis' => $patient->diagnosis,
                 'note' => $patient->note,
+                'comment' => $patient->comment,
                 'status' => $patient->status,
                 'photos' => $patient->photos->transform(fn ($photo) => [
                     'id' => $photo->id,
@@ -187,6 +189,13 @@ class PatientController extends Controller
     }
 
     public function saveReport(Patient $patient, PatientReportRequest $request)
+    {
+        $patient->update($request->validated());
+
+        return redirect()->route('patients.show', $patient->id);
+    }
+
+    public function saveComment(Patient $patient, PatientCommentRequest $request)
     {
         $patient->update($request->validated());
 

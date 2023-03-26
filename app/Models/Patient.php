@@ -29,7 +29,8 @@ class Patient extends Model
         'diagnosis',
         'note',
         'print_date',
-        'created_by'
+        'created_by',
+        'comment'
     ];
 
     protected $casts = [

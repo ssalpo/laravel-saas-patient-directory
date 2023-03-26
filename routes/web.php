@@ -14,6 +14,7 @@ Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static functio
     Route::get('/patients/all', [PatientController::class, 'all'])->name('patients.all');
     Route::get('/patients/full-records', [PatientController::class, 'fullRecords'])->name('patients.full_records');
     Route::post('/patients/{patient}/report', [PatientController::class, 'saveReport'])->name('patients.save.report');
+    Route::post('/patients/{patient}/comment', [PatientController::class, 'saveComment'])->name('patients.save.comment');
     Route::get('/patients/{patient}/print', [PatientController::class, 'print'])->name('patients.print');
     Route::post('/patients/{patient}/submit', [PatientController::class, 'submit'])->name('patients.submit');
     Route::post('/patients/{patient}/edit-print-date', [PatientController::class, 'editPrintDate'])->name('patients.edit_print_date');

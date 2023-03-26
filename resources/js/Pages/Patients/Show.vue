@@ -186,6 +186,37 @@
                     </table>
                     </div>
 
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td width="400">
+                                    <b>Комментарий</b>
+                                </td>
+                                <td>
+                                    <div v-if="$page.props.shared.userPermissions.includes('add_comment')">
+                                        <QuillEditor theme="snow"
+                                                     @blur="saveComment"
+                                                     @ready="focusOnReady"
+                                                     v-if="editBlock === 'comment' || !patient.comment"
+                                                     contentType="html"
+                                                     :toolbar="['bold', 'italic', 'underline']"
+                                                     v-model:content="formComment.comment" />
+
+                                        <div v-else>
+                                            <div class="editor-content" v-html="patient.comment"></div>
+                                            <a href="" @click.prevent="editBlock = 'comment'"><small>Редактировать</small></a>
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        <span v-html="patient.comment"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <h4 class="mt-5 mb-3" v-show="patient.photos.length > 0">Прикрепленные фотография</h4>
 
                     <div v-for="(photo, index) in patient.photos"
@@ -270,6 +301,9 @@ export default {
                 microscopic_description: this.patient?.microscopic_description || '',
                 diagnosis: this.patient?.diagnosis || '',
                 note: this.patient?.note || ''
+            }),
+            formComment: useForm({
+                comment: this.patient?.comment || ''
             })
         }
     },
@@ -294,6 +328,11 @@ export default {
     methods: {
         saveReport() {
             this.form.post(route('patients.save.report', this.patient.id), {preserveState: true, preserveScroll: true})
+
+            this.editBlock = ''
+        },
+        saveComment() {
+            this.formComment.post(route('patients.save.comment', this.patient.id), {preserveState: true, preserveScroll: true})
 
             this.editBlock = ''
         },
