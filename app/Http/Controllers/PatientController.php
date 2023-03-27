@@ -23,6 +23,7 @@ class PatientController extends Controller
         $this->middleware('can:edit_patients,read_all_patients')->only(['edit', 'update']);
         $this->middleware('can:edit_patients')->only('deletePhoto');
         $this->middleware('can:add_report')->only(['saveReport', 'submit']);
+        $this->middleware('can:add_comment')->only(['saveComment']);
     }
 
     public function all()
