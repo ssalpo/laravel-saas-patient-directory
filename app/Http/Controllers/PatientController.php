@@ -215,7 +215,7 @@ class PatientController extends Controller
         $patient->load('doctor');
 
         return inertia('Patients/Print', [
-            'currentDate' => $patient->created_at->format('d.m.Y'),
+            'currentDate' => now()->format('d.m.Y'),
             'patient' => [
                 'id' => $patient->id,
                 'hashid' => $patient->hashid,
