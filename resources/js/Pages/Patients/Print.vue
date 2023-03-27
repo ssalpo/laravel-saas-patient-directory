@@ -110,7 +110,7 @@
                            type="text" class="form-control form-control-sm"/>
 
                     <span v-else>
-                        {{ patient.print_date || patient.created_at }}
+                        {{ patient.print_date || currentDate }}
                         <small class="btn btn-link btn-sm edit-btn" @click="isDateEdit = !isDateEdit">ред.</small>
                     </span>
                 </td>
