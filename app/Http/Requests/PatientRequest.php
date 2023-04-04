@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PatientRequest extends FormRequest
 {
@@ -34,6 +35,9 @@ class PatientRequest extends FormRequest
             'anamnes' => 'nullable|string',
             'categories' => 'required|array',
             'categories.*.code' => 'required|string|min:2|max:5',
+            'categories.*.biopsyCustom' => 'required|bool',
+            'categories.*.biopsyCustomValue' => 'required_without:categories.*.biopsy|max:255',
+            'categories.*.biopsy' => 'required_without:categories.*.biopsyCustomValue|max:255',
             'categories.*.description' => 'required|string|min:2|max:255',
             'photos' => 'nullable|array',
             'photos.*' => 'required|mimes:jpg,jpeg,png|max:200000',
@@ -64,5 +68,13 @@ class PatientRequest extends FormRequest
             'sampling_date' => $this->sampling_date ? Carbon::parse($this->sampling_date)->format('Y-m-d H:i') : null,
             'sample_receipt_date' => $this->sample_receipt_date ? Carbon::parse($this->sample_receipt_date)->format('Y-m-d H:i') : null,
         ]);
+    }
+
+    public function messages()
+    {
+        return [
+            'categories.*.biopsy.required_without' => 'Обязательно для заполнения',
+            'categories.*.biopsyCustomValue.required_without' => 'Обязательно для заполнения',
+        ];
     }
 }

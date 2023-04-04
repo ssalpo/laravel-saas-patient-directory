@@ -112,20 +112,62 @@
                     </div>
                     <div class="form-group">
                         <label class="form-asterisk">Тип/Место забора образца</label>
-                        <div class="row mt-2" v-for="(category, index) in form.categories">
-                            <div class="col-4">
-                                <input type="text" v-model="category.code" class="form-control form-control-sm"
-                                       placeholder="Введите код, например A1 или B1">
+
+                        <div v-for="(category, index) in form.categories">
+                            <div class="row mt-2">
+                                <div class="col-3 col-sm-2 pb-2 pb-sm-0">
+                                    <input type="text" v-model="category.code" class="form-control form-control-sm"
+                                           placeholder="Введите код, например A1 или B1">
+                                </div>
+                                <div class="col-9 col-sm-4 pb-2 pb-sm-0">
+                                    <div class="row" v-if="!category?.biopsyCustom || category?.biopsyCustom == 0" >
+                                        <div class="col-12">
+                                            <select @change="biopsyCustomToggle(category, $event.target.value === 'свой вариант')" class="form-control form-control-sm" v-model="category.biopsy">
+                                                <option value="" disabled>Выберите тип биопсии</option>
+                                                <option :value="biopsy" v-for="biopsy in biopsyTypes">{{biopsy}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row" v-else>
+                                        <div class="col-10">
+                                            <input type="text" class="form-control form-control-sm" v-model="category.biopsyCustomValue">
+                                        </div>
+                                        <div class="col-2">
+                                            <button class="btn btn-sm" @click="biopsyCustomToggle(category, false)">
+                                                <span class="fa fa-times"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-10 col-sm-4">
+                                    <input type="text" v-model="category.description"
+                                           class="form-control form-control-sm"
+                                           placeholder="Введите описание, например рука">
+                                </div>
+                                <div class="col-2">
+                                    <button type="button" @click="removeCategory(index)" class="btn btn-sm btn-warning">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-4">
-                                <input type="text" v-model="category.description"
-                                       class="form-control form-control-sm"
-                                       placeholder="Введите описание, например рука">
-                            </div>
-                            <div class="col-4">
-                                <button type="button" @click="removeCategory(index)" class="btn btn-sm btn-warning">
-                                    <i class="fa fa-trash"></i>
-                                </button>
+
+
+                            <div class="row mt-2" v-if="errors[`categories.${index}.code`] || errors[`categories.${index}.description`] || errors[`categories.${index}.biopsy`] || errors[`categories.${index}.biopsyCustomValue`] || errors[`categories.${index}.biopsyCustom`]">
+                                <div class="col-3 col-sm-2 pb-2 pb-sm-0">
+                                    <div v-if="errors[`categories.${index}.code`]" class="invalid-feedback-simple">
+                                        {{errors[`categories.${index}.code`]}}
+                                    </div>
+                                </div>
+                                <div class="col-9 col-sm-4 pb-2 pb-sm-0">
+                                    <div v-if="errors[`categories.${index}.biopsy`] || errors[`categories.${index}.biopsyCustomValue`] || errors[`categories.${index}.biopsyCustom`]" class="invalid-feedback-simple">
+                                        {{errors[`categories.${index}.biopsy`] || errors[`categories.${index}.biopsyCustomValue`] || errors[`categories.${index}.biopsyCustom`]}}
+                                    </div>
+                                </div>
+                                <div class="col-10 col-sm-4">
+                                    <div v-if="errors[`categories.${index}.description`]" class="invalid-feedback-simple">
+                                        {{errors[`categories.${index}.description`]}}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -133,11 +175,6 @@
                             <button type="button" @click="addCategory" class="btn btn-sm btn-info mt-2">
                                 <i class="fa fa-plus"></i>
                             </button>
-                        </div>
-
-                        <div v-if="errors['categories'] || errors['categories.0.code'] || errors['categories.0.code']"
-                             class="invalid-feedback-simple">
-                            {{ errors['categories'] || errors['categories.0.code'] || errors['categories.0.code'] }}
                         </div>
                     </div>
                     <div class="form-group"
@@ -257,7 +294,7 @@
                             <td>Тип/Место забора образца</td>
                             <td>
                                 <div v-for="category in form.categories">{{ category.code }}
-                                    ({{ category.description }})
+                                    ({{category.biopsy ? (category?.biopsyCustom ? category.biopsyCustomValue : category.biopsy) + ',' : ''}} {{ category.description }})
                                 </div>
                             </td>
                         </tr>
@@ -303,6 +340,8 @@ export default {
     directives: { maska: vMaska },
     data() {
         return {
+            customBiopsyToggle: [],
+            biopsyTypes: ['шейв-биопсия', 'панч-биопсия', 'свой вариант'],
             newDoctor: false,
             birthdayConfig: {
                 locale: 'ru',
@@ -323,7 +362,7 @@ export default {
                 anamnes: this.patient?.anamnes,
                 doctor: this.patient?.doctor || null,
                 doctor_phone: this.patient?.doctor_phone || null,
-                categories: this.patient?.categories || [],
+                categories: this.patient?.categories || [{code: 'A1', biopsy: 'шейв-биопсия', biopsyCustomValue: null, biopsyCustom: false, description: ''}],
                 photos: this.patient?.photos || [],
             }),
         }
@@ -349,7 +388,16 @@ export default {
                 .post(`/patients/${this.id}`, {forceFormData: true})
         },
         addCategory() {
-            this.form.categories.push({code: '', description: ''})
+            this.form.categories.push({code: '', biopsy: null, biopsyCustom: false, biopsyCustomValue: null, description: ''})
+        },
+        biopsyCustomToggle(category, isCustom) {
+            category.biopsyCustom = isCustom
+
+            if(isCustom) {
+                category.biopcy = null
+            } else {
+                category.biopsyCustomValue = null
+            }
         },
         removeCategory(index) {
             this.form.categories.splice(index, 1);
