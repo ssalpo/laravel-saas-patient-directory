@@ -77,7 +77,11 @@ class Patient extends Model
 
     public function getCategoriesFormattedAttribute()
     {
-        return array_map(fn($c) => sprintf('%s (%s, %s)', $c['code'], $c['biopsyCustomValue'] ?? $c['biopsy'] ?? '', $c['description']), $this->categories);
+        return array_map(function ($c) {
+            $biopsy = $c['biopsyCustomValue'] ?? $c['biopsy'] ?? '';
+
+            return sprintf('%s (%s)', $c['code'],  ($biopsy ? $biopsy . ', ' : '') . $c['description']);
+        }, $this->categories);
     }
 
     public function doctor()
