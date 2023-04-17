@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:payments_manage');
+    }
+
     public function index()
     {
         $doctors = Doctor::withCount('notPaidPatients')->get();
