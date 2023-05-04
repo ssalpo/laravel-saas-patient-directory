@@ -13,6 +13,7 @@ Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static functio
     Route::get('/', [PatientController::class, 'index'])->name('patients.index');
     Route::get('/patients/all', [PatientController::class, 'all'])->name('patients.all');
     Route::get('/patients/full-records', [PatientController::class, 'fullRecords'])->name('patients.full_records');
+    Route::get('/patients/daily-statistics', [PatientController::class, 'dailyStatistics'])->name('patients.daily-statistics');
     Route::post('/patients/{patient}/report', [PatientController::class, 'saveReport'])->name('patients.save.report');
     Route::post('/patients/{patient}/comment', [PatientController::class, 'saveComment'])->name('patients.save.comment');
     Route::get('/patients/{patient}/print', [PatientController::class, 'print'])->name('patients.print');

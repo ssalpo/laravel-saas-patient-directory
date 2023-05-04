@@ -65,7 +65,7 @@ class PatientController extends Controller
                 'diagnosis' => $patient->diagnosis,
                 'note' => $patient->note,
                 'status' => $patient->status,
-                'photos' => $patient->photos->transform(fn ($photo) => [
+                'photos' => $patient->photos->transform(fn($photo) => [
                     'id' => $photo->id,
                     'url' => $photo->url
                 ]),
@@ -73,6 +73,19 @@ class PatientController extends Controller
             ]);
 
         return inertia('Patients/FullRecords', compact('patients'));
+    }
+
+    public function dailyStatistics()
+    {
+        $statistics = Patient::select(
+            DB::raw('CAST(sampling_date AS DATE) s_date'),
+            DB::raw('COUNT(*) AS total')
+        )
+            ->orderBy('s_date', 'DESC')
+            ->groupBy('s_date')
+            ->get();
+
+        return inertia('Patients/DailyStatistics', compact('statistics'));
     }
 
     public function index()
@@ -120,7 +133,7 @@ class PatientController extends Controller
         $patient = Patient::myByPermission()->findOrFail($id);
 
         return inertia('Patients/Show', [
-            'qrCode' => (string) QrCode::size(100)->generate(route('patients.public_show', $patient->hashid)),
+            'qrCode' => (string)QrCode::size(100)->generate(route('patients.public_show', $patient->hashid)),
             'patient' => [
                 'id' => $patient->id,
                 'name' => $patient->name,
@@ -138,7 +151,7 @@ class PatientController extends Controller
                 'note' => $patient->note,
                 'comment' => $patient->comment,
                 'status' => $patient->status,
-                'photos' => $patient->photos->transform(fn ($photo) => [
+                'photos' => $patient->photos->transform(fn($photo) => [
                     'id' => $photo->id,
                     'url' => $photo->url
                 ]),
