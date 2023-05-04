@@ -6,13 +6,17 @@
     <div class="content-header">
         <div class="container">
             <div class="row mb-2">
-                <div class="col-sm-6">
+                <div class="col-12 col-sm-6">
                     <h1 class="m-0">Дерматопатология</h1>
                 </div>
 
-                <div class="col-sm-6 text-right">
-                    <Link class="btn btn-warning mr-2" :href="route('patients.full_records')">
-                        <i class="fa fa-list"></i>
+                <div class="col-12 col-sm-6 text-left text-sm-right mt-3 mt-sm-0">
+                    <Link class="btn btn-outline-primary mr-2" :href="route('patients.full_records')">
+                        <i class="fa fa-list"></i> Все пациенты
+                    </Link>
+
+                    <Link class="btn btn-info mr-2" :href="route('patients.daily-statistics')">
+                        <i class="fa fa-chart-line"></i>
                     </Link>
                 </div>
             </div>
