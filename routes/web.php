@@ -7,10 +7,17 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
+
+Route::get('/', function() {
+    View::share('home', true);
+
+    return inertia('Home');
+});
 
 Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static function () {
     // Patients
-    Route::get('/', [PatientController::class, 'index'])->name('patients.index');
+    Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
     Route::get('/patients/all', [PatientController::class, 'all'])->name('patients.all');
     Route::get('/patients/full-records', [PatientController::class, 'fullRecords'])->name('patients.full_records');
     Route::get('/patients/daily-statistics', [PatientController::class, 'dailyStatistics'])->name('patients.daily-statistics');
