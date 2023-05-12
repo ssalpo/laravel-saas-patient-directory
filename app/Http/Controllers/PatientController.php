@@ -6,12 +6,15 @@ use App\Http\Requests\PatientCommentRequest;
 use App\Http\Requests\PatientRequest;
 use App\Http\Requests\PatientReportRequest;
 use App\Http\Requests\PrintDateRequest;
+use App\Jobs\AddUniqCodeForPatient;
 use App\Models\Doctor;
 use App\Models\Patient;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PatientController extends Controller
@@ -122,6 +125,8 @@ class PatientController extends Controller
 
             $this->uploadPhotos($patient, $request);
 
+            AddUniqCodeForPatient::dispatch($patient);
+
             return $patient;
         });
 
@@ -136,6 +141,7 @@ class PatientController extends Controller
             'qrCode' => (string)QrCode::size(100)->generate(route('patients.public_show', $patient->hashid)),
             'patient' => [
                 'id' => $patient->id,
+                'uniq_code' => $patient->uniq_code,
                 'name' => $patient->name,
                 'phone' => $patient->phone,
                 'case_numbers' => $patient->case_numbers,
@@ -290,6 +296,25 @@ class PatientController extends Controller
         Storage::disk('public')->delete($photo->url ?? '');
 
         return back();
+    }
+
+    public function checkResult()
+    {
+        $patient = Patient::where('uniq_code', request('code'))->first();
+
+        if(is_null($patient)) {
+            throw ValidationException::withMessages([
+                'code' => 'Введите корректный код.',
+            ]);
+        }
+
+        if($patient->status !== Patient::STATUS_CHECKED) {
+            throw ValidationException::withMessages([
+                'code' => 'Ваше заключение еще не готово.',
+            ]);
+        }
+
+        abort(409, '', ['X-Inertia-Location' => url()->route('patients.public_show', $patient->hashid)]);
     }
 
     private function uploadPhotos($patient, $request)

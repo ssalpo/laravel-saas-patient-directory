@@ -15,6 +15,8 @@ Route::get('/', function() {
     return inertia('Home');
 });
 
+Route::get('/patients/check-result', [PatientController::class, 'checkResult'])->name('patient.check-result');
+
 Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static function () {
     // Patients
     Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
@@ -51,5 +53,6 @@ Route::controller(LoginController::class)->group(static function () {
     Route::post('login', 'store')->middleware('guest');
     Route::delete('logout', 'destroy')->name('logout');
 });
+
 
 Route::get('/{hash}', [PatientController::class, 'publicShow'])->name('patients.public_show');

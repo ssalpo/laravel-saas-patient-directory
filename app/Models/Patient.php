@@ -30,7 +30,8 @@ class Patient extends Model
         'note',
         'print_date',
         'created_by',
-        'comment'
+        'comment',
+        'uniq_code'
     ];
 
     protected $casts = [
@@ -80,7 +81,7 @@ class Patient extends Model
         return array_map(function ($c) {
             $biopsy = $c['biopsyCustomValue'] ?? $c['biopsy'] ?? '';
 
-            return sprintf('%s (%s)', $c['code'],  ($biopsy ? $biopsy . ', ' : '') . $c['description']);
+            return sprintf('%s (%s)', $c['code'], ($biopsy ? $biopsy . ', ' : '') . $c['description']);
         }, $this->categories);
     }
 
@@ -115,5 +116,16 @@ class Patient extends Model
         $this->update(['case_numbers' => $caseNumbers]);
 
         return $caseNumbers;
+    }
+
+    public function generateUniqCode(): int
+    {
+        do {
+            $code = random_int(1000, 20000);
+        } while (self::where("uniq_code", $code)->exists());
+
+        $this->update(['uniq_code' => $code]);
+
+        return $code;
     }
 }

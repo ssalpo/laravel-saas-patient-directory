@@ -300,7 +300,7 @@
                         </tr>
                         <tr>
                             <td>Направивший врач</td>
-                            <td>{{ selectedDoctor }}</td>
+                            <td>{{ selectedDoctor?.name }}</td>
                         </tr>
                         <tr>
                             <td>Количество прикрепленных фото</td>

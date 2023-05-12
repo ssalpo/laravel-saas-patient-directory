@@ -234,7 +234,13 @@
             <div class="code-block" id="code-block">
                 <div class="t-container code-block__inner">
                     <form>
-                        <input type="text" placeholder="Введите код...">
+                        <div>
+                            <input type="text" @blur="checkResult" v-model="form.code" placeholder="Введите код...">
+                        </div>
+
+                        <div v-if="form.errors.code">
+                            {{form.errors.code}}
+                        </div>
                     </form>
                 </div>
             </div>
@@ -285,13 +291,20 @@
     </div>
 </template>
 <script>
-import {Head, Link} from "@inertiajs/inertia-vue3";
+import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
 import PublicLayout from "../Layouts/PublicLayout.vue";
 
 export default {
     props: ['shared'],
     components: {Head, Link},
     layout: PublicLayout,
+    data() {
+        return {
+            form: useForm({
+                code: null
+            })
+        }
+    },
     mounted() {
         $(document).ready(function () {
             if ($('.work_box_cont_img').length > 2) workBlock()
@@ -365,6 +378,14 @@ export default {
                     sliderWork.update();
                 }
             }
+        }
+    },
+    methods: {
+        checkResult() {
+            this.form.get(route('patient.check-result'), {
+                preserveScroll: true,
+                preserveState: true
+            })
         }
     }
 }
