@@ -10,7 +10,7 @@
                 <!-- Left navbar links -->
                 <ul class="navbar-nav">
                     <li class="nav-item"
-                        :class="{ active : $page.url === '/' }"
+                        :class="{ active : $page.component.startsWith('Patients/Index') }"
                     >
                         <Link :href="route('patients.index')" class="nav-link">
                             Пациенты
@@ -18,7 +18,7 @@
                     </li>
 
                     <li class="nav-item"
-                        :class="{ active : $page.url.startsWith('/patients') }"
+                        :class="{ active : $page.component.startsWith('Patients/All') }"
                         v-if="$page.props.shared.userPermissions.includes('read_all_patients')">
                         <Link :href="route('patients.all')" class="nav-link">
                             Дерматопатология
