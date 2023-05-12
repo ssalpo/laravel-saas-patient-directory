@@ -46,11 +46,8 @@
 <script src="/external/admin-lte/js/tempusdominus-bootstrap-4.min.js"></script>
 
 @isset($home)
-    <!--<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;coordorder=latlong&amp;onload=t_handleYandexApiReady_577109246"
-        type="text/javascript"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.2.1/js/swiper.min.js" integrity="sha512-y3xBRnPcYKl5rPeXr8jFALTW+vpeqXVqhNACy573tW3YBqocRygpJ042ukRPKxA2pbWp3YrvfWmWUXcEOgDIrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 @endisset
 
 </body>
