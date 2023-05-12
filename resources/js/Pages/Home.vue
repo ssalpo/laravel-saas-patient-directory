@@ -233,14 +233,14 @@
         <div class="r t-rec">
             <div class="code-block" id="code-block">
                 <div class="t-container code-block__inner">
-                    <form>
-                        <div>
-                            <input type="text" @blur="checkResult" v-model="form.code" placeholder="Введите код...">
+                    <form class="code-block-form">
+                        <div class="code-block-form__content-top">
+                            <input type="number" placeholder="Введите код..." v-model="form.code" >
+                            <button class="code-block-form__btn-submit" @click="checkResult" type="button">Проверить</button>
                         </div>
-
-                        <div v-if="form.errors.code">
+                        <small v-if="form.errors.code" class="code-block-form__input-error">
                             {{form.errors.code}}
-                        </div>
+                        </small>
                     </form>
                 </div>
             </div>
