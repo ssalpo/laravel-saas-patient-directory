@@ -378,7 +378,7 @@ export default {
                 doctor_phone: this.patient?.doctor_phone || null,
                 categories: this.patient?.categories || [{code: 'A1', biopsy: 'шейв-биопсия', biopsyCustomValue: null, biopsyCustom: false, description: ''}],
                 photos: this.patient?.photos || [],
-                place_of_residence: null
+                place_of_residence: this.patient?.place_of_residence
             }),
         }
     },
