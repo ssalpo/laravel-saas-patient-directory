@@ -31,7 +31,8 @@ class Patient extends Model
         'print_date',
         'created_by',
         'comment',
-        'uniq_code'
+        'uniq_code',
+        'place_of_residence'
     ];
 
     protected $casts = [

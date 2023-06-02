@@ -24,6 +24,16 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label>Место проживания</label>
+                        <input type="text" class="form-control"
+                               :class="{'is-invalid': errors.place_of_residence}"
+                               v-model="form.place_of_residence">
+
+                        <div v-if="errors.place_of_residence" class="error invalid-feedback">
+                            {{ errors.place_of_residence }}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label>Номер телефона</label>
                         <input type="text" class="form-control"
                                :class="{'is-invalid': errors.phone}"
@@ -275,6 +285,10 @@
                             <td>{{ form.birthday }}</td>
                         </tr>
                         <tr>
+                            <td>Место проживания</td>
+                            <td>{{ form.place_of_residence }}</td>
+                        </tr>
+                        <tr>
                             <td>Пол</td>
                             <td>{{ form.gender ? 'Мужской' : 'Женский' }}</td>
                         </tr>
@@ -364,6 +378,7 @@ export default {
                 doctor_phone: this.patient?.doctor_phone || null,
                 categories: this.patient?.categories || [{code: 'A1', biopsy: 'шейв-биопсия', biopsyCustomValue: null, biopsyCustom: false, description: ''}],
                 photos: this.patient?.photos || [],
+                place_of_residence: null
             }),
         }
     },

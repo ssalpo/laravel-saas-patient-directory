@@ -13,6 +13,7 @@
                     <tr>
                         <th width="150">Номер кейса</th>
                         <th width="250">Ф.И.О</th>
+                        <th width="250">Место проживания</th>
                         <th width="500">Микроскопическое описание</th>
                         <th width="500">Диагноз</th>
                         <th width="500">Заметка</th>
@@ -29,6 +30,7 @@
                     <tr v-for="patient in patients">
                         <td>{{ patient.case_numbers }}</td>
                         <td>{{ patient.name }}</td>
+                        <td>{{ patient.place_of_residence }}</td>
                         <td class="diagnosis-table" v-html="patient.microscopic_description"></td>
                         <td class="diagnosis-table" v-html="patient.diagnosis"></td>
                         <td class="diagnosis-table" v-html="patient.note"></td>

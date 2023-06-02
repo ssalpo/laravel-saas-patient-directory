@@ -44,6 +44,10 @@
         <td>{{$patient->name}}</td>
     </tr>
     <tr>
+        <td width="200">Место проживания</td>
+        <td>{{$patient->place_of_residence}}</td>
+    </tr>
+    <tr>
         <td>Дата рождения</td>
         <td>{{$patient->birthday->format('d.m.Y')}}</td>
     </tr>

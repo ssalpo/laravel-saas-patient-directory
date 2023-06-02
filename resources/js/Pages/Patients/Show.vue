@@ -41,6 +41,10 @@
                             <td>{{ patient.name }}</td>
                         </tr>
                         <tr>
+                            <td width="400">Место проживания</td>
+                            <td>{{ patient.place_of_residence }}</td>
+                        </tr>
+                        <tr>
                             <td width="400">Номер телефона</td>
                             <td>{{ patient.phone }}</td>
                         </tr>

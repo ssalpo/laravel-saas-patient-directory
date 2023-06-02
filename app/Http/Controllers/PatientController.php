@@ -72,7 +72,8 @@ class PatientController extends Controller
                     'id' => $photo->id,
                     'url' => $photo->url
                 ]),
-                'hashid' => $patient->hashid
+                'hashid' => $patient->hashid,
+                'place_of_residence' => $patient->place_of_residence,
             ]);
 
         return inertia('Patients/FullRecords', compact('patients'));
@@ -161,7 +162,8 @@ class PatientController extends Controller
                     'id' => $photo->id,
                     'url' => $photo->url
                 ]),
-                'hashid' => $patient->hashid
+                'hashid' => $patient->hashid,
+                'place_of_residence' => $patient->place_of_residence,
             ]
         ]);
     }
@@ -185,7 +187,8 @@ class PatientController extends Controller
                 'sample_receipt_date' => $patient->sample_receipt_date->format('d.m.Y H:i'),
                 'anamnes' => $patient->anamnes,
                 'doctor' => $patient->doctor_id,
-                'categories' => $patient->categories
+                'categories' => $patient->categories,
+                'place_of_residence' => $patient->place_of_residence
             ]]);
     }
 
@@ -252,6 +255,7 @@ class PatientController extends Controller
                 'note' => $patient->note,
                 'note_text_count' => strlen(strip_tags($patient->note ?? '')),
                 'status' => $patient->status,
+                'place_of_residence' => $patient->place_of_residence,
                 'print_date' => $patient->print_date?->format('d.m.Y'),
                 'created_at' => $patient->created_at->format('d.m.Y'),
             ]

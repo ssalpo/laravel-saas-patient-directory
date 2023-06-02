@@ -22,6 +22,10 @@
                 <td>{{ patient.name }}</td>
             </tr>
             <tr>
+                <td width="300">Место проживания</td>
+                <td>{{ patient.place_of_residence }}</td>
+            </tr>
+            <tr>
                 <td>Дата рождения</td>
                 <td>{{ patient.birthday }}</td>
             </tr>
