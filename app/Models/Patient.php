@@ -122,7 +122,7 @@ class Patient extends Model
     public function generateUniqCode(): int
     {
         do {
-            $code = random_int(1000, 20000);
+            $code = random_int(100000, 999999);
         } while (self::where("uniq_code", $code)->exists());
 
         $this->update(['uniq_code' => $code]);
