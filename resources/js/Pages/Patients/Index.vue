@@ -88,7 +88,7 @@ export default {
     }),
     methods: {
         doSearch() {
-            this.$inertia.get('/', pickBy(this.search), {preserveState: true})
+            this.$inertia.get('/patients', pickBy(this.search), {preserveState: true})
         }
     },
 }
