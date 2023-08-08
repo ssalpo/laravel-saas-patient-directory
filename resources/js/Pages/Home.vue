@@ -227,7 +227,7 @@
                                 width="100%"></iframe>
 -->
                                 <video width="320" height="315" style="width: 100%;" controls>
-                                    <source src="http://videos.derm.tj/1.mp4" type="video/mp4">
+                                    <source src="https://videos.derm.tj/1.mp4" type="video/mp4">
                                 </video>
 
                     </div>
