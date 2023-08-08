@@ -81,9 +81,9 @@
                     <div class="t165__col-top t-col t-col_6 t165__left"><img alt=""
                                                                              class="t165__img t-img loaded"
                                                                              style="border-radius: 3px;"
-                                                                             data-original="https://static.tildacdn.info/tild3366-3337-4337-a432-346661626366/ff9bd585-34e6-44d0-9.jpg"
+                                                                             data-original="/images/rustam.jpg"
                                                                              imgfiled="img"
-                                                                             src="https://thumb.tildacdn.com/tild3366-3337-4337-a432-346661626366/-/resize/560x/-/format/webp/ff9bd585-34e6-44d0-9.jpg">
+                                                                             src="/images/rustam.jpg">
                     </div>
                     <div class="t-col t-col_6 t165__vmiddle t165__left">
                         <div class="t165__textwrapper">
@@ -221,9 +221,15 @@
                 <div class="t-col t-col_6 t230__videoblock">
                     <div class="t-video-lazyload" data-blocklazy-id="582684438" data-videolazy-id="VzfUo1P1KR0"
                          data-videolazy-load="false" data-videolazy-type="youtube" style="height: 315px;">
-                        <iframe allowfullscreen="" frameborder="0" height="315"
+
+                        <!-- <iframe allowfullscreen="" frameborder="0" height="315"
                                 src="https://www.youtube.com/embed/VzfUo1P1KR0?rel=0&fmt=18&html5=1&showinfo=0"
                                 width="100%"></iframe>
+-->
+                                <video width="320" height="315" style="width: 100%;" controls>
+                                    <source src="http://videos.derm.tj/1.mp4" type="video/mp4">
+                                </video>
+
                     </div>
                     <div class="t230__sectitle t-descr" field="imgtitle"></div>
                     <div class="t230__secdescr t-descr" field="imgdescr"></div>
