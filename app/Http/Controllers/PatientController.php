@@ -67,6 +67,7 @@ class PatientController extends Controller
                 'microscopic_description' => $patient->microscopic_description,
                 'diagnosis' => $patient->diagnosis,
                 'note' => $patient->note,
+                'comment' => $patient->comment,
                 'status' => $patient->status,
                 'photos' => $patient->photos->transform(fn($photo) => [
                     'id' => $photo->id,

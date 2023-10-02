@@ -34,6 +34,7 @@
                         <td class="diagnosis-table" v-html="patient.microscopic_description"></td>
                         <td class="diagnosis-table" v-html="patient.diagnosis"></td>
                         <td class="diagnosis-table" v-html="patient.note"></td>
+                        <td class="diagnosis-table" v-html="patient.comment"></td>
                         <td>{{ patient.phone }}</td>
                         <td>{{ patient.birthday }}</td>
                         <td>{{ patient.age }}</td>
