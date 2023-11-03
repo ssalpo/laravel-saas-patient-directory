@@ -53,6 +53,13 @@
                                     Пользователи
                                 </Link>
                             </li>
+                            <li v-if="$page.props.shared.userPermissions.includes('read_medical_clinics')"
+                                :class="{ active : $page.url.startsWith('/medical-clinics')}"
+                            >
+                                <Link :href="route('medical-clinics.index')" class="nav-link">
+                                    Мед. учреждения
+                                </Link>
+                            </li>
                             <li v-if="$page.props.shared.userPermissions.includes('read_roles')"
                                 :class="{ active : $page.url.startsWith('/roles')}"
                             >

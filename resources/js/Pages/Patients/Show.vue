@@ -81,6 +81,12 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Направившее учреждение</td>
+                            <td>
+                                {{ patient.medical_clinic }}
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Анамнез</td>
                             <td>
                                 {{ patient.anamnes }}

@@ -224,6 +224,21 @@
                             {{ errors.doctor }}
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="form-asterisk">Направившее учреждение</label>
+
+                        <select class="form-control" :class="{'is-invalid': errors.medical_clinic_id}"
+                                v-model="form.medical_clinic_id">
+                            <option :value="null">Не выбран</option>
+                            <option v-for="medicalClinic in medicalClinics" :value="medicalClinic.id">{{ medicalClinic.name }}</option>
+                        </select>
+
+                        <div v-if="errors.medical_clinic_id" class="invalid-feedback-simple">
+                            {{ errors.medical_clinic_id }}
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label>Фото</label>
 
@@ -314,7 +329,11 @@
                         </tr>
                         <tr>
                             <td>Направивший врач</td>
-                            <td>{{ selectedDoctor?.name }}</td>
+                            <td>{{ selectedDoctor?.name || form.doctor }}</td>
+                        </tr>
+                        <tr>
+                            <td>Направившее учреждение</td>
+                            <td>{{ selectedMedicalClinic?.name }}</td>
                         </tr>
                         <tr>
                             <td>Количество прикрепленных фото</td>
@@ -347,9 +366,10 @@
 import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
 import { vMaska } from "maska"
 import resizeImage from "../../utils/resizeImage";
+import {find} from "lodash/collection";
 
 export default {
-    props: ['id', 'doctors', 'patient', 'errors'],
+    props: ['id', 'doctors', 'medicalClinics', 'patient', 'errors'],
     components: {Head, Link},
     directives: { maska: vMaska },
     data() {
@@ -378,13 +398,17 @@ export default {
                 doctor_phone: this.patient?.doctor_phone || null,
                 categories: this.patient?.categories || [{code: 'A1', biopsy: 'шейв-биопсия', biopsyCustomValue: null, biopsyCustom: false, description: ''}],
                 photos: this.patient?.photos || [],
-                place_of_residence: this.patient?.place_of_residence
+                place_of_residence: this.patient?.place_of_residence,
+                medical_clinic_id: this.patient?.medical_clinic_id || null
             }),
         }
     },
     computed: {
         selectedDoctor() {
-            return this.doctors[parseFloat(this.form.doctor)] || this.form.doctor
+            return find(this.doctors, {id: parseInt(this.form.doctor)})
+        },
+        selectedMedicalClinic() {
+            return find(this.medicalClinics, {id: parseInt(this.form.medical_clinic_id)})
         }
     },
     methods: {

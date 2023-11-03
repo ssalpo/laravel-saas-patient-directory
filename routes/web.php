@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\MedicalClinicController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoleController;
@@ -33,6 +34,9 @@ Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static functio
 
     // Doctors
     Route::resource('doctors', DoctorController::class);
+
+    // Doctors
+    Route::resource('medical-clinics', MedicalClinicController::class);
 
     // Payments
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');

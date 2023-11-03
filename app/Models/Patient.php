@@ -32,7 +32,8 @@ class Patient extends Model
         'created_by',
         'comment',
         'uniq_code',
-        'place_of_residence'
+        'place_of_residence',
+        'medical_clinic_id'
     ];
 
     protected $casts = [
@@ -99,6 +100,11 @@ class Patient extends Model
     public function payment()
     {
         return $this->hasOne(Payment::class);
+    }
+
+    public function medicalClinic()
+    {
+        return $this->belongsTo(MedicalClinic::class);
     }
 
     public function generateCaseNumbers(): array

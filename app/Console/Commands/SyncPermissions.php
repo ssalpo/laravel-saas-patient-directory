@@ -31,6 +31,10 @@ class SyncPermissions extends Command
         $permissions = [
             ['name' => 'payments_manage', 'readable_name' => 'Управлять выплатами'],
             ['name' => 'add_comment', 'readable_name' => 'Добавлять комментарий'],
+            ['name' => 'read_medical_clinics', 'readable_name' => 'Просматривать список учреждений'],
+            ['name' => 'edit_medical_clinics', 'readable_name' => 'Редактирование учреждения'],
+            ['name' => 'create_medical_clinics', 'readable_name' => 'Добавлять учреждения'],
+            ['name' => 'delete_medical_clinics', 'readable_name' => 'Удалять учреждения'],
         ];
 
         foreach ($permissions as $permission) {

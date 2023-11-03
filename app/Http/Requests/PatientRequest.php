@@ -42,7 +42,8 @@ class PatientRequest extends FormRequest
             'photos' => 'nullable|array',
             'photos.*' => 'required|mimes:jpg,jpeg,png|max:200000',
             'created_by' => 'required|integer',
-            'place_of_residence' => 'nullable|string|min:3|max:255'
+            'place_of_residence' => 'nullable|string|min:3|max:255',
+            'medical_clinic_id' => 'required|exists:medical_clinics,id'
         ];
 
         if ($this->user()?->can('select_doctor_patients')) {

@@ -23,6 +23,7 @@
                         <th>Возраст</th>
                         <th>Пол</th>
                         <th>Направивший врач</th>
+                        <th>Направившее учреждение</th>
                         <th>Анамнез</th>
                         <th>Тип/место забора образца</th>
                     </tr>
@@ -41,6 +42,7 @@
                         <td>{{ patient.age }}</td>
                         <td>{{ patient.gender ? 'М' : 'Ж' }}</td>
                         <td>{{ patient.doctor }}</td>
+                        <td>{{ patient.medical_clinic }}</td>
                         <td>{{ patient.anamnes }}</td>
                         <td>{{ patient.categories }}</td>
                     </tr>

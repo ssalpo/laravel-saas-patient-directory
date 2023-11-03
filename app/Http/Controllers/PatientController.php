@@ -8,6 +8,7 @@ use App\Http\Requests\PatientReportRequest;
 use App\Http\Requests\PrintDateRequest;
 use App\Jobs\AddUniqCodeForPatient;
 use App\Models\Doctor;
+use App\Models\MedicalClinic;
 use App\Models\Patient;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -63,6 +64,7 @@ class PatientController extends Controller
                 'sample_receipt_date' => $patient->sample_receipt_date->format('d.m.Y H:i'),
                 'anamnes' => $patient->anamnes,
                 'doctor' => $patient->doctor->name,
+                'medical_clinic' => $patient->medicalClinic?->name,
                 'categories' => implode(', ', $patient->categories_formatted),
                 'microscopic_description' => $patient->microscopic_description,
                 'diagnosis' => $patient->diagnosis,
@@ -112,8 +114,9 @@ class PatientController extends Controller
     public function create()
     {
         $doctors = Doctor::orderBy('name', 'ASC')->get(['id', 'name']);
+        $medicalClinics = MedicalClinic::get(['id', 'name']);
 
-        return inertia('Patients/Edit', compact('doctors'));
+        return inertia('Patients/Edit', compact('doctors', 'medicalClinics'));
     }
 
     public function store(PatientRequest $request)
@@ -165,6 +168,7 @@ class PatientController extends Controller
                 ]),
                 'hashid' => $patient->hashid,
                 'place_of_residence' => $patient->place_of_residence,
+                'medical_clinic' => $patient->medicalClinic?->name
             ]
         ]);
     }
@@ -175,9 +179,12 @@ class PatientController extends Controller
 
         $doctors = Doctor::orderBy('name', 'DESC')->get(['id', 'name']);
 
+        $medicalClinics = MedicalClinic::get(['id', 'name']);
+
         return inertia('Patients/Edit', [
             'id' => $patient->id,
             'doctors' => $doctors,
+            'medicalClinics' => $medicalClinics,
             'patient' => [
                 'id' => $patient->id,
                 'name' => $patient->name,
