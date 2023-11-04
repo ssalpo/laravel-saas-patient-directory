@@ -51,7 +51,8 @@ class HandleInertiaRequests extends Middleware
                 'userPermissions' => $userPermissions,
             ],
             'flash' => [
-                'isCreated' => fn() => $request->session()->get('isCreated')
+                'isCreated' => fn() => $request->session()->get('isCreated'),
+                'message' => fn () => $request->session()->get('message')
             ],
         ]);
     }

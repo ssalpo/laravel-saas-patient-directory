@@ -34,6 +34,7 @@ Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static functio
 
     // Doctors
     Route::resource('doctors', DoctorController::class);
+    Route::get('/doctors/{doctor}/patients', [DoctorController::class, 'patients'])->name('doctors.patients');
 
     // Doctors
     Route::resource('medical-clinics', MedicalClinicController::class);
