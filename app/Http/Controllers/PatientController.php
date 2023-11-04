@@ -124,7 +124,12 @@ class PatientController extends Controller
         $patient = DB::transaction(function () use ($request) {
             $doctor = $request->getDoctor();
 
-            $patient = Patient::create($request->validated() + ['doctor_id' => $this->findDoctorOrCreateByName($doctor, $request->doctor_phone)]);
+            $data = [
+                'doctor_id' => $this->findDoctorOrCreateByName($doctor, $request->doctor_phone),
+                'medical_clinic_id' => $this->findClinicOrCreateByName($request->medical_clinic)
+            ];
+
+            $patient = Patient::create($request->validated() + $data);
 
             $patient->generateCaseNumbers();
 
@@ -195,6 +200,7 @@ class PatientController extends Controller
                 'sample_receipt_date' => $patient->sample_receipt_date->format('d.m.Y H:i'),
                 'anamnes' => $patient->anamnes,
                 'doctor' => $patient->doctor_id,
+                'medical_clinic' => $patient->medical_clinic_id,
                 'categories' => $patient->categories,
                 'place_of_residence' => $patient->place_of_residence
             ]]);
@@ -207,7 +213,12 @@ class PatientController extends Controller
 
             $doctor = $request->getDoctor();
 
-            $patient->update($request->validated() + ['doctor_id' => $this->findDoctorOrCreateByName($doctor, $request->doctor_phone)]);
+            $data = [
+                'doctor_id' => $this->findDoctorOrCreateByName($doctor, $request->doctor_phone),
+                'medical_clinic_id' => $this->findClinicOrCreateByName($request->medical_clinic)
+            ];
+
+            $patient->update($request->validated() + $data);
 
             $patient->generateCaseNumbers();
 
@@ -281,6 +292,19 @@ class PatientController extends Controller
         }
 
         return Doctor::create(['name' => $nameOrId, 'phone' => $phone])->id;
+    }
+
+    private function findClinicOrCreateByName(int|string $nameOrId)
+    {
+        if (is_numeric($nameOrId)) {
+            return MedicalClinic::findOrFail($nameOrId)->id;
+        }
+
+        if ($clinic = MedicalClinic::where('name', 'LIKE', '%' . $nameOrId . '%')->first()) {
+            return $clinic->id;
+        }
+
+        return MedicalClinic::create(['name' => $nameOrId])->id;
     }
 
     public function publicShow(string $hash)

@@ -228,14 +228,31 @@
                     <div class="form-group">
                         <label class="form-asterisk">Направившее учреждение</label>
 
-                        <select class="form-control" :class="{'is-invalid': errors.medical_clinic_id}"
-                                v-model="form.medical_clinic_id">
-                            <option :value="null">Не выбран</option>
-                            <option v-for="medicalClinic in medicalClinics" :value="medicalClinic.id">{{ medicalClinic.name }}</option>
-                        </select>
+                        <div v-if="!newClinic">
+                            <select class="form-control" :class="{'is-invalid': errors.medical_clinic}"
+                                    v-model="form.medical_clinic">
+                                <option :value="null">Не выбран</option>
+                                <option v-for="medicalClinic in medicalClinics" :value="medicalClinic.id">{{ medicalClinic.name }}</option>
+                            </select>
 
-                        <div v-if="errors.medical_clinic_id" class="invalid-feedback-simple">
-                            {{ errors.medical_clinic_id }}
+                            <button @click="toggleNewClinic" type="button" class="btn btn-sm btn-link">
+                                + Новое учреждение
+                            </button>
+                        </div>
+
+                        <div v-else>
+                            <input type="text"
+                                   v-model.trim="form.medical_clinic"
+                                   class="form-control form-control-sm"
+                                   placeholder="Введите название учреждения">
+
+                            <button @click="toggleNewClinic" type="button" class="btn btn-sm btn-link">
+                                Выбрать из списка
+                            </button>
+                        </div>
+
+                        <div v-if="errors.medical_clinic" class="invalid-feedback-simple">
+                            {{ errors.medical_clinic }}
                         </div>
                     </div>
 
@@ -333,7 +350,7 @@
                         </tr>
                         <tr>
                             <td>Направившее учреждение</td>
-                            <td>{{ selectedMedicalClinic?.name }}</td>
+                            <td>{{ selectedMedicalClinic?.name || form.medical_clinic }}</td>
                         </tr>
                         <tr>
                             <td>Количество прикрепленных фото</td>
@@ -377,6 +394,7 @@ export default {
             customBiopsyToggle: [],
             biopsyTypes: ['шейв-биопсия', 'панч-биопсия', 'свой вариант'],
             newDoctor: false,
+            newClinic: false,
             birthdayConfig: {
                 locale: 'ru',
                 format: 'DD.MM.YYYY'
@@ -399,7 +417,7 @@ export default {
                 categories: this.patient?.categories || [{code: 'A1', biopsy: 'шейв-биопсия', biopsyCustomValue: null, biopsyCustom: false, description: ''}],
                 photos: this.patient?.photos || [],
                 place_of_residence: this.patient?.place_of_residence,
-                medical_clinic_id: this.patient?.medical_clinic_id || null
+                medical_clinic: this.patient?.medical_clinic || null,
             }),
         }
     },
@@ -408,7 +426,7 @@ export default {
             return find(this.doctors, {id: parseInt(this.form.doctor)})
         },
         selectedMedicalClinic() {
-            return find(this.medicalClinics, {id: parseInt(this.form.medical_clinic_id)})
+            return find(this.medicalClinics, {id: parseInt(this.form.medical_clinic)})
         }
     },
     methods: {
@@ -445,6 +463,10 @@ export default {
             this.newDoctor = !this.newDoctor;
             this.form.doctor = null
             this.form.doctor_phone = null
+        },
+        toggleNewClinic() {
+            this.newClinic = !this.newClinic;
+            this.form.medical_clinic = null
         },
         resizeImages: async function (values) {
             let resizedImages = [];
