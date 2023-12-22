@@ -1,3 +1,11 @@
 #!/usr/bin/env sh
 
-./vendor/bin/pint --preset laravel
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.php')
+
+if [[ "$STAGED_FILES" = "" ]]; then
+    exit 0
+fi
+
+./vendor/bin/pint $STAGED_FILES -q --preset laravel
+
+git add $R_STAGED_FILES
