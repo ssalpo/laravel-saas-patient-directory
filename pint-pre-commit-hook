@@ -8,4 +8,4 @@ fi
 
 ./vendor/bin/pint $STAGED_FILES -q --preset laravel
 
-git add $R_STAGED_FILES
+git add $STAGED_FILES

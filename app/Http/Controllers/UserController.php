@@ -3,82 +3,89 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
+use App\Services\UserService;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Response;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(
+        protected readonly UserService $userService
+    ) {
         $this->middleware('can:read_users')->only('index');
         $this->middleware('can:create_users')->only(['create', 'store']);
         $this->middleware('can:edit_users')->only(['edit', 'update']);
         $this->middleware('can:toggle_activity_users')->only('toggleActivity');
     }
 
-    public function index()
+    /**
+     * Показывает список пользователей
+     */
+    public function index(): Response
     {
-        $users = User::orderBy('created_at', 'DESC')
-            ->paginate(100)
-            ->through(fn ($user) => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'username' => $user->username,
-                'is_active' => $user->is_active,
-                'created_at' => $user->created_at->format('d.m.Y'),
-                'roles' => $user->roles->pluck('readable_name') ?? [],
-            ]);
+        $users = UserResource::collection(
+            User::query()
+                ->with('roles')
+                ->orderByDESC('created_at')
+                ->paginate(100)
+        );
 
         return inertia('Users/Index', compact('users'));
     }
 
-    public function create()
+    /**
+     * Показывает форму создания пользователя
+     */
+    public function create(): Response
     {
         $roles = Role::pluck('readable_name', 'name');
 
         return inertia('Users/Edit', compact('roles'));
     }
 
-    public function store(UserRequest $request)
+    /**
+     * Добавляет нового пользователя
+     */
+    public function store(UserRequest $request): RedirectResponse
     {
-        DB::transaction(function () use ($request) {
-            $user = User::create($request->validated());
-            $user->assignRole($request->role);
-        });
+        $this->userService->store($request->validated());
 
         return redirect()->route('users.index');
     }
 
-    public function edit(User $user)
+    /**
+     * Показывает форму редактирования пользователя
+     */
+    public function edit(User $user): Response
     {
-        $roles = Role::pluck('readable_name', 'name');
+        $user->load('roles');
 
-        $userData = [
-            'id' => $user->id,
-            'name' => $user->name,
-            'username' => $user->username,
-            'role' => $user->roles[0]->name,
-        ];
+        $roles = Role::pluck('readable_name', 'name');
 
         return inertia('Users/Edit', [
             'roles' => $roles,
-            'user' => $userData,
+            'user' => UserResource::make($user),
         ]);
     }
 
-    public function update(UserRequest $request, User $user)
+    /**
+     * Обновляет данные пользователя
+     */
+    public function update(int $id, UserRequest $request): RedirectResponse
     {
-        DB::transaction(function () use ($request, $user) {
-            $user->update($request->validated());
-            $user->syncRoles($request->role);
-        });
+        $this->userService->update($id, $request->validated());
 
         return redirect()->route('users.index');
     }
 
-    public function toggleActivity(User $user)
+    /**
+     * Переключает активность пользователя
+     */
+    public function toggleActivity(int $id): void
     {
-        $user->update(['is_active' => ! $user->is_active]);
+        $this->userService->toggleActivity($id);
     }
 }

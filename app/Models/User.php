@@ -48,8 +48,10 @@ class User extends Authenticatable
         'is_admin' => 'boolean',
     ];
 
-    public function setPasswordAttribute(string $value)
+    public function setPasswordAttribute(?string $value): void
     {
-        $this->attributes['password'] = Hash::make($value);
+        if ($value) {
+            $this->attributes['password'] = Hash::make($value);
+        }
     }
 }

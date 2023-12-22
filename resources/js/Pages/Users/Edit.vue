@@ -1,11 +1,11 @@
 <template>
     <Head>
-        <title>{{user?.id ? 'Обновление данных пользователя' : 'Новый пользователя'}}</title>
+        <title>{{user?.data.id ? 'Обновление данных пользователя' : 'Новый пользователя'}}</title>
     </Head>
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">{{ user?.id ? 'Обновление данных пользователя' : 'Новый пользователя' }}</h1>
+            <h1 class="m-0">{{ user?.data.id ? 'Обновление данных пользователя' : 'Новый пользователя' }}</h1>
         </div>
     </div>
 
@@ -51,7 +51,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-asterisk">Пароль</label>
+                            <label :class="{'form-asterisk': user?.data.id === undefined}">Пароль</label>
                             <input type="password" class="form-control"
                                    :class="{'is-invalid': errors.password}"
                                    v-model.trim="form.password">
@@ -68,7 +68,7 @@
                             <span v-if="form.processing">
                                 <i class="fas fa-spinner fa-spin"></i> Сохранение...
                             </span>
-                            <span v-else>{{ user?.id ? 'Сохранить' : 'Добавить' }}</span>
+                            <span v-else>{{ user?.data.id ? 'Сохранить' : 'Добавить' }}</span>
                         </button>
 
                         <Link :href="route('users.index')" :class="{disabled: form.processing}" class="btn btn-default ml-2">Отменить</Link>
@@ -87,21 +87,21 @@ export default {
     data() {
         return {
             form: useForm({
-                name: this.user?.name,
-                username: this.user?.username,
-                password: this.user?.password,
-                role: this.user?.role || 'doctor'
+                name: this.user?.data.name,
+                username: this.user?.data.username,
+                password: null,
+                role: this.user?.data.roles[0].name || 'doctor'
             }),
         }
     },
     methods: {
         submit() {
-            if (!this.user?.id) {
+            if (!this.user?.data.id) {
                 this.form.post('/users');
                 return;
             }
 
-            this.form.put(`/users/${this.user.id}`)
+            this.form.put(`/users/${this.user.data.id}`)
         }
     }
 }

@@ -36,11 +36,11 @@
                             </thead>
                             <tbody>
                             <tr v-for="(user, index) in users.data">
-                                <td>{{ ((users.current_page - 1) * users.per_page) + index + 1 }}</td>
+                                <td>{{ ((users.meta.current_page - 1) * users.meta.per_page) + index + 1 }}</td>
                                 <td>{{ user.name }}</td>
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.created_at }}</td>
-                                <td>{{ user.roles.join(', ') }}</td>
+                                <td>{{ user.roles.map(e => e.readable_name).join(', ') }}</td>
                                 <td>
                                     <input type="checkbox" :checked="user.is_active" @change="$page.props.shared.userPermissions.includes('toggle_activity_users') ? toggleActivity(user.id) : null">
                                 </td>
