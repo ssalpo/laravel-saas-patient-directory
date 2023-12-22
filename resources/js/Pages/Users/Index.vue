@@ -58,8 +58,8 @@
                 </div>
                 <!-- /.card-body -->
 
-                <div class="card-footer clearfix" v-if="users.links.length > 3">
-                    <pagination :links="users.links"/>
+                <div class="card-footer clearfix" v-if="users.meta.last_page > 1">
+                    <pagination :links="users.meta.links"/>
                 </div>
             </div>
         </div>

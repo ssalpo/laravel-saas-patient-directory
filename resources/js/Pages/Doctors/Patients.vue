@@ -1,17 +1,37 @@
 <template>
     <Head>
-        <title>Пациенты: {{doctor.name}}</title>
+        <title>Пациенты: {{doctor.data.name}}</title>
     </Head>
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">Пациенты: {{doctor.name}}</h1>
+            <h1 class="m-0">Пациенты: {{doctor.data.name}}</h1>
         </div>
     </div>
 
     <div class="content">
         <div class="container">
             <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-9 col-sm-3 mb-2 mb-sm-0">
+                            <input type="text"
+                                   v-model="search.query"
+                                   @keydown.enter="doSearch"
+                                   class="form-control form-control-sm"
+                                   placeholder="Ф.И.О, код"/>
+                        </div>
+                        <div class="col-3 col-sm-3">
+                            <button class="btn btn-sm btn-primary mr-1" type="button" @click="doSearch">
+                                <span class="fa fa-search"></span>
+                            </button>
+                            <button v-if="isFiltered" type="button" class="btn btn-sm btn-danger" @click="reset">
+                                <span class="fa fa-times"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered">
@@ -46,8 +66,8 @@
                 </div>
                 <!-- /.card-body -->
 
-                <div class="card-footer clearfix" v-if="patients.links.length > 3">
-                    <pagination :links="patients.links"/>
+                <div class="card-footer clearfix" v-if="patients.meta.last_page > 1">
+                    <pagination :links="patients.meta.links"/>
                 </div>
             </div>
         </div>
@@ -56,20 +76,30 @@
 <script>
 import {Head, Link} from "@inertiajs/vue3";
 import Pagination from "../../Shared/Pagination.vue";
-import debounce from 'lodash/debounce'
+import size from "lodash/size";
 import pickBy from 'lodash/pickBy'
 
 export default {
     components: {Pagination, Head, Link},
-    props: ['patients', 'doctor'],
-    data: () => ({
-        search: {
-            query: ''
-        },
-    }),
+    props: ['filterParams', 'patients', 'doctor'],
+    data() {
+        return {
+            search: {
+                query: this.filterParams?.query || null
+            }
+        }
+    },
+    computed: {
+        isFiltered() {
+            return size(this.filterParams);
+        }
+    },
     methods: {
         doSearch() {
-            this.$inertia.get('/patients', pickBy(this.search), {preserveState: true})
+            this.$inertia.get(route('doctors.patients', {doctor: this.doctor.data.id}), pickBy(this.search), {preserveState: true})
+        },
+        reset() {
+            this.$inertia.visit(route('doctors.patients', {doctor: this.doctor.data.id}));
         }
     },
 }

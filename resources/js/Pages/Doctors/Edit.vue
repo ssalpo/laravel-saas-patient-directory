@@ -1,11 +1,11 @@
 <template>
     <Head>
-        <title>{{doctor?.id ? 'Обновление данных врача' : 'Новый врач'}}</title>
+        <title>{{doctor?.data.id ? 'Обновление данных врача' : 'Новый врач'}}</title>
     </Head>
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">{{ doctor?.id ? 'Обновление данных врача' : 'Новый врач' }}</h1>
+            <h1 class="m-0">{{ doctor?.data.id ? 'Обновление данных врача' : 'Новый врач' }}</h1>
         </div>
     </div>
 
@@ -44,7 +44,7 @@
                             <span v-if="form.processing">
                                 <i class="fas fa-spinner fa-spin"></i> Сохранение...
                             </span>
-                            <span v-else>{{ doctor?.id ? 'Сохранить' : 'Добавить' }}</span>
+                            <span v-else>{{ doctor?.data.id ? 'Сохранить' : 'Добавить' }}</span>
                         </button>
 
                         <Link :href="route('doctors.index')" :class="{disabled: form.processing}" class="btn btn-default ml-2">Отменить</Link>
@@ -65,19 +65,19 @@ export default {
     data() {
         return {
             form: useForm({
-                name: this.doctor?.name,
-                phone: this.doctor?.phone,
+                name: this.doctor?.data.name,
+                phone: this.doctor?.data.phone,
             }),
         }
     },
     methods: {
         submit() {
-            if (!this.doctor?.id) {
+            if (!this.doctor?.data.id) {
                 this.form.post('/doctors');
                 return;
             }
 
-            this.form.put(`/doctors/${this.doctor.id}`)
+            this.form.put(`/doctors/${this.doctor.data.id}`)
         }
     }
 }

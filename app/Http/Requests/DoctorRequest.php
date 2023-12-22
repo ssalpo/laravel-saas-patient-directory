@@ -23,7 +23,7 @@ class DoctorRequest extends FormRequest
      */
     public function rules()
     {
-        $id = ($this->doctor?->id ? ','.$this->doctor->id.',id' : '');
+        $id = ($this->doctor ? ','.$this->doctor.',id' : '');
 
         return [
             'name' => 'required|min:2|max:255|unique:doctors,name'.$id,

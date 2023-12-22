@@ -7,6 +7,7 @@ use Hashids\Hashids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 
 class Patient extends Model
 {
@@ -56,17 +57,17 @@ class Patient extends Model
 
     public const STATUS_CHECKED = 2;
 
-    public function scopeFilter($q)
+    public function scopeFilter($q, array $data): void
     {
         $q->when(
-            request('query'),
+            Arr::get($data, 'query'),
             fn ($q, $search) => $q->where('name', 'LIKE', '%'.$search.'%')
                 ->orWhere('diagnosis', 'LIKE', '%'.$search.'%')
                 ->orWhereRaw("JSON_SEARCH(case_numbers, 'all', ?) IS NOT NULL", ["%{$search}%"])
         );
 
         $q->when(
-            request('status'),
+            Arr::get($data, 'status'),
             fn ($q, $status) => $q->whereStatus($status)
         );
     }

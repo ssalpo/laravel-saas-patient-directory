@@ -2,76 +2,110 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\DoctorPatientsNotMovedException;
 use App\Http\Requests\DoctorRequest;
+use App\Http\Resources\DoctorResource;
+use App\Http\Resources\PatientResource;
 use App\Models\Doctor;
-use App\Models\Patient;
+use App\Services\DoctorService;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Response;
 
 class DoctorController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(
+        protected readonly DoctorService $doctorService
+    ) {
         $this->middleware('can:read_doctors')->only('index', 'patients');
         $this->middleware('can:edit_doctors')->only(['edit', 'update']);
         $this->middleware('can:create_doctors')->only(['create', 'store']);
         $this->middleware('can:delete_doctors')->only(['destroy']);
     }
 
-    public function index()
+    /**
+     * Возвращает список докторов
+     */
+    public function index(): Response
     {
-        $doctors = Doctor::withCount('patients')->paginate(100);
+        $doctors = Doctor::withCount('patients')
+            ->orderByDesc('created_at')
+            ->paginate(100);
 
-        return inertia('Doctors/Index', compact('doctors'));
+        return inertia('Doctors/Index', [
+            'doctors' => DoctorResource::collection($doctors),
+        ]);
     }
 
-    public function create()
+    /**
+     * Возвращает форму добавления доктора
+     */
+    public function create(): Response
     {
         return inertia('Doctors/Edit');
     }
 
-    public function store(DoctorRequest $request)
+    /**
+     * Добавляет нового доктора
+     */
+    public function store(DoctorRequest $request): RedirectResponse
     {
-        Doctor::create($request->validated());
+        $this->doctorService->store($request->validated());
 
         return redirect()->route('doctors.index');
     }
 
-    public function edit(Doctor $doctor)
+    /**
+     * Возвращает форму редактирования доктора
+     */
+    public function edit(Doctor $doctor): Response
     {
-        return inertia('Doctors/Edit', compact('doctor'));
+        return inertia('Doctors/Edit', [
+            'doctor' => DoctorResource::make($doctor),
+        ]);
     }
 
-    public function update(Doctor $doctor, DoctorRequest $request)
+    /**
+     * Обновляет данные доктора
+     */
+    public function update(int $id, DoctorRequest $request): RedirectResponse
     {
-        $doctor->update($request->validated());
+        $this->doctorService->update($id, $request->validated());
 
         return redirect()->route('doctors.index');
     }
 
-    public function destroy(Doctor $doctor)
+    /**
+     * Удаляет доктора
+     */
+    public function destroy(int $id): RedirectResponse
     {
-        $doctor->loadCount('patients');
-
-        if ($doctor->patients_count) {
-            return redirect()->back()->with('message', 'Невозможно удалить, переместите пациентов врача на другого специалиста!');
+        try {
+            $this->doctorService->destroy($id);
+        } catch (DoctorPatientsNotMovedException $e) {
+            return redirect()->back()->with('message', $e->getMessage());
         }
 
-        $doctor->delete();
-
         return redirect()->route('doctors.index');
     }
 
-    public function patients(Doctor $doctor)
+    /**
+     * Возвращает список пациентов доктора
+     */
+    public function patients(Doctor $doctor): Response
     {
-        $patients = Patient::whereDoctorId($doctor->id)
-            ->orderBy('created_at', 'DESC')
-            ->paginate(100)
-            ->through(fn ($patient) => [
-                'id' => $patient->id,
-                'name' => $patient->name,
-                'status' => $patient->status,
-                'case_numbers' => implode(', ', $patient->case_numbers),
-            ]);
+        $filterParams = request()?->all();
 
-        return inertia('Doctors/Patients', compact('doctor', 'patients'));
+        $patients = $doctor->patients()
+            ->filter($filterParams)
+            ->orderByDesc('created_at')
+            ->paginate(100)
+            ->onEachSide(0)
+            ->withQueryString();
+
+        return inertia('Doctors/Patients', [
+            'filterParams' => $filterParams,
+            'doctor' => DoctorResource::make($doctor),
+            'patients' => PatientResource::collection($patients),
+        ]);
     }
 }

@@ -41,7 +41,7 @@
                         </thead>
                         <tbody>
                         <tr v-for="(doctor, index) in doctors.data">
-                            <td>{{ ((doctors.current_page - 1) * doctors.per_page) + index + 1 }}</td>
+                            <td>{{ ((doctors.meta.current_page - 1) * doctors.meta.per_page) + index + 1 }}</td>
                             <td>{{ doctor.name }}</td>
                             <td class="text-center">
                                 <Link :href="route('doctors.patients', doctor.id)">{{ doctor.patients_count }}</Link>
@@ -68,8 +68,8 @@
                 </div>
                 <!-- /.card-body -->
 
-                <div class="card-footer clearfix" v-if="doctors.links.length > 3">
-                    <pagination :links="doctors.links"/>
+                <div class="card-footer clearfix" v-if="doctors.meta.last_page > 1">
+                    <pagination :links="doctors.meta.links"/>
                 </div>
             </div>
         </div>

@@ -30,7 +30,7 @@ class PatientController extends Controller
 
     public function all()
     {
-        $patients = Patient::filter()
+        $patients = Patient::filter(request()?->all())
             ->orderBy('created_at', 'DESC')
             ->paginate(100)
             ->through(fn ($patient) => [
@@ -96,7 +96,7 @@ class PatientController extends Controller
     public function index()
     {
         $patients = Patient::my('created_by')
-            ->filter()
+            ->filter(request()?->all())
             ->orderBy('created_at', 'DESC')
             ->paginate(100)
             ->through(fn ($patient) => [
