@@ -38,7 +38,7 @@ class SyncPermissions extends Command
         ];
 
         foreach ($permissions as $permission) {
-            if (!Permission::whereName($permission['name'])->exists()) {
+            if (! Permission::whereName($permission['name'])->exists()) {
                 Permission::create($permission);
 
                 $this->info(sprintf('Created %s permission', $permission['name']));

@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\Patient;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -21,8 +20,7 @@ class AddUniqCodeForPatient implements ShouldQueue
      */
     public function __construct(
         public Patient $patient
-    )
-    {
+    ) {
         //
     }
 

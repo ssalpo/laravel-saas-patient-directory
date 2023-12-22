@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class PatientRequest extends FormRequest
 {
@@ -43,7 +42,7 @@ class PatientRequest extends FormRequest
             'photos.*' => 'required|mimes:jpg,jpeg,png|max:200000',
             'created_by' => 'required|integer',
             'place_of_residence' => 'nullable|string|min:3|max:255',
-            'medical_clinic' => 'required'
+            'medical_clinic' => 'required',
         ];
 
         if ($this->user()?->can('select_doctor_patients')) {

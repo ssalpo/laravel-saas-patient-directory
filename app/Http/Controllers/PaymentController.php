@@ -26,8 +26,8 @@ class PaymentController extends Controller
         $doctor = Doctor::with('notPaidPatients')->findOrFail($request->doctor_id);
 
         DB::transaction(
-            static fn() => $doctor->notPaidPatients->each(
-                fn($patient) => $patient->payment()
+            static fn () => $doctor->notPaidPatients->each(
+                fn ($patient) => $patient->payment()
                     ->create(['amount' => Payment::DEFAULT_AMOUNT, 'doctor_id' => $doctor->id])
             )
         );
@@ -41,10 +41,10 @@ class PaymentController extends Controller
             ->orderBy('created_at', 'DESC')
             ->with('patient')
             ->paginate(20)
-            ->through(fn($payment) => [
+            ->through(fn ($payment) => [
                 'patient' => $payment->patient->name,
                 'amount' => $payment->amount,
-                'created_at' => $payment->created_at->format('d.m.Y')
+                'created_at' => $payment->created_at->format('d.m.Y'),
             ]);
 
         $doctor = $doctor->only('id', 'name');

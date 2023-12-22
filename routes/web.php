@@ -10,7 +10,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
-Route::get('/', function() {
+Route::get('/', function () {
     View::share('home', true);
 
     return inertia('Home');
@@ -58,6 +58,5 @@ Route::controller(LoginController::class)->group(static function () {
     Route::post('login', 'store')->middleware('guest');
     Route::delete('logout', 'destroy')->name('logout');
 });
-
 
 Route::get('/{hash}', [PatientController::class, 'publicShow'])->name('patients.public_show');

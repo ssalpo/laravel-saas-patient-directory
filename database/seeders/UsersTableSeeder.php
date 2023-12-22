@@ -3,10 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -23,25 +21,25 @@ class UsersTableSeeder extends Seeder
                     'name' => 'User 1',
                     'username' => 'user1',
                     'password' => 'secret',
-                    'role' => 'admin'
+                    'role' => 'admin',
                 ],
                 [
                     'name' => 'User 2',
                     'username' => 'user2',
                     'password' => 'secret',
-                    'role' => 'resident'
+                    'role' => 'resident',
                 ],
                 [
                     'name' => 'User 3',
                     'username' => 'user3',
                     'password' => 'secret',
-                    'role' => 'doctor'
+                    'role' => 'doctor',
                 ],
                 [
                     'name' => 'User 4',
                     'username' => 'user4',
                     'password' => 'secret',
-                    'role' => 'doctor'
+                    'role' => 'doctor',
                 ],
             ]
             : [
@@ -49,8 +47,8 @@ class UsersTableSeeder extends Seeder
                     'name' => 'Султонов Рустам Алпомишевич',
                     'username' => 'rustam',
                     'password' => 'secret',
-                    'role' => 'admin'
-                ]
+                    'role' => 'admin',
+                ],
             ];
 
         foreach ($users as $userData) {

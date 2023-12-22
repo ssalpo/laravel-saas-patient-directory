@@ -23,10 +23,10 @@ class MedicalClinicRequest extends FormRequest
      */
     public function rules()
     {
-        $id = ($this->medicalClinic?->id ? ',' . $this->medicalClinic->id . ',id' : '');
+        $id = ($this->medicalClinic?->id ? ','.$this->medicalClinic->id.',id' : '');
 
         return [
-            'name' => 'required|min:2|max:255|unique:medical_clinics,name' . $id,
+            'name' => 'required|min:2|max:255|unique:medical_clinics,name'.$id,
         ];
     }
 }

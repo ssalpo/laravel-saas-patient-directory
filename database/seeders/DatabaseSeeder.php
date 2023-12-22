@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-//         \App\Models\Doctor::factory(10)->create();
+        //         \App\Models\Doctor::factory(10)->create();
 
         $this->call(RolesSeeder::class);
         $this->call(UsersTableSeeder::class);

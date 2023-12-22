@@ -3,19 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PatientCommentRequest;
-use App\Http\Requests\PatientRequest;
 use App\Http\Requests\PatientReportRequest;
+use App\Http\Requests\PatientRequest;
 use App\Http\Requests\PrintDateRequest;
 use App\Jobs\AddUniqCodeForPatient;
 use App\Models\Doctor;
 use App\Models\MedicalClinic;
 use App\Models\Patient;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PatientController extends Controller
@@ -35,12 +33,12 @@ class PatientController extends Controller
         $patients = Patient::filter()
             ->orderBy('created_at', 'DESC')
             ->paginate(100)
-            ->through(fn($patient) => [
+            ->through(fn ($patient) => [
                 'id' => $patient->id,
                 'name' => $patient->name,
                 'status' => $patient->status,
                 'diagnosis' => $patient->diagnosis,
-                'case_numbers' => implode(', ', $patient->case_numbers)
+                'case_numbers' => implode(', ', $patient->case_numbers),
             ]);
 
         $firstItem = $patients->firstItem();
@@ -52,7 +50,7 @@ class PatientController extends Controller
     {
         $patients = Patient::orderBy('created_at', 'DESC')
             ->get()
-            ->transform(fn($patient) => [
+            ->transform(fn ($patient) => [
                 'id' => $patient->id,
                 'name' => $patient->name,
                 'phone' => $patient->phone,
@@ -71,9 +69,9 @@ class PatientController extends Controller
                 'note' => $patient->note,
                 'comment' => $patient->comment,
                 'status' => $patient->status,
-                'photos' => $patient->photos->transform(fn($photo) => [
+                'photos' => $patient->photos->transform(fn ($photo) => [
                     'id' => $photo->id,
-                    'url' => $photo->url
+                    'url' => $photo->url,
                 ]),
                 'hashid' => $patient->hashid,
                 'place_of_residence' => $patient->place_of_residence,
@@ -101,11 +99,11 @@ class PatientController extends Controller
             ->filter()
             ->orderBy('created_at', 'DESC')
             ->paginate(100)
-            ->through(fn($patient) => [
+            ->through(fn ($patient) => [
                 'id' => $patient->id,
                 'name' => $patient->name,
                 'status' => $patient->status,
-                'case_numbers' => implode(', ', $patient->case_numbers)
+                'case_numbers' => implode(', ', $patient->case_numbers),
             ]);
 
         return inertia('Patients/Index', compact('patients'));
@@ -126,7 +124,7 @@ class PatientController extends Controller
 
             $data = [
                 'doctor_id' => $this->findDoctorOrCreateByName($doctor, $request->doctor_phone),
-                'medical_clinic_id' => $this->findClinicOrCreateByName($request->medical_clinic)
+                'medical_clinic_id' => $this->findClinicOrCreateByName($request->medical_clinic),
             ];
 
             $patient = Patient::create($request->validated() + $data);
@@ -148,7 +146,7 @@ class PatientController extends Controller
         $patient = Patient::myByPermission()->findOrFail($id);
 
         return inertia('Patients/Show', [
-            'qrCode' => (string)QrCode::size(100)->generate(route('patients.public_show', $patient->hashid)),
+            'qrCode' => (string) QrCode::size(100)->generate(route('patients.public_show', $patient->hashid)),
             'patient' => [
                 'id' => $patient->id,
                 'uniq_code' => $patient->uniq_code,
@@ -167,14 +165,14 @@ class PatientController extends Controller
                 'note' => $patient->note,
                 'comment' => $patient->comment,
                 'status' => $patient->status,
-                'photos' => $patient->photos->transform(fn($photo) => [
+                'photos' => $patient->photos->transform(fn ($photo) => [
                     'id' => $photo->id,
-                    'url' => $photo->url
+                    'url' => $photo->url,
                 ]),
                 'hashid' => $patient->hashid,
                 'place_of_residence' => $patient->place_of_residence,
-                'medical_clinic' => $patient->medicalClinic?->name
-            ]
+                'medical_clinic' => $patient->medicalClinic?->name,
+            ],
         ]);
     }
 
@@ -202,7 +200,7 @@ class PatientController extends Controller
                 'doctor' => $patient->doctor_id,
                 'medical_clinic' => $patient->medical_clinic_id,
                 'categories' => $patient->categories,
-                'place_of_residence' => $patient->place_of_residence
+                'place_of_residence' => $patient->place_of_residence,
             ]]);
     }
 
@@ -215,7 +213,7 @@ class PatientController extends Controller
 
             $data = [
                 'doctor_id' => $this->findDoctorOrCreateByName($doctor, $request->doctor_phone),
-                'medical_clinic_id' => $this->findClinicOrCreateByName($request->medical_clinic)
+                'medical_clinic_id' => $this->findClinicOrCreateByName($request->medical_clinic),
             ];
 
             $patient->update($request->validated() + $data);
@@ -277,7 +275,7 @@ class PatientController extends Controller
                 'place_of_residence' => $patient->place_of_residence,
                 'print_date' => $patient->print_date?->format('d.m.Y'),
                 'created_at' => $patient->created_at->format('d.m.Y'),
-            ]
+            ],
         ]);
     }
 
@@ -287,7 +285,7 @@ class PatientController extends Controller
             return Doctor::findOrFail($nameOrId)->id;
         }
 
-        if ($doctor = Doctor::where('name', 'LIKE', '%' . $nameOrId . '%')->first()) {
+        if ($doctor = Doctor::where('name', 'LIKE', '%'.$nameOrId.'%')->first()) {
             return $doctor->id;
         }
 
@@ -300,7 +298,7 @@ class PatientController extends Controller
             return MedicalClinic::findOrFail($nameOrId)->id;
         }
 
-        if ($clinic = MedicalClinic::where('name', 'LIKE', '%' . $nameOrId . '%')->first()) {
+        if ($clinic = MedicalClinic::where('name', 'LIKE', '%'.$nameOrId.'%')->first()) {
             return $clinic->id;
         }
 
@@ -338,13 +336,13 @@ class PatientController extends Controller
     {
         $patient = Patient::where('uniq_code', request('code'))->first();
 
-        if(is_null($patient)) {
+        if (is_null($patient)) {
             throw ValidationException::withMessages([
                 'code' => 'Введите корректный код.',
             ]);
         }
 
-        if($patient->status !== Patient::STATUS_CHECKED) {
+        if ($patient->status !== Patient::STATUS_CHECKED) {
             throw ValidationException::withMessages([
                 'code' => 'Ваше заключение еще не готово.',
             ]);

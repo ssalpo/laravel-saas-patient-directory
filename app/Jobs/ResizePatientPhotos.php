@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -32,14 +31,14 @@ class ResizePatientPhotos implements ShouldQueue
     public function handle()
     {
         foreach ($this->photos as $photo) {
-            $img = Image::make(public_path('/storage/' . $photo->url));
+            $img = Image::make(public_path('/storage/'.$photo->url));
 
             if ($img->getWidth() > 1000) {
                 $img->resize(
                     1000,
                     null,
-                    fn($const) => $const->aspectRatio()
-                )->save(public_path('/storage/thumb/' . $photo->url));
+                    fn ($const) => $const->aspectRatio()
+                )->save(public_path('/storage/thumb/'.$photo->url));
 
                 $photo->update(['has_thumb' => true]);
             }

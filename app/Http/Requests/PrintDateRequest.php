@@ -24,7 +24,7 @@ class PrintDateRequest extends FormRequest
     public function rules()
     {
         return [
-            'print_date' => 'required|date_format:d.m.Y'
+            'print_date' => 'required|date_format:d.m.Y',
         ];
     }
 }

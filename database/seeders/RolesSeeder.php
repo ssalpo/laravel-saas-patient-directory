@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -43,7 +42,7 @@ class RolesSeeder extends Seeder
             $permissionEditUsers,
             $permissionCreateUsers,
             $permissionDeleteUsers,
-            $permissionToggleActivityUsers
+            $permissionToggleActivityUsers,
         ];
 
         $permissionReadPatients = Permission::create(['name' => 'read_all_patients', 'readable_name' => 'Просматривать всех пациентов']);
@@ -55,7 +54,7 @@ class RolesSeeder extends Seeder
         $permissionsManagerPatients = [
             $permissionEditPatients,
             $permissionCreatePatients,
-            $permissionDeletePatients
+            $permissionDeletePatients,
         ];
 
         $permissionReadDoctors = Permission::create(['name' => 'read_doctors', 'readable_name' => 'Просматривать список врачей']);
@@ -67,23 +66,23 @@ class RolesSeeder extends Seeder
             $permissionReadDoctors,
             $permissionEditDoctors,
             $permissionCreateDoctors,
-            $permissionDeleteDoctors
+            $permissionDeleteDoctors,
         ];
 
         $permissionAddReport = Permission::create(['name' => 'add_report', 'readable_name' => 'Добавлять диагноз']);
 
-//        $roleAdmin->syncPermissions([
-//            ...$permissionsManagerRoles,
-//            ...$permissionsManagerUsers,
-//            ...$permissionsManagerPatients,
-//            $permissionReadPatients,
-//            $permissionSelectDoctorPatients,
-//            ...$permissionsManagerDoctors,
-//            $permissionAddReport
-//        ]);
+        //        $roleAdmin->syncPermissions([
+        //            ...$permissionsManagerRoles,
+        //            ...$permissionsManagerUsers,
+        //            ...$permissionsManagerPatients,
+        //            $permissionReadPatients,
+        //            $permissionSelectDoctorPatients,
+        //            ...$permissionsManagerDoctors,
+        //            $permissionAddReport
+        //        ]);
 
         $roleDoctor->syncPermissions([
-            ...$permissionsManagerPatients
+            ...$permissionsManagerPatients,
         ]);
     }
 }

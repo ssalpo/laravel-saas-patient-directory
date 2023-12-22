@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
@@ -22,13 +21,13 @@ class UserController extends Controller
     {
         $users = User::orderBy('created_at', 'DESC')
             ->paginate(100)
-            ->through(fn($user) => [
+            ->through(fn ($user) => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'username' => $user->username,
                 'is_active' => $user->is_active,
                 'created_at' => $user->created_at->format('d.m.Y'),
-                'roles' => $user->roles->pluck('readable_name') ?? []
+                'roles' => $user->roles->pluck('readable_name') ?? [],
             ]);
 
         return inertia('Users/Index', compact('users'));
@@ -64,7 +63,7 @@ class UserController extends Controller
 
         return inertia('Users/Edit', [
             'roles' => $roles,
-            'user' => $userData
+            'user' => $userData,
         ]);
     }
 
@@ -80,6 +79,6 @@ class UserController extends Controller
 
     public function toggleActivity(User $user)
     {
-        $user->update(['is_active' => !$user->is_active]);
+        $user->update(['is_active' => ! $user->is_active]);
     }
 }

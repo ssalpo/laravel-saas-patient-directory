@@ -20,9 +20,9 @@ class RoleController extends Controller
     {
         $roles = Role::orderBy('created_at', 'DESC')
             ->paginate(100)
-            ->through(fn($user) => [
+            ->through(fn ($user) => [
                 'id' => $user->id,
-                'readable_name' => $user->readable_name
+                'readable_name' => $user->readable_name,
             ]);
 
         return inertia('Roles/Index', compact('roles'));
@@ -54,8 +54,8 @@ class RoleController extends Controller
                 'id' => $role->id,
                 'name' => $role->name,
                 'readable_name' => $role->readable_name,
-                'permissions' => $role->permissions->pluck('id')
-            ]
+                'permissions' => $role->permissions->pluck('id'),
+            ],
         ]);
     }
 

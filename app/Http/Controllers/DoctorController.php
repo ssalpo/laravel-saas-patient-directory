@@ -51,7 +51,7 @@ class DoctorController extends Controller
     {
         $doctor->loadCount('patients');
 
-        if($doctor->patients_count) {
+        if ($doctor->patients_count) {
             return redirect()->back()->with('message', 'Невозможно удалить, переместите пациентов врача на другого специалиста!');
         }
 
@@ -65,11 +65,11 @@ class DoctorController extends Controller
         $patients = Patient::whereDoctorId($doctor->id)
             ->orderBy('created_at', 'DESC')
             ->paginate(100)
-            ->through(fn($patient) => [
+            ->through(fn ($patient) => [
                 'id' => $patient->id,
                 'name' => $patient->name,
                 'status' => $patient->status,
-                'case_numbers' => implode(', ', $patient->case_numbers)
+                'case_numbers' => implode(', ', $patient->case_numbers),
             ]);
 
         return inertia('Doctors/Patients', compact('doctor', 'patients'));

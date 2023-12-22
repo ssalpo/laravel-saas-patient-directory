@@ -13,7 +13,7 @@ class Photo extends Model
     protected $fillable = ['url', 'has_thumb'];
 
     protected $casts = [
-        'has_thumb' => 'boolean'
+        'has_thumb' => 'boolean',
     ];
 
     public function photoable()
