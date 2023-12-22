@@ -70,7 +70,7 @@
     </div>
 </template>
 <script>
-import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 
 export default {
     props: ['role', 'errors', 'permissions'],

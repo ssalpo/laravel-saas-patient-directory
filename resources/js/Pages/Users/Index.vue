@@ -66,7 +66,7 @@
     </div>
 </template>
 <script>
-import {Head, Link} from "@inertiajs/inertia-vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import Pagination from "../../Shared/Pagination.vue";
 
 export default {

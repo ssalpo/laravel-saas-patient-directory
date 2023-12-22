@@ -380,7 +380,7 @@
     <!-- /.modal -->
 </template>
 <script>
-import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 import { vMaska } from "maska"
 import resizeImage from "../../utils/resizeImage";
 import {find} from "lodash/collection";

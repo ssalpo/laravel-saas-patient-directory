@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import {Head, Link, useForm} from '@inertiajs/inertia-vue3'
+import {Head, Link, useForm} from '@inertiajs/vue3'
 import AuthLayout from "../../Layouts/AuthLayout.vue";
 
 export default {
