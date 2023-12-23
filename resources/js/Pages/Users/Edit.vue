@@ -15,63 +15,50 @@
                 <!-- form start -->
                 <form @submit.prevent="submit">
                     <div class="card-body">
-                        <div class="form-group">
-                            <label class="form-asterisk">Имя</label>
-                            <input type="text" class="form-control"
-                                   :class="{'is-invalid': errors.name}"
-                                   v-model.trim="form.name">
 
-                            <div v-if="errors.name" class="error invalid-feedback">
-                                {{ errors.name }}
-                            </div>
-                        </div>
+                        <form-input
+                            label="Имя"
+                            required
+                            v-model.trim="form.name"
+                            :validation-error="errors.name"
+                        />
 
-                        <div class="form-group">
-                            <label class="form-asterisk">Логин для входа</label>
-                            <input type="text" class="form-control"
-                                   :class="{'is-invalid': errors.username}"
-                                   v-model.trim="form.username">
+                        <form-input
+                            label="Логин для входа"
+                            required
+                            v-model.trim="form.username"
+                            :validation-error="errors.username"
+                        />
 
-                            <div v-if="errors.username" class="error invalid-feedback">
-                                {{ errors.username }}
-                            </div>
-                        </div>
+                        <form-select-roles
+                            ref="selectRoles"
+                            v-model="form.role"
+                            :invalid-text="errors.role"
+                            label="Роль"
+                        />
 
-                        <div class="form-group">
-                            <label class="form-asterisk">Роль</label>
-                            <select class="form-control"
-                                   :class="{'is-invalid': errors.role}"
-                                   v-model.trim="form.role">
-                                <option :value="role" v-for="(description, role) in roles">{{description}}</option>
-                            </select>
+                        <new-role-modal @success="setRole"/>
 
-                            <div v-if="errors.role" class="error invalid-feedback">
-                                {{ errors.role }}
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label :class="{'form-asterisk': user?.data.id === undefined}">Пароль</label>
-                            <input type="password" class="form-control"
-                                   :class="{'is-invalid': errors.password}"
-                                   v-model.trim="form.password">
-
-                            <div v-if="errors.password" class="error invalid-feedback">
-                                {{ errors.password }}
-                            </div>
-                        </div>
+                        <form-input
+                            label="Пароль"
+                            :required="!user?.data.id"
+                            v-model.trim="form.password"
+                            :validation-error="errors.password"
+                        />
                     </div>
                     <!-- /.card-body -->
 
                     <div class="card-footer">
-                        <button type="submit" :disabled="form.processing" class="btn btn-primary">
-                            <span v-if="form.processing">
-                                <i class="fas fa-spinner fa-spin"></i> Сохранение...
-                            </span>
-                            <span v-else>{{ user?.data.id ? 'Сохранить' : 'Добавить' }}</span>
-                        </button>
 
-                        <Link :href="route('users.index')" :class="{disabled: form.processing}" class="btn btn-default ml-2">Отменить</Link>
+                        <form-save-button
+                            :is-processing="form.processing"
+                            :is-editing="user?.data.id"
+                        />
+
+                        <form-cancel-button
+                            :url="route('users.index')"
+                            :is-processing="form.processing"
+                        />
                     </div>
                 </form>
             </div>
@@ -80,10 +67,15 @@
 </template>
 <script>
 import {Head, Link, useForm} from "@inertiajs/vue3";
+import FormInput from "../../Shared/Form/FormInput.vue";
+import FormSelectRoles from "../../Shared/Form/FormSelectRoles.vue";
+import NewRoleModal from "../../Shared/Modals/NewRoleModal.vue";
+import FormSaveButton from "../../Shared/Form/FormSaveButton.vue";
+import FormCancelButton from "../../Shared/Form/FormCancelButton.vue";
 
 export default {
-    props: ['user', 'errors', 'roles'],
-    components: {Head, Link},
+    props: ['user', 'errors'],
+    components: {FormCancelButton, FormSaveButton, NewRoleModal, FormSelectRoles, FormInput, Head, Link},
     data() {
         return {
             form: useForm({
@@ -102,6 +94,13 @@ export default {
             }
 
             this.form.put(`/users/${this.user.data.id}`)
+        },
+        setRole(role) {
+            this.$refs.selectRoles.refreshData()
+
+            this.form.role = role.name
+
+            this.form.clearErrors()
         }
     }
 }

@@ -18,6 +18,8 @@
         "@vueup/vue-quill": "^1.2",
         "maska": "^2.1",
         "sass": "^1.58.3",
+        "uuid": "^9.0.0",
+        "vform": "^2.1.2",
         "vue": "^3.2.36",
         "vue-lazyload": "^3.0.0-rc.2"
     },

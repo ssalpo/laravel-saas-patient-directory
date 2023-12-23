@@ -15,39 +15,33 @@
                 <!-- form start -->
                 <form @submit.prevent="submit">
                     <div class="card-body">
-                        <div class="form-group">
-                            <label class="form-asterisk">Имя</label>
-                            <input type="text" class="form-control"
-                                   :class="{'is-invalid': errors.name}"
-                                   v-model.trim="form.name">
+                        <form-input
+                            label="Имя"
+                            required
+                            v-model.trim="form.name"
+                            :validation-error="errors.name"
+                        />
 
-                            <div v-if="errors.name" class="error invalid-feedback">
-                                {{ errors.name }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Номер телефона</label>
-                            <input type="text" class="form-control"
-                                   :class="{'is-invalid': errors.phone}"
-                                   v-maska data-maska="+############"
-                                   placeholder="пример: +992 (92) 992-72-33"
-                                   v-model.trim="form.phone">
-
-                            <div v-if="errors.phone" class="error invalid-feedback">
-                                {{ errors.phone }}
-                            </div>
-                        </div>
+                        <form-input
+                            label="Номер телефона"
+                            required
+                            v-model.trim="form.phone"
+                            v-maska data-maska="+############"
+                            placeholder="пример: +992929927233"
+                            :validation-error="errors.phone"
+                        />
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" :disabled="form.processing" class="btn btn-primary">
-                            <span v-if="form.processing">
-                                <i class="fas fa-spinner fa-spin"></i> Сохранение...
-                            </span>
-                            <span v-else>{{ doctor?.data.id ? 'Сохранить' : 'Добавить' }}</span>
-                        </button>
+                        <form-save-button
+                            :is-processing="form.processing"
+                            :is-editing="doctor?.data.id"
+                        />
 
-                        <Link :href="route('doctors.index')" :class="{disabled: form.processing}" class="btn btn-default ml-2">Отменить</Link>
+                        <form-cancel-button
+                            :url="route('doctors.index')"
+                            :is-processing="form.processing"
+                        />
                     </div>
                 </form>
             </div>
@@ -57,10 +51,13 @@
 <script>
 import {Head, Link, useForm} from "@inertiajs/vue3";
 import { vMaska } from "maska"
+import FormInput from "../../Shared/Form/FormInput.vue";
+import FormSaveButton from "../../Shared/Form/FormSaveButton.vue";
+import FormCancelButton from "../../Shared/Form/FormCancelButton.vue";
 
 export default {
     props: ['doctor', 'errors'],
-    components: {Head, Link},
+    components: {FormCancelButton, FormSaveButton, FormInput, Head, Link},
     directives: { maska: vMaska },
     data() {
         return {

@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
-use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -41,9 +40,7 @@ class UserController extends Controller
      */
     public function create(): Response
     {
-        $roles = Role::pluck('readable_name', 'name');
-
-        return inertia('Users/Edit', compact('roles'));
+        return inertia('Users/Edit');
     }
 
     /**
@@ -63,10 +60,7 @@ class UserController extends Controller
     {
         $user->load('roles');
 
-        $roles = Role::pluck('readable_name', 'name');
-
         return inertia('Users/Edit', [
-            'roles' => $roles,
             'user' => UserResource::make($user),
         ]);
     }

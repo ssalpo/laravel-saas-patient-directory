@@ -27,7 +27,7 @@ class RoleRequest extends FormRequest
             'name' => 'required|min:2|max:255|unique:roles,name,'.$this->route('role')?->id,
             'readable_name' => 'required|min:2|max:255',
             'permissions' => 'required|array',
-            'permissions.*' => 'integer',
+            'permissions.*' => 'integer|exists:permissions,name',
         ];
     }
 }

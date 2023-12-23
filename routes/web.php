@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\AutocompleteController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\MedicalClinicController;
 use App\Http\Controllers\PatientController;
@@ -60,3 +61,13 @@ Route::controller(LoginController::class)->group(static function () {
 });
 
 Route::get('/{hash}', [PatientController::class, 'publicShow'])->name('patients.public_show');
+
+// Autocomplete
+Route::prefix('autocomplete')
+    ->controller(AutocompleteController::class)
+    ->group(function () {
+
+        Route::get('roles', 'roles')->name('autocomplete.roles');
+        Route::get('permissions', 'permissions')->name('autocomplete.permissions');
+
+    });

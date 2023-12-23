@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
+use App\Http\Resources\RoleResource;
 use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -40,6 +41,10 @@ class RoleController extends Controller
         $role = Role::create($request->validated() + ['guard_name' => 'web']);
 
         $role->syncPermissions(Permission::whereIn('id', $request->permissions)->pluck('name'));
+
+        if ($request->has('modal')) {
+            return response()->json(RoleResource::make($role));
+        }
 
         return redirect()->route('roles.index');
     }
