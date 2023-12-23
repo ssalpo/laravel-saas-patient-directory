@@ -32,7 +32,7 @@
                         </thead>
                         <tbody>
                         <tr v-for="(medicalClinic, index) in medicalClinics.data">
-                            <td>{{ ((medicalClinics.current_page - 1) * medicalClinics.per_page) + index + 1 }}</td>
+                            <td>{{ ((medicalClinics.meta.current_page - 1) * medicalClinics.meta.per_page) + index + 1 }}</td>
                             <td>{{ medicalClinic.name }}</td>
                             <td class="text-center" v-if="$page.props.shared.userPermissions.includes('edit_medical_clinics')">
                                 <Link :href="route('medical-clinics.edit', medicalClinic.id)">
@@ -47,8 +47,8 @@
                 </div>
                 <!-- /.card-body -->
 
-                <div class="card-footer clearfix" v-if="medicalClinics.links.length > 3">
-                    <pagination :links="medicalClinics.links"/>
+                <div class="card-footer clearfix" v-if="medicalClinics.meta.last_page > 1">
+                    <pagination :links="medicalClinics.meta.links"/>
                 </div>
             </div>
         </div>

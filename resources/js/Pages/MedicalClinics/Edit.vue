@@ -15,27 +15,24 @@
                 <!-- form start -->
                 <form @submit.prevent="submit">
                     <div class="card-body">
-                        <div class="form-group">
-                            <label class="form-asterisk">Название</label>
-                            <input type="text" class="form-control"
-                                   :class="{'is-invalid': errors.name}"
-                                   v-model.trim="form.name">
-
-                            <div v-if="errors.name" class="error invalid-feedback">
-                                {{ errors.name }}
-                            </div>
-                        </div>
+                        <form-input
+                            label="Название"
+                            required
+                            v-model.trim="form.name"
+                            :validation-error="errors.name"
+                        />
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" :disabled="form.processing" class="btn btn-primary">
-                            <span v-if="form.processing">
-                                <i class="fas fa-spinner fa-spin"></i> Сохранение...
-                            </span>
-                            <span v-else>{{ medicalClinic?.id ? 'Сохранить' : 'Добавить' }}</span>
-                        </button>
+                        <form-save-button
+                            :is-processing="form.processing"
+                            :is-editing="medicalClinic?.data.id"
+                        />
 
-                        <Link :href="route('medical-clinics.index')" :class="{disabled: form.processing}" class="btn btn-default ml-2">Отменить</Link>
+                        <form-cancel-button
+                            :url="route('medical-clinics.index')"
+                            :is-processing="form.processing"
+                        />
                     </div>
                 </form>
             </div>
@@ -44,25 +41,28 @@
 </template>
 <script>
 import {Head, Link, useForm} from "@inertiajs/vue3";
+import FormSaveButton from "../../Shared/Form/FormSaveButton.vue";
+import FormCancelButton from "../../Shared/Form/FormCancelButton.vue";
+import FormInput from "../../Shared/Form/FormInput.vue";
 
 export default {
     props: ['medicalClinic', 'errors'],
-    components: {Head, Link},
+    components: {FormInput, FormCancelButton, FormSaveButton, Head, Link},
     data() {
         return {
             form: useForm({
-                name: this.medicalClinic?.name,
+                name: this.medicalClinic?.data.name,
             }),
         }
     },
     methods: {
         submit() {
-            if (!this.medicalClinic?.id) {
+            if (!this.medicalClinic?.data.id) {
                 this.form.post('/medical-clinics');
                 return;
             }
 
-            this.form.put(`/medical-clinics/${this.medicalClinic.id}`)
+            this.form.put(`/medical-clinics/${this.medicalClinic.data.id}`)
         }
     }
 }
