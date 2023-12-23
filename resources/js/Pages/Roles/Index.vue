@@ -32,7 +32,7 @@
                         </thead>
                         <tbody>
                         <tr v-for="(role, index) in roles.data">
-                            <td>{{ ((roles.current_page - 1) * roles.per_page) + index + 1 }}</td>
+                            <td>{{ ((roles.meta.current_page - 1) * roles.meta.per_page) + index + 1 }}</td>
                             <td>{{ role.readable_name }}</td>
                             <td class="text-center" v-if="$page.props.shared.userPermissions.includes('edit_roles')">
                                 <Link :href="route('roles.edit', role.id)">
@@ -47,8 +47,8 @@
                 </div>
                 <!-- /.card-body -->
 
-                <div class="card-footer clearfix" v-if="roles.links.length > 3">
-                    <pagination :links="roles.links"/>
+                <div class="card-footer clearfix" v-if="roles.meta.last_page > 1">
+                    <pagination :links="roles.meta.links"/>
                 </div>
             </div>
         </div>

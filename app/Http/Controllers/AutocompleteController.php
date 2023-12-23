@@ -25,7 +25,7 @@ class AutocompleteController extends Controller
             ->when(request('q'), static fn ($q, $v) => $q->where('readable_name', 'like', '%'.$v.'%'))
             ->get()
             ->transform(fn ($m) => [
-                'id' => $m->name,
+                'id' => $m->id,
                 'text' => $m->readable_name,
             ])
             ->toArray();

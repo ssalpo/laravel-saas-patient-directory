@@ -49,7 +49,6 @@
                     <!-- /.card-body -->
 
                     <div class="card-footer">
-
                         <form-save-button
                             :is-processing="form.processing"
                             :is-editing="user?.data.id"

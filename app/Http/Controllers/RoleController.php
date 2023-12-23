@@ -4,43 +4,48 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
 use App\Http\Resources\RoleResource;
-use Illuminate\Support\Arr;
-use Spatie\Permission\Models\Permission;
+use App\Services\RoleService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Response;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(
+        protected readonly RoleService $roleService
+    ) {
         $this->middleware('can:read_roles')->only('index');
         $this->middleware('can:create_roles')->only(['create', 'store']);
         $this->middleware('can:edit_roles')->only(['edit', 'update']);
     }
 
-    public function index()
+    /**
+     * Возвращает список всех ролей
+     */
+    public function index(): Response
     {
-        $roles = Role::orderBy('created_at', 'DESC')
-            ->paginate(100)
-            ->through(fn ($user) => [
-                'id' => $user->id,
-                'readable_name' => $user->readable_name,
-            ]);
+        $roles = Role::orderByDesc('created_at')->paginate(100);
 
-        return inertia('Roles/Index', compact('roles'));
+        return inertia('Roles/Index', [
+            'roles' => RoleResource::collection($roles),
+        ]);
     }
 
-    public function create()
+    /**
+     * Возвращает форму для создания роли
+     */
+    public function create(): Response
     {
-        $permissions = Permission::pluck('readable_name', 'id');
-
-        return inertia('Roles/Edit', compact('permissions'));
+        return inertia('Roles/Edit');
     }
 
-    public function store(RoleRequest $request)
+    /**
+     * Создает новую роль
+     */
+    public function store(RoleRequest $request): JsonResponse|RedirectResponse
     {
-        $role = Role::create($request->validated() + ['guard_name' => 'web']);
-
-        $role->syncPermissions(Permission::whereIn('id', $request->permissions)->pluck('name'));
+        $role = $this->roleService->store($request->validated());
 
         if ($request->has('modal')) {
             return response()->json(RoleResource::make($role));
@@ -49,30 +54,24 @@ class RoleController extends Controller
         return redirect()->route('roles.index');
     }
 
-    public function edit(Role $role)
+    /**
+     * Возвращает форму для редактирования роли
+     */
+    public function edit(Role $role): Response
     {
-        $permissions = Permission::pluck('readable_name', 'id');
+        $role->load('permissions');
 
         return inertia('Roles/Edit', [
-            'permissions' => $permissions,
-            'role' => [
-                'id' => $role->id,
-                'name' => $role->name,
-                'readable_name' => $role->readable_name,
-                'permissions' => $role->permissions->pluck('id'),
-            ],
+            'role' => RoleResource::make($role),
         ]);
     }
 
-    public function update(RoleRequest $request, Role $role)
+    /**
+     * Обновляет данные роли
+     */
+    public function update(RoleRequest $request, int $id): RedirectResponse
     {
-        $role->update(
-            $request->user()->hasRole('admin')
-                ? Arr::except($request->validated(), 'name')
-                : $request->validated()
-        );
-
-        $role->syncPermissions(Permission::whereIn('id', $request->permissions)->pluck('name'));
+        $this->roleService->update($id, $request->validated());
 
         return redirect()->route('roles.index');
     }

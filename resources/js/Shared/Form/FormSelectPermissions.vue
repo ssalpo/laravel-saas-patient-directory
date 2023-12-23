@@ -1,7 +1,6 @@
 <template>
     <div class="form-group">
         <label class="form-asterisk">Права</label>
-
         <div class="custom-control custom-checkbox" v-for="permission in permissions">
             <input class="custom-control-input"
                    :value="permission.id"

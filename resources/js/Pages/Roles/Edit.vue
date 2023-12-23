@@ -15,54 +15,40 @@
                 <!-- form start -->
                 <form @submit.prevent="submit">
                     <div class="card-body">
-                        <div class="form-group">
-                            <label class="form-asterisk">Ключ</label>
-                            <input type="text" class="form-control"
-                                   :class="{'is-invalid': errors.name}"
-                                   v-model.trim="form.name">
+                        <form-input
+                            label="Ключ"
+                            required
+                            placeholder="admin"
+                            v-model.trim="form.name"
+                            :validation-error="errors.name"
+                        />
 
-                            <div v-if="errors.name" class="error invalid-feedback">
-                                {{ errors.name }}
-                            </div>
-                        </div>
+                        <form-input
+                            label="Название"
+                            placeholder="Администратор"
+                            required
+                            v-model.trim="form.readable_name"
+                            :validation-error="errors.readable_name"
+                        />
 
-                        <div class="form-group">
-                            <label class="form-asterisk">Название</label>
-                            <input type="text" class="form-control"
-                                   :class="{'is-invalid': errors.readable_name}"
-                                   v-model.trim="form.readable_name" placeholder="Ключ на английском, например: admin, doctor">
-
-                            <div v-if="errors.readable_name" class="error invalid-feedback">
-                                {{ errors.readable_name }}
-                            </div>
-                        </div>
-
-                        <div class="form-group" v-if="form.name !== 'admin'">
-                            <label class="form-asterisk">Права</label>
-
-                            <div class="custom-control custom-checkbox" v-for="(permission, id) in permissions">
-                                <input class="custom-control-input"  v-model="form.permissions" :value="id" type="checkbox" :id="`permissionCheckbox${id}`">
-                                <label :for="`permissionCheckbox${id}`" class="custom-control-label">
-                                    {{permission}}
-                                </label>
-                            </div>
-
-                            <div v-if="errors.permissions" class="invalid-feedback-simple">
-                                {{ errors.permissions }}
-                            </div>
-                        </div>
+                        <form-select-permissions
+                            v-if="form.name !== 'admin'"
+                            v-model="form.permissions"
+                            :validation-error="errors['permissions'] || errors?.permissions"
+                        />
                     </div>
                     <!-- /.card-body -->
 
                     <div class="card-footer">
-                        <button type="submit" :disabled="form.processing" class="btn btn-primary">
-                            <span v-if="form.processing">
-                                <i class="fas fa-spinner fa-spin"></i> Сохранение...
-                            </span>
-                            <span v-else>{{ role?.id ? 'Сохранить' : 'Добавить' }}</span>
-                        </button>
+                        <form-save-button
+                            :is-processing="form.processing"
+                            :is-editing="role?.data.id"
+                        />
 
-                        <Link :href="route('roles.index')" :class="{disabled: form.processing}" class="btn btn-default ml-2">Отменить</Link>
+                        <form-cancel-button
+                            :url="route('roles.index')"
+                            :is-processing="form.processing"
+                        />
                     </div>
                 </form>
             </div>
@@ -71,27 +57,31 @@
 </template>
 <script>
 import {Head, Link, useForm} from "@inertiajs/vue3";
+import FormSaveButton from "../../Shared/Form/FormSaveButton.vue";
+import FormCancelButton from "../../Shared/Form/FormCancelButton.vue";
+import FormInput from "../../Shared/Form/FormInput.vue";
+import FormSelectPermissions from "../../Shared/Form/FormSelectPermissions.vue";
 
 export default {
-    props: ['role', 'errors', 'permissions'],
-    components: {Head, Link},
+    props: ['role', 'errors'],
+    components: {FormSelectPermissions, FormInput, FormCancelButton, FormSaveButton, Head, Link},
     data() {
         return {
             form: useForm({
-                name: this.role?.name,
-                readable_name: this.role?.readable_name,
-                permissions: this.role?.permissions || []
+                name: this.role?.data.name,
+                readable_name: this.role?.data.readable_name,
+                permissions: this.role?.data.permissions.map(e => e.id) || []
             }),
         }
     },
     methods: {
         submit() {
-            if (!this.role?.id) {
+            if (!this.role?.data.id) {
                 this.form.post('/roles');
                 return;
             }
 
-            this.form.put(`/roles/${this.role.id}`)
+            this.form.put(`/roles/${this.role.data.id}`)
         }
     }
 }
