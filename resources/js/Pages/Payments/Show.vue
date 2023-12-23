@@ -5,7 +5,7 @@
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">История выплат доктора {{doctor.name}}</h1>
+            <h1 class="m-0">История выплат доктора {{doctor.data.name}}</h1>
         </div>
     </div>
 
@@ -13,7 +13,7 @@
         <div class="container">
             <div class="card">
                 <div class="card-body">
-                    <Link :href="route('payments.index', doctor.id)" class="mb-3 d-inline-block">
+                    <Link :href="route('payments.index')" class="mb-3 d-inline-block">
                         Вернуться к списку выплат
                     </Link>
 
@@ -29,8 +29,10 @@
                         </thead>
                         <tbody>
                         <tr v-for="(payment, index) in payments.data">
-                            <td>{{ ((payments.current_page - 1) * payments.per_page) + index + 1 }}</td>
-                            <td>{{ payment.patient }}</td>
+                            <td>{{ ((payments.meta.current_page - 1) * payments.meta.per_page) + index + 1 }}</td>
+                            <td>
+                                <Link :href="route('patients.show', payment.patient.id)">{{ payment.patient.name }}</Link>
+                            </td>
                             <td>{{ payment.amount }}</td>
                             <td>{{ payment.created_at }}</td>
                         </tr>
@@ -40,8 +42,8 @@
                 </div>
                 <!-- /.card-body -->
 
-                <div class="card-footer clearfix" v-if="payments.links.length > 3">
-                    <pagination :links="payments.links"/>
+                <div class="card-footer clearfix" v-if="payments.meta.last_page > 1">
+                    <pagination :links="payments.meta.links"/>
                 </div>
             </div>
         </div>

@@ -2,53 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DoctorResource;
+use App\Http\Resources\PaymentResource;
 use App\Models\Doctor;
 use App\Models\Payment;
+use App\Services\PaymentService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Inertia\Response;
 
 class PaymentController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(
+        protected readonly PaymentService $paymentService
+    ) {
         $this->middleware('can:payments_manage');
     }
 
-    public function index()
+    /**
+     * Возвращает список докторов
+     */
+    public function index(): Response
     {
-        $doctors = Doctor::withCount('notPaidPatients')->get();
+        $doctors = DoctorResource::collection(
+            Doctor::query()
+                ->withCount('notPaidPatients')
+                ->withCount('paidPatients')
+                ->orderByDesc('not_paid_patients_count')
+                ->get()
+        );
 
         return inertia('Payments/Index', compact('doctors'));
     }
 
-    public function store(Request $request)
+    /**
+     * Создает платеж для всех неоплаченных пациентов доктора
+     */
+    public function store(Request $request): RedirectResponse
     {
-        $doctor = Doctor::with('notPaidPatients')->findOrFail($request->doctor_id);
-
-        DB::transaction(
-            static fn () => $doctor->notPaidPatients->each(
-                fn ($patient) => $patient->payment()
-                    ->create(['amount' => Payment::DEFAULT_AMOUNT, 'doctor_id' => $doctor->id])
-            )
-        );
+        $this->paymentService->store($request->doctor_id);
 
         return back();
     }
 
-    public function show(Doctor $doctor)
+    /**
+     * Возвращает историю выплат доктору
+     */
+    public function show(Doctor $doctor): Response
     {
         $payments = Payment::whereDoctorId($doctor->id)
-            ->orderBy('created_at', 'DESC')
+            ->orderByDesc('created_at')
             ->with('patient')
-            ->paginate(20)
-            ->through(fn ($payment) => [
-                'patient' => $payment->patient->name,
-                'amount' => $payment->amount,
-                'created_at' => $payment->created_at->format('d.m.Y'),
-            ]);
+            ->paginate(50);
 
-        $doctor = $doctor->only('id', 'name');
-
-        return inertia('Payments/Show', compact('payments', 'doctor'));
+        return inertia('Payments/Show', [
+            'payments' => PaymentResource::collection($payments),
+            'doctor' => DoctorResource::make($doctor),
+        ]);
     }
 }

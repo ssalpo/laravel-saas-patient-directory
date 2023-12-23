@@ -19,15 +19,15 @@
                             <tr>
                                 <th style="width: 10px">#</th>
                                 <th>Доктор</th>
-                                <th title="Количество невыплаченных пациентов">Кол-во невып. пациентов</th>
+                                <th>Кол-во невып./вып. пациентов</th>
                                 <th width="40"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(doctor, index) in doctors">
+                            <tr v-for="(doctor, index) in doctors.data">
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ doctor.name }}</td>
-                                <td title="Количество невыплаченных пациентов">{{ doctor.not_paid_patients_count }}</td>
+                                <td title="Кол-во невып./вып. пациентов">{{ doctor.not_paid_patients_count }} / {{ doctor.paid_patients_count}}</td>
                                 <td class="text-center" width="300">
                                     <Link :href="route('payments.store')" :data="{doctor_id: doctor.id}"
                                           preserve-scroll
