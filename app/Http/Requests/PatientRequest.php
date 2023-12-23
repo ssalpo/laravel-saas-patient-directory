@@ -27,7 +27,7 @@ class PatientRequest extends FormRequest
         $rules = [
             'name' => 'required|string|min:1|max:255',
             'phone' => 'nullable|string|min:1|max:255',
-            'birthday' => 'date:Y-m-d',
+            'birthday' => 'required|date:Y-m-d',
             'gender' => 'required|boolean',
             'sampling_date' => 'required|date_format:Y-m-d H:i',
             'sample_receipt_date' => 'required|date_format:Y-m-d H:i',
@@ -42,22 +42,14 @@ class PatientRequest extends FormRequest
             'photos.*' => 'required|mimes:jpg,jpeg,png|max:200000',
             'created_by' => 'required|integer',
             'place_of_residence' => 'nullable|string|min:3|max:255',
-            'medical_clinic' => 'required',
+            'medical_clinic_id' => 'required|exists:medical_clinics,id',
         ];
 
         if ($this->user()?->can('select_doctor_patients')) {
-            $rules['doctor'] = 'required';
-            $rules['doctor_phone'] = 'nullable|string|min:1|max:255';
+            $rules['doctor_id'] = 'required|exists:doctors,id';
         }
 
         return $rules;
-    }
-
-    public function getDoctor()
-    {
-        return $this->user()?->can('select_doctor_patients')
-            ? $this->doctor
-            : $this->user()?->name;
     }
 
     protected function prepareForValidation()
@@ -71,7 +63,7 @@ class PatientRequest extends FormRequest
         ]);
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'categories.*.biopsy.required_without' => 'Обязательно для заполнения',

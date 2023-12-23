@@ -55,11 +55,10 @@
                                 <th width="250">Ф.И.О</th>
                                 <th>Диагноз</th>
                                 <th width="130">Статус</th>
-<!--                                <th></th>-->
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(patient, index) in patients.data">
+                            <tr v-for="patient in patients.data">
                                 <td>{{ patient.case_numbers }}</td>
                                 <td>
                                     <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
@@ -68,23 +67,17 @@
                                     <div class="diagnosis-table" v-html="patient.diagnosis"></div>
                                 </td>
                                 <td :class="[patient.status === 1 ? 'text-danger' : 'text-success']">
-                                    {{ patient.status == 1 ? 'На проверке' : 'Проверено' }}
+                                    {{ patient.status === 1 ? 'На проверке' : 'Проверено' }}
                                 </td>
-<!--                                <td class="text-center">
-                                    <Link :href="route('patients.edit', patient.id)">
-                                        <i class="fa fa-pencil-alt"></i>
-                                    </Link>
-                                </td>-->
                             </tr>
-
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <!-- /.card-body -->
 
-                <div class="card-footer clearfix" v-if="patients.links.length > 3">
-                    <pagination :links="patients.links"/>
+                <div class="card-footer clearfix" v-if="patients.meta.last_page > 1">
+                    <pagination :links="patients.meta.links"/>
                 </div>
             </div>
         </div>
@@ -98,7 +91,7 @@ import pickBy from 'lodash/pickBy'
 
 export default {
     components: {Pagination, Head, Link},
-    props: ['patients', 'firstItem'],
+    props: ['patients'],
     data: () => ({
         search: {
             query: '',

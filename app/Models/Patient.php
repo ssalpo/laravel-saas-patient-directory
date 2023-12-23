@@ -4,8 +4,12 @@ namespace App\Models;
 
 use App\Models\Traits\CurrentUser;
 use Hashids\Hashids;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 
@@ -53,11 +57,7 @@ class Patient extends Model
         });
     }
 
-    public const STATUS_CHECKING = 1;
-
-    public const STATUS_CHECKED = 2;
-
-    public function scopeFilter($q, array $data): void
+    public function scopeFilter(Builder $q, array $data): void
     {
         $q->when(
             Arr::get($data, 'query'),
@@ -72,7 +72,7 @@ class Patient extends Model
         );
     }
 
-    public function scopeMyByPermission($q, string $field = 'created_by')
+    public function scopeMyByPermission(Builder $q, string $field = 'created_by'): void
     {
         $q->when(
             ! auth()->user()?->can('read_all_patients'),
@@ -80,7 +80,7 @@ class Patient extends Model
         );
     }
 
-    public function getCategoriesFormattedAttribute()
+    public function getCategoriesFormattedAttribute(): array
     {
         return array_map(function ($c) {
             $biopsy = $c['biopsyCustomValue'] ?? $c['biopsy'] ?? '';
@@ -89,52 +89,23 @@ class Patient extends Model
         }, $this->categories);
     }
 
-    public function doctor()
+    public function doctor(): BelongsTo
     {
         return $this->belongsTo(Doctor::class);
     }
 
-    public function photos()
+    public function photos(): MorphMany
     {
         return $this->morphMany(Photo::class, 'photoable');
     }
 
-    public function payment()
+    public function payment(): HasOne
     {
         return $this->hasOne(Payment::class);
     }
 
-    public function medicalClinic()
+    public function medicalClinic(): BelongsTo
     {
         return $this->belongsTo(MedicalClinic::class);
-    }
-
-    public function generateCaseNumbers(): array
-    {
-        $caseNumbers = [];
-
-        foreach ($this->categories as $category) {
-            $caseNumbers[] = sprintf(
-                'D%s/%s %s',
-                substr(date('Y'), -2),
-                sprintf('%02d', $this->id),
-                $category['code']
-            );
-        }
-
-        $this->update(['case_numbers' => $caseNumbers]);
-
-        return $caseNumbers;
-    }
-
-    public function generateUniqCode(): int
-    {
-        do {
-            $code = random_int(100000, 999999);
-        } while (self::where('uniq_code', $code)->exists());
-
-        $this->update(['uniq_code' => $code]);
-
-        return $code;
     }
 }

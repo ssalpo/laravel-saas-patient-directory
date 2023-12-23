@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Patient;
+use App\Services\PatientService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -29,8 +30,8 @@ class AddUniqCodeForPatient implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(PatientService $patientService)
     {
-        $this->patient->generateUniqCode();
+        $patientService->generateUniqAccessCode($this->patient->id);
     }
 }

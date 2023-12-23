@@ -43,13 +43,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(patient, index) in patients.data">
+                            <tr v-for="patient in patients.data">
                                 <td>{{ patient.case_numbers }}</td>
                                 <td>
                                     <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
                                 </td>
                                 <td :class="[patient.status === 1 ? 'text-danger' : 'text-success']">
-                                    {{ patient.status == 1 ? 'На проверке' : 'Проверено' }}
+                                    {{ patient.status === 1 ? 'На проверке' : 'Проверено' }}
                                 </td>
                                 <td v-if="$page.props.shared.userPermissions.includes('edit_patients')"
                                     class="text-center">
@@ -65,8 +65,8 @@
                 </div>
                 <!-- /.card-body -->
 
-                <div class="card-footer clearfix" v-if="patients.links.length > 3">
-                    <pagination :links="patients.links"/>
+                <div class="card-footer clearfix" v-if="patients.meta.last_page > 1">
+                    <pagination :links="patients.meta.links"/>
                 </div>
             </div>
         </div>

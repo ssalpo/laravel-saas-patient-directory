@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\AutocompleteController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\MedicalClinicController;
 use App\Http\Controllers\PatientController;
@@ -17,8 +16,6 @@ Route::get('/', function () {
     return inertia('Home');
 });
 
-Route::get('/patients/check-result', [PatientController::class, 'checkResult'])->name('patient.check-result');
-
 Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static function () {
     // Patients
     Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
@@ -28,9 +25,9 @@ Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static functio
     Route::post('/patients/{patient}/report', [PatientController::class, 'saveReport'])->name('patients.save.report');
     Route::post('/patients/{patient}/comment', [PatientController::class, 'saveComment'])->name('patients.save.comment');
     Route::get('/patients/{patient}/print', [PatientController::class, 'print'])->name('patients.print');
-    Route::post('/patients/{patient}/submit', [PatientController::class, 'submit'])->name('patients.submit');
+    Route::post('/patients/{patient}/mark-as-checked', [PatientController::class, 'markAsChecked'])->name('patients.mark_as_checked');
     Route::post('/patients/{patient}/edit-print-date', [PatientController::class, 'editPrintDate'])->name('patients.edit_print_date');
-    Route::delete('/patients/{patient}/photos/{photo}/delete', [PatientController::class, 'deletePhoto'])->name('patients.photos.delete');
+    Route::delete('/patients/{patient}/photos/{photo}', [PatientController::class, 'deletePhoto'])->name('patients.photos.delete');
     Route::resource('patients', PatientController::class)->except('index');
 
     // Doctors
@@ -60,14 +57,8 @@ Route::controller(LoginController::class)->group(static function () {
     Route::delete('logout', 'destroy')->name('logout');
 });
 
-Route::get('/{hash}', [PatientController::class, 'publicShow'])->name('patients.public_show');
+// Autocomplete routes
+require_once __DIR__.'/web-parts/public.php';
 
-// Autocomplete
-Route::prefix('autocomplete')
-    ->controller(AutocompleteController::class)
-    ->group(function () {
-
-        Route::get('roles', 'roles')->name('autocomplete.roles');
-        Route::get('permissions', 'permissions')->name('autocomplete.permissions');
-
-    });
+// Autocomplete routes
+require_once __DIR__.'/web-parts/autocomplete.php';

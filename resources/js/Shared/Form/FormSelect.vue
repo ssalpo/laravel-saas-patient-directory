@@ -1,5 +1,5 @@
 <template>
-    <label class="form-label" :class="{required: labelRequired}" :for="uid" v-if="label">{{ label }}</label>
+    <label class="form-label" :class="{'form-asterisk': labelRequired}" :for="uid" v-if="label">{{ label }}</label>
 
     <div v-bind="$attrs"
          :id="`dropdown${uid}`"

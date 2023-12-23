@@ -8,6 +8,7 @@ use App\Http\Resources\DoctorResource;
 use App\Http\Resources\PatientResource;
 use App\Models\Doctor;
 use App\Services\DoctorService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
 
@@ -47,9 +48,13 @@ class DoctorController extends Controller
     /**
      * Добавляет нового доктора
      */
-    public function store(DoctorRequest $request): RedirectResponse
+    public function store(DoctorRequest $request): JsonResponse|RedirectResponse
     {
-        $this->doctorService->store($request->validated());
+        $doctor = $this->doctorService->store($request->validated());
+
+        if ($request->has('modal')) {
+            return response()->json(DoctorResource::make($doctor));
+        }
 
         return redirect()->route('doctors.index');
     }

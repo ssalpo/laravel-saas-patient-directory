@@ -1,11 +1,11 @@
 <template>
     <Head>
-        <title>{{id ? 'Обновление данных пациента' : 'Новый пациент'}}</title>
+        <title>{{patient?.data.id ? 'Обновление данных пациента' : 'Новый пациент'}}</title>
     </Head>
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">{{ id ? 'Обновление данных пациента' : 'Новый пациент' }}</h1>
+            <h1 class="m-0">{{ patient?.data.id ? 'Обновление данных пациента' : 'Новый пациент' }}</h1>
         </div>
     </div>
 
@@ -13,51 +13,37 @@
         <div class="container">
             <div class="card card-primary">
                 <div class="card-body">
-                    <div class="form-group">
-                        <label class="form-asterisk">Ф.И.О</label>
-                        <input type="text" class="form-control"
-                               :class="{'is-invalid': errors.name}"
-                               v-model="form.name">
+                    <form-input
+                        label="Ф.И.О"
+                        required
+                        v-model.trim="form.name"
+                        :validation-error="errors.name"
+                    />
 
-                        <div v-if="errors.name" class="error invalid-feedback">
-                            {{ errors.name }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Место проживания</label>
-                        <input type="text" class="form-control"
-                               :class="{'is-invalid': errors.place_of_residence}"
-                               v-model="form.place_of_residence">
+                    <form-input
+                        label="Место проживания"
+                        v-model.trim="form.place_of_residence"
+                        :validation-error="errors.place_of_residence"
+                    />
 
-                        <div v-if="errors.place_of_residence" class="error invalid-feedback">
-                            {{ errors.place_of_residence }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Номер телефона</label>
-                        <input type="text" class="form-control"
-                               :class="{'is-invalid': errors.phone}"
-                               v-maska data-maska="+############"
-                               placeholder="пример: +992 (92) 992-72-33"
-                               v-model="form.phone">
+                    <form-input
+                        label="Номер телефона"
+                        required
+                        v-maska data-maska="+############"
+                        placeholder="пример: +992929927233"
+                        v-model.trim="form.phone"
+                        :validation-error="errors.phone"
+                    />
 
-                        <div v-if="errors.phone" class="error invalid-feedback">
-                            {{ errors.phone }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-asterisk">Дата рождения</label>
+                    <form-input
+                        label="Дата рождения"
+                        required
+                        v-maska data-maska="##.##.####"
+                        placeholder="ДД.ММ.ГГГГ"
+                        v-model.trim="form.birthday"
+                        :validation-error="errors.birthday"
+                    />
 
-                        <input :class="{'is-invalid': errors.birthday}"
-                               class="form-control"
-                               v-maska data-maska="##.##.####"
-                               placeholder="ДД.ММ.ГГГГ"
-                               v-model="form.birthday" />
-
-                        <div v-if="errors.birthday" class="error invalid-feedback">
-                            {{ errors.birthday }}
-                        </div>
-                    </div>
                     <div class="form-group">
                         <label>Пол</label>
                         <div>
@@ -82,44 +68,31 @@
                             {{ errors.gender }}
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-asterisk">Дата/время забора образца</label>
 
-                        <input :class="{'is-invalid': errors.sampling_date}"
-                               class="form-control"
-                               v-maska data-maska="##.##.#### ##:##"
-                               placeholder="ДД.ММ.ГГГГ ЧЧ:ММ"
-                               v-model="form.sampling_date" />
+                    <form-input
+                        label="Дата/время забора образца"
+                        required
+                        v-maska data-maska="##.##.#### ##:##"
+                        placeholder="ДД.ММ.ГГГГ ЧЧ:ММ"
+                        v-model.trim="form.sampling_date"
+                        :validation-error="errors.sampling_date"
+                    />
 
-                        <div v-if="errors.sampling_date" class="error invalid-feedback">
-                            {{ errors.sampling_date }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-asterisk">Дата/время получения образца</label>
+                    <form-input
+                        label="Дата/время получения образца"
+                        required
+                        v-maska data-maska="##.##.#### ##:##"
+                        placeholder="ДД.ММ.ГГГГ ЧЧ:ММ"
+                        v-model.trim="form.sample_receipt_date"
+                        :validation-error="errors.sample_receipt_date"
+                    />
 
-                        <input :class="{'is-invalid': errors.sample_receipt_date}"
-                               class="form-control"
-                               v-maska data-maska="##.##.#### ##:##"
-                               placeholder="ДД.ММ.ГГГГ ЧЧ:ММ"
-                               v-model="form.sample_receipt_date" />
+                    <form-textarea
+                        label="Анамнез"
+                        v-model.trim="form.anamnes"
+                        :validation-error="errors.anamnes"
+                    />
 
-                        <div v-if="errors.sample_receipt_date" class="error invalid-feedback">
-                            {{ errors.sample_receipt_date }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Анамнез</label>
-
-                        <textarea :class="{'is-invalid': errors.anamnes}"
-                                  class="form-control"
-                                  v-model="form.anamnes"
-                        ></textarea>
-
-                        <div v-if="errors.anamnes" class="error invalid-feedback">
-                            {{ errors.anamnes }}
-                        </div>
-                    </div>
                     <div class="form-group">
                         <label class="form-asterisk">Тип/Место забора образца</label>
 
@@ -130,7 +103,7 @@
                                            placeholder="Введите код, например A1 или B1">
                                 </div>
                                 <div class="col-9 col-sm-4 pb-2 pb-sm-0">
-                                    <div class="row" v-if="!category?.biopsyCustom || category?.biopsyCustom == 0" >
+                                    <div class="row" v-if="!category?.biopsyCustom" >
                                         <div class="col-12">
                                             <select @change="biopsyCustomToggle(category, $event.target.value === 'свой вариант')" class="form-control form-control-sm" v-model="category.biopsy">
                                                 <option value="" disabled>Выберите тип биопсии</option>
@@ -187,73 +160,32 @@
                             </button>
                         </div>
                     </div>
-                    <div class="form-group"
-                         v-if="$page.props.shared.userPermissions.includes('select_doctor_patients')">
-                        <label class="form-asterisk">Направивший врач</label>
 
-                        <div v-if="!newDoctor">
-                            <select class="form-control" :class="{'is-invalid': errors.doctor}"
-                                    v-model="form.doctor">
-                                <option :value="null">Не выбран</option>
-                                <option v-for="doctor in doctors" :value="doctor.id">{{ doctor.name }}</option>
-                            </select>
+                    <div class="form-group">
+                        <form-select-doctors
+                            label-required
+                            v-if="$page.props.shared.userPermissions.includes('select_doctor_patients')"
+                            ref="selectDoctors"
+                            v-model="form.doctor_id"
+                            :invalid-text="errors.doctor_id"
+                            label="Направивший врач"
+                            @selected="selectedDoctor = $event"
+                        />
 
-                            <button @click="toggleNewDoctor" type="button" class="btn btn-sm btn-link">
-                                + Новый врач
-                            </button>
-                        </div>
-
-                        <div v-else>
-                            <input type="text"
-                                   v-model.trim="form.doctor"
-                                   class="form-control form-control-sm"
-                                   placeholder="Введите имя доктора">
-
-                            <input type="text"
-                                   placeholder="Номер телефона (необязательно), пример: +992 (92) 992-72-33"
-                                   class="form-control form-control-sm mt-2"
-                                   v-maska data-maska="+############"
-                                   v-model="form.doctor_phone">
-
-                            <button @click="toggleNewDoctor" type="button" class="btn btn-sm btn-link">
-                                Выбрать из списка
-                            </button>
-                        </div>
-
-                        <div v-if="errors.doctor" class="invalid-feedback-simple">
-                            {{ errors.doctor }}
-                        </div>
+                        <new-doctor-modal @success="setDoctor" />
                     </div>
 
                     <div class="form-group">
-                        <label class="form-asterisk">Направившее учреждение</label>
+                        <form-select-medical-clinics
+                            label-required
+                            ref="selectMedicalClinics"
+                            v-model="form.medical_clinic_id"
+                            :invalid-text="errors.medical_clinic_id"
+                            label="Направившее учреждение"
+                            @selected="selectedMedicalClinic = $event"
+                        />
 
-                        <div v-if="!newClinic">
-                            <select class="form-control" :class="{'is-invalid': errors.medical_clinic}"
-                                    v-model="form.medical_clinic">
-                                <option :value="null">Не выбран</option>
-                                <option v-for="medicalClinic in medicalClinics" :value="medicalClinic.id">{{ medicalClinic.name }}</option>
-                            </select>
-
-                            <button @click="toggleNewClinic" type="button" class="btn btn-sm btn-link">
-                                + Новое учреждение
-                            </button>
-                        </div>
-
-                        <div v-else>
-                            <input type="text"
-                                   v-model.trim="form.medical_clinic"
-                                   class="form-control form-control-sm"
-                                   placeholder="Введите название учреждения">
-
-                            <button @click="toggleNewClinic" type="button" class="btn btn-sm btn-link">
-                                Выбрать из списка
-                            </button>
-                        </div>
-
-                        <div v-if="errors.medical_clinic" class="invalid-feedback-simple">
-                            {{ errors.medical_clinic }}
-                        </div>
+                        <new-medical-clinic-modal @success="setMedicalClinic" />
                     </div>
 
                     <div class="form-group">
@@ -279,19 +211,19 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                    <button type="button" @click="id ? submit() : null" :data-toggle="!id ? 'modal' : ''"
-                            :data-target="!id ? '#confirm-modal' : ''" :disabled="form.processing"
-                            class="btn btn-primary">
-                        <span v-if="form.processing">
-                            <i class="fas fa-spinner fa-spin"></i> Сохранение...
-                        </span>
+                    <form-save-button
+                        type="button"
+                        @click="patient?.data.id ? submit() : null"
+                        :data-toggle="!patient?.data.id ? 'modal' : ''"
+                        :data-target="!patient?.data.id ? '#confirm-modal' : ''" :disabled="form.processing"
+                        :is-processing="form.processing"
+                        :is-editing="patient?.data.id"
+                    />
 
-                        <span v-else>{{ id ? 'Сохранить' : 'Добавить' }}</span>
-                    </button>
-
-                    <Link :href="route('patients.index')" :class="{disabled: form.processing}"
-                          class="btn btn-default ml-2">Отменить
-                    </Link>
+                    <form-cancel-button
+                        :url="route('patients.index')"
+                        :is-processing="form.processing"
+                    />
                 </div>
             </div>
         </div>
@@ -346,11 +278,11 @@
                         </tr>
                         <tr>
                             <td>Направивший врач</td>
-                            <td>{{ selectedDoctor?.name || form.doctor }}</td>
+                            <td>{{ selectedDoctor?.text || selectedDoctor?.name || form.doctor_id }}</td>
                         </tr>
                         <tr>
                             <td>Направившее учреждение</td>
-                            <td>{{ selectedMedicalClinic?.name || form.medical_clinic }}</td>
+                            <td>{{ selectedMedicalClinic?.text || selectedMedicalClinic?.name || form.medical_clinic_id }}</td>
                         </tr>
                         <tr>
                             <td>Количество прикрепленных фото</td>
@@ -369,7 +301,7 @@
                             <i class="fas fa-spinner fa-spin"></i> Сохранение...
                         </span>
 
-                        <span v-else>{{ id ? 'Сохранить' : 'Добавить' }}</span>
+                        <span v-else>{{ patient?.data.id ? 'Сохранить' : 'Добавить' }}</span>
                     </button>
                 </div>
             </div>
@@ -384,54 +316,50 @@ import {Head, Link, useForm} from "@inertiajs/vue3";
 import { vMaska } from "maska"
 import resizeImage from "../../utils/resizeImage";
 import {find} from "lodash/collection";
+import FormInput from "../../Shared/Form/FormInput.vue";
+import FormTextarea from "../../Shared/Form/FormTextarea.vue";
+import FormCancelButton from "../../Shared/Form/FormCancelButton.vue";
+import FormSaveButton from "../../Shared/Form/FormSaveButton.vue";
+import FormSelectDoctors from "../../Shared/Form/FormSelectDoctors.vue";
+import FormSelectRoles from "../../Shared/Form/FormSelectRoles.vue";
+import NewDoctorModal from "../../Shared/Modals/NewDoctorModal.vue";
+import NewMedicalClinicModal from "../../Shared/Modals/NewMedicalClinicModal.vue";
+import FormSelectMedicalClinics from "../../Shared/Form/FormSelectMedicalClinics.vue";
 
 export default {
-    props: ['id', 'doctors', 'medicalClinics', 'patient', 'errors'],
-    components: {Head, Link},
+    props: ['doctors', 'medicalClinics', 'patient', 'errors'],
+    components: {
+        FormSelectMedicalClinics,
+        NewMedicalClinicModal,
+        NewDoctorModal,
+        FormSelectRoles,
+        FormSelectDoctors, FormSaveButton, FormCancelButton, FormTextarea, FormInput, Head, Link},
     directives: { maska: vMaska },
     data() {
         return {
             customBiopsyToggle: [],
+            selectedDoctor: null,
+            selectedMedicalClinic: null,
             biopsyTypes: ['шейв-биопсия', 'панч-биопсия', 'свой вариант'],
-            newDoctor: false,
-            newClinic: false,
-            birthdayConfig: {
-                locale: 'ru',
-                format: 'DD.MM.YYYY'
-            },
-            sampleConfig: {
-                locale: 'ru',
-                icons: {time: 'far fa-clock'},
-                format: 'DD.MM.YYYY HH:mm'
-            },
             form: useForm({
-                name: this.patient?.name,
-                phone: this.patient?.phone,
-                birthday: this.patient?.birthday || '',
-                gender: this.patient?.gender !== undefined ? this.patient.gender : 1,
-                sampling_date: this.patient?.sampling_date,
-                sample_receipt_date: this.patient?.sample_receipt_date,
-                anamnes: this.patient?.anamnes,
-                doctor: this.patient?.doctor || null,
-                doctor_phone: this.patient?.doctor_phone || null,
-                categories: this.patient?.categories || [{code: 'A1', biopsy: 'шейв-биопсия', biopsyCustomValue: null, biopsyCustom: false, description: ''}],
-                photos: this.patient?.photos || [],
-                place_of_residence: this.patient?.place_of_residence,
-                medical_clinic: this.patient?.medical_clinic || null,
+                name: this.patient?.data.name,
+                phone: this.patient?.data.phone,
+                birthday: this.patient?.data.birthday || '',
+                gender: this.patient?.data.gender !== undefined ? this.patient.data.gender : 1,
+                sampling_date: this.patient?.data.sampling_date,
+                sample_receipt_date: this.patient?.data.sample_receipt_date,
+                anamnes: this.patient?.data.anamnes,
+                doctor_id: this.patient?.data.doctor_id || null,
+                categories: this.patient?.data.categories || [{code: 'A1', biopsy: 'шейв-биопсия', biopsyCustomValue: null, biopsyCustom: false, description: ''}],
+                photos: this.patient?.data.photos || [],
+                place_of_residence: this.patient?.data.place_of_residence,
+                medical_clinic_id: this.patient?.data.medical_clinic_id || null,
             }),
-        }
-    },
-    computed: {
-        selectedDoctor() {
-            return find(this.doctors, {id: parseInt(this.form.doctor)})
-        },
-        selectedMedicalClinic() {
-            return find(this.medicalClinics, {id: parseInt(this.form.medical_clinic)})
         }
     },
     methods: {
         submit() {
-            if (!this.id) {
+            if (!this.patient?.data.id) {
                 $('#confirm-modal').modal('hide');
                 this.form.post('/patients', {forceFormData: true});
                 return;
@@ -442,7 +370,7 @@ export default {
                     data['_method'] = 'put';
                     return data;
                 })
-                .post(`/patients/${this.id}`, {forceFormData: true})
+                .post(`/patients/${this.patient?.data.id}`, {forceFormData: true})
         },
         addCategory() {
             this.form.categories.push({code: '', biopsy: null, biopsyCustom: false, biopsyCustomValue: null, description: ''})
@@ -459,14 +387,23 @@ export default {
         removeCategory(index) {
             this.form.categories.splice(index, 1);
         },
-        toggleNewDoctor() {
-            this.newDoctor = !this.newDoctor;
-            this.form.doctor = null
-            this.form.doctor_phone = null
+        setDoctor(doctor) {
+            this.$refs.selectDoctors.refreshData()
+
+            this.form.doctor_id = doctor.id
+
+            this.selectedDoctor = doctor
+
+            this.form.clearErrors()
         },
-        toggleNewClinic() {
-            this.newClinic = !this.newClinic;
-            this.form.medical_clinic = null
+        setMedicalClinic(medicalClinic) {
+            this.$refs.selectMedicalClinics.refreshData()
+
+            this.form.medical_clinic_id = medicalClinic.id
+
+            this.selectedMedicalClinic = medicalClinic
+
+            this.form.clearErrors()
         },
         resizeImages: async function (values) {
             let resizedImages = [];

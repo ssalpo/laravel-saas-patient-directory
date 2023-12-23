@@ -388,7 +388,7 @@ export default {
     },
     methods: {
         checkResult() {
-            this.form.get(route('patient.check-result'), {
+            this.form.get(route('public.patients.check-result'), {
                 preserveScroll: true,
                 preserveState: true
             })

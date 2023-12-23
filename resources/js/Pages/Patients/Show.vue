@@ -10,12 +10,12 @@
                     <h1 class="m-0">Данные пациента</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6 text-right">
-                    <Link :href="route('patients.print', patient.id)" class="btn btn-warning mr-2">
+                    <Link :href="route('patients.print', {patient: patient.data.id})" class="btn btn-warning mr-2">
                         <i class="fa fa-print"></i>
                     </Link>
 
                     <Link v-if="$page.props.shared.userPermissions.includes('edit_patients')"
-                          :href="route('patients.edit', patient.id)" class="btn btn-primary">
+                          :href="route('patients.edit', {patient: patient.data.id})" class="btn btn-primary">
                         <i class="fa fa-pencil-alt"></i>
                     </Link>
                 </div><!-- /.col -->
@@ -34,27 +34,27 @@
                         <tbody>
                         <tr>
                             <td width="400">Уникальный код клиента</td>
-                            <td>{{ patient.uniq_code }}</td>
+                            <td>{{ patient.data.uniq_code }}</td>
                         </tr>
                         <tr>
                             <td width="400">ФИО пациента</td>
-                            <td>{{ patient.name }}</td>
+                            <td>{{ patient.data.name }}</td>
                         </tr>
                         <tr>
                             <td width="400">Место проживания</td>
-                            <td>{{ patient.place_of_residence }}</td>
+                            <td>{{ patient.data.place_of_residence }}</td>
                         </tr>
                         <tr>
                             <td width="400">Номер телефона</td>
-                            <td>{{ patient.phone }}</td>
+                            <td>{{ patient.data.phone }}</td>
                         </tr>
                         <tr>
                             <td>Дата рождения</td>
-                            <td>{{ patient.birthday }}</td>
+                            <td>{{ patient.data.birthday }}</td>
                         </tr>
                         <tr>
                             <td>Пол</td>
-                            <td>{{ patient.gender ? 'М' : 'Ж' }}</td>
+                            <td>{{ patient.data.gender ? 'М' : 'Ж' }}</td>
                         </tr>
                         <tr>
                             <td>Номер медицинской записи</td>
@@ -62,34 +62,34 @@
                         </tr>
                         <tr>
                             <td>Дата/время забора образца</td>
-                            <td>{{ patient.sampling_date }}</td>
+                            <td>{{ patient.data.sampling_date }}</td>
                         </tr>
                         <tr>
                             <td>Дата/время получения образца</td>
-                            <td>{{ patient.sample_receipt_date }}</td>
+                            <td>{{ patient.data.sample_receipt_date }}</td>
                         </tr>
                         <tr :class="{'animate-background': $page.props.flash.isCreated === true}">
                             <td>Номер кейса</td>
                             <td>
-                                <div v-for="case_number in patient.case_numbers">{{ case_number }}</div>
+                                <div v-for="case_number in patient.data.case_numbers">{{ case_number }}</div>
                             </td>
                         </tr>
                         <tr>
                             <td>Направивший врач</td>
                             <td>
-                                {{ patient.doctor }}
+                                {{ patient.data.doctor?.name }}
                             </td>
                         </tr>
                         <tr>
                             <td>Направившее учреждение</td>
                             <td>
-                                {{ patient.medical_clinic }}
+                                {{ patient.data.medical_clinic?.name }}
                             </td>
                         </tr>
                         <tr>
                             <td>Анамнез</td>
                             <td>
-                                {{ patient.anamnes }}
+                                {{ patient.data.anamnes }}
                             </td>
                         </tr>
                         </tbody>
@@ -104,7 +104,7 @@
                         <tr>
                             <td width="400">Тип/место забора образца</td>
                             <td>
-                                {{ patient.categories }}
+                                {{ patient.data.categories_formatted }}
                             </td>
                         </tr>
                         <tr>
@@ -115,7 +115,7 @@
                                     <QuillEditor theme="snow"
                                                  @blur="saveReport"
                                                  @ready="focusOnReady"
-                                                 v-if="editBlock === 'microscopic_description' || !patient.microscopic_description"
+                                                 v-if="editBlock === 'microscopic_description' || !patient.data.microscopic_description"
                                                  contentType="html"
                                                  :toolbar="['bold', 'italic', 'underline']"
                                                  v-model:content="form.microscopic_description"/>
@@ -127,7 +127,7 @@
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <span v-if="patient.status === 2">{{ patient.microscopic_description }}</span>
+                                    <span v-if="patient.data.status === 2">{{ patient.data.microscopic_description }}</span>
                                 </div>
                             </td>
                         </tr>
@@ -140,18 +140,18 @@
                                     <QuillEditor theme="snow"
                                                  @blur="saveReport"
                                                  @ready="focusOnReady"
-                                                 v-if="editBlock === 'diagnosis' || !patient.diagnosis"
+                                                 v-if="editBlock === 'diagnosis' || !patient.data.diagnosis"
                                                  contentType="html"
                                                  :toolbar="['bold', 'italic', 'underline']"
                                                  v-model:content="form.diagnosis"/>
 
                                     <div v-else>
-                                        <div class="editor-content" v-html="patient.diagnosis"></div>
+                                        <div class="editor-content" v-html="patient.data.diagnosis"></div>
                                         <a href="" @click.prevent="editBlock = 'diagnosis'"><small>Редактировать</small></a>
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <span v-if="patient.status === 2" v-html="patient.diagnosis"></span>
+                                    <span v-if="patient.data.status === 2" v-html="patient.data.diagnosis"></span>
                                 </div>
                             </td>
                         </tr>
@@ -162,27 +162,27 @@
                                     <QuillEditor theme="snow"
                                                  @blur="saveReport"
                                                  @ready="focusOnReady"
-                                                 v-if="editBlock === 'note' || !patient.note"
+                                                 v-if="editBlock === 'note' || !patient.data.note"
                                                  contentType="html"
                                                  :toolbar="['bold', 'italic', 'underline']"
                                                  v-model:content="form.note"/>
 
                                     <div v-else>
-                                        <div class="editor-content" v-html="patient.note"></div>
+                                        <div class="editor-content" v-html="patient.data.note"></div>
                                         <a href="" @click.prevent="editBlock = 'note'"><small>Редактировать</small></a>
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <span v-if="patient.status === 2">{{ patient.note }}</span>
+                                    <span v-if="patient.data.status === 2">{{ patient.data.note }}</span>
                                 </div>
                             </td>
                         </tr>
-                        <tr v-if="$page.props.shared.userPermissions.includes('add_report') && patient.status === 1">
+                        <tr v-if="$page.props.shared.userPermissions.includes('add_report') && patient.data.status === 1">
                             <td>
                                 <b>Статус проверки</b>
                             </td>
                             <td>
-                                <Link :href="route('patients.submit', patient.id)" preserve-scroll
+                                <Link :href="route('patients.mark_as_checked', patient.data.id)" preserve-scroll
                                       class="btn btn-primary" method="post" as="button">Submit
                                 </Link>
                             </td>
@@ -190,7 +190,7 @@
                         <tr>
                             <td rowspan="2" class="align-middle text-bold">Ссылка карточки пациента</td>
                             <td>
-                                {{ route('patients.public_show', patient.hashid) }}
+                                {{ route('public.patients.show', patient.data.hashid) }}
                             </td>
                         </tr>
                         <tr>
@@ -212,18 +212,18 @@
                                         <QuillEditor theme="snow"
                                                      @blur="saveComment"
                                                      @ready="focusOnReady"
-                                                     v-if="editBlock === 'comment' || !patient.comment"
+                                                     v-if="editBlock === 'comment' || !patient.data.comment"
                                                      contentType="html"
                                                      :toolbar="['bold', 'italic', 'underline']"
                                                      v-model:content="formComment.comment" />
 
                                         <div v-else>
-                                            <div class="editor-content" v-html="patient.comment"></div>
+                                            <div class="editor-content" v-html="patient.data.comment"></div>
                                             <a href="" @click.prevent="editBlock = 'comment'"><small>Редактировать</small></a>
                                         </div>
                                     </div>
                                     <div v-else>
-                                        <span v-html="patient.comment"></span>
+                                        <span v-html="patient.data.comment"></span>
                                     </div>
                                 </td>
                             </tr>
@@ -231,9 +231,9 @@
                         </table>
                     </div>
 
-                    <h4 class="mt-5 mb-3" v-show="patient.photos.length > 0">Прикрепленные фотография</h4>
+                    <h4 class="mt-5 mb-3" v-show="patient.data.photos.length > 0">Прикрепленные фотография</h4>
 
-                    <div v-for="(photo, index) in patient.photos"
+                    <div v-for="(photo, index) in patient.data.photos"
                          class="btn-group btn-group-sm" role="group">
                         <button type="button"
                                 @click="selectPhoto(photo.url, index)"
@@ -265,7 +265,7 @@
                                                 оригинал
                                             </a>
                                         </div>
-                                        <div class="col-6 text-sm-right text-md-left" v-if="patient.photos.length > 1">
+                                        <div class="col-6 text-sm-right text-md-left" v-if="patient.data.photos.length > 1">
                                             <a href="#" @click.prevent="slidePhoto('prev')" class="btn btn-default btn-sm mr-2">
                                                 <i class="fa fa-arrow-left"></i>
                                             </a>
@@ -312,9 +312,9 @@ export default {
             editBlock: '',
             someData: '',
             form: useForm({
-                microscopic_description: this.patient?.microscopic_description || '',
-                diagnosis: this.patient?.diagnosis || '',
-                note: this.patient?.note || ''
+                microscopic_description: this.patient?.data.microscopic_description || '',
+                diagnosis: this.patient?.data.diagnosis || '',
+                note: this.patient?.data.note || ''
             }),
             formComment: useForm({
                 comment: this.patient?.comment || ''
@@ -341,19 +341,19 @@ export default {
     },
     methods: {
         saveReport() {
-            this.form.post(route('patients.save.report', this.patient.id), {preserveState: true, preserveScroll: true})
+            this.form.post(route('patients.save.report', this.patient.data.id), {preserveState: true, preserveScroll: true})
 
             this.editBlock = ''
         },
         saveComment() {
-            this.formComment.post(route('patients.save.comment', this.patient.id), {preserveState: true, preserveScroll: true})
+            this.formComment.post(route('patients.save.comment', this.patient.data.id), {preserveState: true, preserveScroll: true})
 
             this.editBlock = ''
         },
         deletePhoto(photo) {
             if(!confirm('Вы уверены что хотите удалить фотографию?')) return;
 
-            this.form.delete(route('patients.photos.delete', {patient: this.patient.id, photo}), {preserveState: true, preserveScroll: true})
+            this.form.delete(route('patients.photos.delete', {patient: this.patient.data.id, photo}), {preserveState: true, preserveScroll: true})
         },
         showOriginalPhoto() {
             this.selectedPhoto = this.selectedPhoto.replace('/thumb', '');
@@ -370,7 +370,7 @@ export default {
             if(type === 'next') {
                 this.selectedPhotoIndex += 1;
 
-                if(this.selectedPhotoIndex > this.patient.photos.length - 1) {
+                if(this.selectedPhotoIndex > this.patient.data.photos.length - 1) {
                     this.selectedPhotoIndex = 0;
                 }
             }
@@ -379,11 +379,11 @@ export default {
                 this.selectedPhotoIndex -= 1;
 
                 if(this.selectedPhotoIndex < 0) {
-                    this.selectedPhotoIndex = this.patient.photos.length - 1;
+                    this.selectedPhotoIndex = this.patient.data.photos.length - 1;
                 }
             }
 
-            this.selectedPhoto = `/storage/${this.patient.photos.find((_, i) => i === this.selectedPhotoIndex).url}`;
+            this.selectedPhoto = `/storage/${this.patient.data.photos.find((_, i) => i === this.selectedPhotoIndex).url}`;
         }
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\MedicalClinicRequest;
 use App\Http\Resources\MedicalClinicResource;
 use App\Models\MedicalClinic;
 use App\Services\MedicalClinicService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
 
@@ -42,9 +43,13 @@ class MedicalClinicController extends Controller
     /**
      * Добавляет новое медицинское учреждение
      */
-    public function store(MedicalClinicRequest $request): RedirectResponse
+    public function store(MedicalClinicRequest $request): JsonResponse|RedirectResponse
     {
-        $this->medicalClinicService->store($request->validated());
+        $medicalClinic = $this->medicalClinicService->store($request->validated());
+
+        if ($request->has('modal')) {
+            return response()->json(MedicalClinicResource::make($medicalClinic));
+        }
 
         return redirect()->route('medical-clinics.index');
     }

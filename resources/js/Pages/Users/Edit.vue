@@ -30,14 +30,16 @@
                             :validation-error="errors.username"
                         />
 
-                        <form-select-roles
-                            ref="selectRoles"
-                            v-model="form.role"
-                            :invalid-text="errors.role"
-                            label="Роль"
-                        />
+                        <div class="form-group">
+                            <form-select-roles
+                                ref="selectRoles"
+                                v-model="form.role"
+                                :invalid-text="errors.role"
+                                label="Роль"
+                            />
 
-                        <new-role-modal @success="setRole"/>
+                            <new-role-modal @success="setRole"/>
+                        </div>
 
                         <form-input
                             label="Пароль"

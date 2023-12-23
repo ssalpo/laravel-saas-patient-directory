@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
             $table->jsonb('case_numbers')->nullable();
-            $table->tinyInteger('status')->default(\App\Models\Patient::STATUS_CHECKING);
+            $table->tinyInteger('status')->default(\App\Enums\PatientStatusEnum::CHECKING);
             $table->string('name');
             $table->date('birthday');
             $table->boolean('gender');

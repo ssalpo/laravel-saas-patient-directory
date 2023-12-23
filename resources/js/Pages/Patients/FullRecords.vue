@@ -29,7 +29,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="patient in patients">
+                    <tr v-for="patient in patients.data">
                         <td>{{ patient.case_numbers }}</td>
                         <td>{{ patient.name }}</td>
                         <td>{{ patient.place_of_residence }}</td>
@@ -41,10 +41,10 @@
                         <td>{{ patient.birthday }}</td>
                         <td>{{ patient.age }}</td>
                         <td>{{ patient.gender ? 'М' : 'Ж' }}</td>
-                        <td>{{ patient.doctor }}</td>
-                        <td>{{ patient.medical_clinic }}</td>
+                        <td>{{ patient.doctor?.data.name }}</td>
+                        <td>{{ patient.medical_clinic?.data.name }}</td>
                         <td>{{ patient.anamnes }}</td>
-                        <td>{{ patient.categories }}</td>
+                        <td>{{ patient.categories_formatted }}</td>
                     </tr>
 
                     </tbody>
