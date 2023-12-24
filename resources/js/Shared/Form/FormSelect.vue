@@ -117,6 +117,10 @@ export default {
     },
     created() {
         this.prefetchData()
+
+        if(!this.prefetch) {
+            this.getData(this.modelValue);
+        }
     },
     mounted() {
         if (this.autoPosition) {
@@ -181,7 +185,7 @@ export default {
             this.searchQuery = e.target.value
 
             this.getData();
-        }, 300),
+        }, 700),
         prefetchData() {
             if (!this.prefetch) return
 
@@ -190,11 +194,12 @@ export default {
         refreshData() {
             this.prefetchData()
         },
-        getData() {
+        getData(query = null) {
             if (this.remote && this.remoteUrl) {
                 this.loading = true;
+                let q = query || this.searchQuery;
 
-                axios.get(this.remoteUrl + `?q=${this.searchQuery}`)
+                axios.get(this.remoteUrl + `?q=${q}`)
                     .then((r) => {
                         this.listOptions = r.data
 

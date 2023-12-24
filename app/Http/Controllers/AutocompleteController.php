@@ -46,12 +46,12 @@ class AutocompleteController extends Controller
     public function locations(): Collection
     {
         return $this->transformCollection(
-            items: Location::where(fn ($q) => $this->searchFinder($q, ['region', 'area']))->get(),
+            items: Location::where(fn ($q) => $this->searchFinder($q, ['id', 'region', 'area']))->get(),
             textField: 'full_address'
         );
     }
 
-    private function searchFinder(Builder $q, array|string $field = 'name'): void
+    private function searchFinder(Builder $q, array|string $field = ['id', 'name']): void
     {
         $q->when(request('q'), function ($q, $v) use ($field) {
             foreach ((array) $field as $index => $f) {
