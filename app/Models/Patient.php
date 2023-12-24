@@ -38,6 +38,7 @@ class Patient extends Model
         'comment',
         'uniq_code',
         'place_of_residence',
+        'location_id',
         'medical_clinic_id',
     ];
 
@@ -102,6 +103,11 @@ class Patient extends Model
     public function payment(): HasOne
     {
         return $this->hasOne(Payment::class);
+    }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class);
     }
 
     public function medicalClinic(): BelongsTo

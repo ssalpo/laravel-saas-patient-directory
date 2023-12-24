@@ -42,7 +42,7 @@
                     <div class="card-footer">
                         <form-save-button
                             :is-processing="form.processing"
-                            :is-editing="role?.data.id"
+                            :is-editing="role?.id"
                         />
 
                         <form-cancel-button
@@ -68,20 +68,20 @@ export default {
     data() {
         return {
             form: useForm({
-                name: this.role?.data.name,
-                readable_name: this.role?.data.readable_name,
-                permissions: this.role?.data.permissions.map(e => e.id) || []
+                name: this.role?.name,
+                readable_name: this.role?.readable_name,
+                permissions: this.role?.permissions.map(e => e.id) || []
             }),
         }
     },
     methods: {
         submit() {
-            if (!this.role?.data.id) {
+            if (!this.role?.id) {
                 this.form.post('/roles');
                 return;
             }
 
-            this.form.put(`/roles/${this.role.data.id}`)
+            this.form.put(`/roles/${this.role.id}`)
         }
     }
 }

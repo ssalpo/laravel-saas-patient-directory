@@ -1,11 +1,11 @@
 <template>
     <Head>
-        <title>{{user?.data.id ? 'Обновление данных пользователя' : 'Новый пользователя'}}</title>
+        <title>{{user?.id ? 'Обновление данных пользователя' : 'Новый пользователя'}}</title>
     </Head>
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">{{ user?.data.id ? 'Обновление данных пользователя' : 'Новый пользователя' }}</h1>
+            <h1 class="m-0">{{ user?.id ? 'Обновление данных пользователя' : 'Новый пользователя' }}</h1>
         </div>
     </div>
 
@@ -43,7 +43,7 @@
 
                         <form-input
                             label="Пароль"
-                            :required="!user?.data.id"
+                            :required="!user?.id"
                             v-model.trim="form.password"
                             :validation-error="errors.password"
                         />
@@ -53,7 +53,7 @@
                     <div class="card-footer">
                         <form-save-button
                             :is-processing="form.processing"
-                            :is-editing="user?.data.id"
+                            :is-editing="user?.id"
                         />
 
                         <form-cancel-button
@@ -80,21 +80,21 @@ export default {
     data() {
         return {
             form: useForm({
-                name: this.user?.data.name,
-                username: this.user?.data.username,
+                name: this.user?.name,
+                username: this.user?.username,
                 password: null,
-                role: this.user?.data.roles[0].name || 'doctor'
+                role: this.user?.roles[0].name || 'doctor'
             }),
         }
     },
     methods: {
         submit() {
-            if (!this.user?.data.id) {
+            if (!this.user?.id) {
                 this.form.post('/users');
                 return;
             }
 
-            this.form.put(`/users/${this.user.data.id}`)
+            this.form.put(`/users/${this.user.id}`)
         },
         setRole(role) {
             this.$refs.selectRoles.refreshData()

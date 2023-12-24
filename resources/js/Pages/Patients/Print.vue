@@ -1,9 +1,9 @@
 <template>
     <Head>
-        <title>{{patient.data.name}}</title>
+        <title>{{patient.name}}</title>
     </Head>
 
-    <Link :href="route('patients.show', patient.data.id)" class="back-to-show">Вернуться назад</Link>
+    <Link :href="route('patients.show', patient.id)" class="back-to-show">Вернуться назад</Link>
 
     <div class="container">
 
@@ -19,19 +19,19 @@
             <tbody>
             <tr>
                 <td width="300">ФИО пациента</td>
-                <td>{{ patient.data.name }}</td>
+                <td>{{ patient.name }}</td>
             </tr>
             <tr>
                 <td width="300">Место проживания</td>
-                <td>{{ patient.data.place_of_residence }}</td>
+                <td>{{ patient.location.full_address }}</td>
             </tr>
             <tr>
                 <td>Дата рождения</td>
-                <td>{{ patient.data.birthday }}</td>
+                <td>{{ patient.birthday }}</td>
             </tr>
             <tr>
                 <td>Пол</td>
-                <td>{{ patient.data.gender ? 'М' : 'Ж' }}</td>
+                <td>{{ patient.gender ? 'М' : 'Ж' }}</td>
             </tr>
             <tr>
                 <td>Номер медицинской записи</td>
@@ -39,16 +39,16 @@
             </tr>
             <tr>
                 <td>Дата/время забора образца</td>
-                <td>{{ patient.data.sampling_date }}</td>
+                <td>{{ patient.sampling_date }}</td>
             </tr>
             <tr>
                 <td>Дата/время получения образца</td>
-                <td>{{ patient.data.sample_receipt_date }}</td>
+                <td>{{ patient.sample_receipt_date }}</td>
             </tr>
             <tr>
                 <td>Номер кейса</td>
                 <td>
-                    <div v-for="case_number in patient.data.case_numbers">{{ case_number }}</div>
+                    <div v-for="case_number in patient.case_numbers">{{ case_number }}</div>
                 </td>
             </tr>
             </tbody>
@@ -61,13 +61,13 @@
             <tr>
                 <td width="300">Тип/место забора образца</td>
                 <td>
-                    {{ patient.data.categories_formatted }}
+                    {{ patient.categories_formatted }}
                 </td>
             </tr>
             <tr>
                 <td>Микроскопическое описание</td>
                 <td>
-                    <span v-if="patient.data.status === 2" v-html="patient.data.microscopic_description" class="editor-content"/>
+                    <span v-if="patient.status === 2" v-html="patient.microscopic_description" class="editor-content"/>
                 </td>
             </tr>
             <tr>
@@ -75,7 +75,7 @@
                     <b>Диагноз</b>
                 </td>
                 <td>
-                    <span v-if="patient.data.status === 2" v-html="patient.data.diagnosis" class="editor-content"/>
+                    <span v-if="patient.status === 2" v-html="patient.diagnosis" class="editor-content"/>
                 </td>
             </tr>
             <tr :class="{'hide-from-print': movedNoteToNewPage}">
@@ -89,7 +89,7 @@
                     </div>
                 </td>
                 <td>
-                    <span v-if="patient.data.status === 2" v-html="patient.data.note" class="editor-content"/>
+                    <span v-if="patient.status === 2" v-html="patient.note" class="editor-content"/>
                 </td>
             </tr>
             </tbody>
@@ -114,7 +114,7 @@
                            type="text" class="form-control form-control-sm"/>
 
                     <span v-else>
-                        {{ patient.data.print_date || currentDate }}
+                        {{ patient.print_date || currentDate }}
                         <small class="btn btn-link btn-sm edit-btn" @click="isDateEdit = !isDateEdit">ред.</small>
                     </span>
                 </td>
@@ -128,7 +128,7 @@
                 <tbody>
                 <tr>
                     <td width="300">Заметка</td>
-                    <td v-html="patient.data.note"></td>
+                    <td v-html="patient.note"></td>
                 </tr>
                 </tbody>
             </table>
@@ -143,7 +143,7 @@
                     <td class="text-right">Дата:</td>
                     <td></td>
                     <td>
-                        {{ patient.data.print_date || patient.data.created_at }}
+                        {{ patient.print_date || patient.created_at }}
                     </td>
                 </tr>
             </table>
@@ -166,13 +166,13 @@ export default {
             movedNoteToNewPage: false,
             isDateEdit: false,
             form: useForm({
-                print_date: this.patient.data.print_date
+                print_date: this.patient.print_date
             })
         }
     },
     methods: {
         savePrintDate() {
-            this.form.post(route('patients.edit_print_date', this.patient.data.id), {
+            this.form.post(route('patients.edit_print_date', this.patient.id), {
                 preserveState: true,
                 preserveScroll: true
             });

@@ -1,11 +1,11 @@
 <template>
     <Head>
-        <title>{{patient?.data.id ? 'Обновление данных пациента' : 'Новый пациент'}}</title>
+        <title>{{patient?.id ? 'Обновление данных пациента' : 'Новый пациент'}}</title>
     </Head>
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">{{ patient?.data.id ? 'Обновление данных пациента' : 'Новый пациент' }}</h1>
+            <h1 class="m-0">{{ patient?.id ? 'Обновление данных пациента' : 'Новый пациент' }}</h1>
         </div>
     </div>
 
@@ -20,11 +20,17 @@
                         :validation-error="errors.name"
                     />
 
-                    <form-input
-                        label="Место проживания"
-                        v-model.trim="form.place_of_residence"
-                        :validation-error="errors.place_of_residence"
-                    />
+                    <div class="form-group">
+                        <form-select-locations
+                            ref="selectLocations"
+                            v-model="form.location_id"
+                            :invalid-text="errors.location_id"
+                            label="Место проживания"
+                            @selected="selectedLocation = $event"
+                        />
+
+                        <new-location-modal @success="setLocation" />
+                    </div>
 
                     <form-input
                         label="Номер телефона"
@@ -213,11 +219,11 @@
                 <div class="card-footer">
                     <form-save-button
                         type="button"
-                        @click="patient?.data.id ? submit() : null"
-                        :data-toggle="!patient?.data.id ? 'modal' : ''"
-                        :data-target="!patient?.data.id ? '#confirm-modal' : ''" :disabled="form.processing"
+                        @click="patient?.id ? submit() : null"
+                        :data-toggle="!patient?.id ? 'modal' : ''"
+                        :data-target="!patient?.id ? '#confirm-modal' : ''" :disabled="form.processing"
                         :is-processing="form.processing"
-                        :is-editing="patient?.data.id"
+                        :is-editing="patient?.id"
                     />
 
                     <form-cancel-button
@@ -250,7 +256,7 @@
                         </tr>
                         <tr>
                             <td>Место проживания</td>
-                            <td>{{ form.place_of_residence }}</td>
+                            <td>{{ selectedLocation?.text || form.location_id }}</td>
                         </tr>
                         <tr>
                             <td>Пол</td>
@@ -301,7 +307,7 @@
                             <i class="fas fa-spinner fa-spin"></i> Сохранение...
                         </span>
 
-                        <span v-else>{{ patient?.data.id ? 'Сохранить' : 'Добавить' }}</span>
+                        <span v-else>{{ patient?.id ? 'Сохранить' : 'Добавить' }}</span>
                     </button>
                 </div>
             </div>
@@ -315,7 +321,6 @@
 import {Head, Link, useForm} from "@inertiajs/vue3";
 import { vMaska } from "maska"
 import resizeImage from "../../utils/resizeImage";
-import {find} from "lodash/collection";
 import FormInput from "../../Shared/Form/FormInput.vue";
 import FormTextarea from "../../Shared/Form/FormTextarea.vue";
 import FormCancelButton from "../../Shared/Form/FormCancelButton.vue";
@@ -325,10 +330,14 @@ import FormSelectRoles from "../../Shared/Form/FormSelectRoles.vue";
 import NewDoctorModal from "../../Shared/Modals/NewDoctorModal.vue";
 import NewMedicalClinicModal from "../../Shared/Modals/NewMedicalClinicModal.vue";
 import FormSelectMedicalClinics from "../../Shared/Form/FormSelectMedicalClinics.vue";
+import FormSelectLocations from "../../Shared/Form/FormSelectLocations.vue";
+import NewLocationModal from "../../Shared/Modals/NewLocationModal.vue";
 
 export default {
     props: ['doctors', 'medicalClinics', 'patient', 'errors'],
     components: {
+        NewLocationModal,
+        FormSelectLocations,
         FormSelectMedicalClinics,
         NewMedicalClinicModal,
         NewDoctorModal,
@@ -340,26 +349,27 @@ export default {
             customBiopsyToggle: [],
             selectedDoctor: null,
             selectedMedicalClinic: null,
+            selectedLocation: null,
             biopsyTypes: ['шейв-биопсия', 'панч-биопсия', 'свой вариант'],
             form: useForm({
-                name: this.patient?.data.name,
-                phone: this.patient?.data.phone,
-                birthday: this.patient?.data.birthday || '',
-                gender: this.patient?.data.gender !== undefined ? this.patient.data.gender : 1,
-                sampling_date: this.patient?.data.sampling_date,
-                sample_receipt_date: this.patient?.data.sample_receipt_date,
-                anamnes: this.patient?.data.anamnes,
-                doctor_id: this.patient?.data.doctor_id || null,
-                categories: this.patient?.data.categories || [{code: 'A1', biopsy: 'шейв-биопсия', biopsyCustomValue: null, biopsyCustom: false, description: ''}],
-                photos: this.patient?.data.photos || [],
-                place_of_residence: this.patient?.data.place_of_residence,
-                medical_clinic_id: this.patient?.data.medical_clinic_id || null,
+                name: this.patient.name,
+                phone: this.patient.phone,
+                birthday: this.patient.birthday || '',
+                gender: this.patient.gender !== undefined ? this.patient.gender : 1,
+                sampling_date: this.patient.sampling_date,
+                sample_receipt_date: this.patient.sample_receipt_date,
+                anamnes: this.patient.anamnes,
+                doctor_id: this.patient.doctor_id || null,
+                categories: this.patient.categories || [{code: 'A1', biopsy: 'шейв-биопсия', biopsyCustomValue: null, biopsyCustom: false, description: ''}],
+                photos: this.patient.photos || [],
+                location_id: this.patient.location?.id,
+                medical_clinic_id: this.patient.medical_clinic_id || null,
             }),
         }
     },
     methods: {
         submit() {
-            if (!this.patient?.data.id) {
+            if (!this.patient?.id) {
                 $('#confirm-modal').modal('hide');
                 this.form.post('/patients', {forceFormData: true});
                 return;
@@ -370,7 +380,7 @@ export default {
                     data['_method'] = 'put';
                     return data;
                 })
-                .post(`/patients/${this.patient?.data.id}`, {forceFormData: true})
+                .post(`/patients/${this.patient.id}`, {forceFormData: true})
         },
         addCategory() {
             this.form.categories.push({code: '', biopsy: null, biopsyCustom: false, biopsyCustomValue: null, description: ''})
@@ -402,6 +412,15 @@ export default {
             this.form.medical_clinic_id = medicalClinic.id
 
             this.selectedMedicalClinic = medicalClinic
+
+            this.form.clearErrors()
+        },
+        setLocation(location) {
+            this.$refs.selectLocations.refreshData()
+
+            this.form.location_id = location.id
+
+            this.selectedLocation = location
 
             this.form.clearErrors()
         },

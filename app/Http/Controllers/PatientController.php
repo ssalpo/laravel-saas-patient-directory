@@ -32,6 +32,7 @@ class PatientController extends Controller
     public function all(): Response
     {
         $patients = Patient::filter(request()?->all())
+            ->with('location')
             ->orderBy('created_at', 'DESC')
             ->paginate(100)
             ->onEachSide(0)
@@ -48,7 +49,7 @@ class PatientController extends Controller
     public function fullRecords(): Response
     {
         $patients = PatientResource::collection(
-            Patient::orderByDesc('created_at')->get()
+            Patient::orderByDesc('created_at')->with('location')->get()
         );
 
         return inertia('Patients/FullRecords', compact('patients'));
@@ -108,7 +109,7 @@ class PatientController extends Controller
     public function show(int $id): Response
     {
         $patient = Patient::myByPermission()
-            ->with('photos', 'doctor', 'medicalClinic')
+            ->with('photos', 'doctor', 'medicalClinic', 'location')
             ->findOrFail($id);
 
         return inertia('Patients/Show', [
@@ -123,7 +124,7 @@ class PatientController extends Controller
     public function edit(int $id): Response
     {
         $patient = Patient::myByPermission()
-            ->with('doctor')
+            ->with(['doctor', 'location'])
             ->findOrFail($id);
 
         return inertia('Patients/Edit', [
@@ -178,7 +179,7 @@ class PatientController extends Controller
      */
     public function print(Patient $patient): Response
     {
-        $patient->load('doctor');
+        $patient->load(['doctor', 'location']);
 
         return inertia('Patients/Print', [
             'currentDate' => now()->format('d.m.Y'),

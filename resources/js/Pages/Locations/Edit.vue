@@ -1,11 +1,11 @@
 <template>
     <Head>
-        <title>{{medicalClinic?.id ? 'Обновление данных учреждения' : 'Новое учреждение'}}</title>
+        <title>{{location?.id ? 'Обновление данных локации' : 'Новая локация'}}</title>
     </Head>
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">{{ medicalClinic?.id ? 'Обновление данных учреждения' : 'Новое учреждение' }}</h1>
+            <h1 class="m-0">{{ location?.id ? 'Обновление данных локации' : 'Новая локация' }}</h1>
         </div>
     </div>
 
@@ -16,21 +16,28 @@
                 <form @submit.prevent="submit">
                     <div class="card-body">
                         <form-input
-                            label="Название"
+                            label="Область"
                             required
-                            v-model.trim="form.name"
-                            :validation-error="errors.name"
+                            v-model.trim="form.region"
+                            :validation-error="errors.region"
+                        />
+
+                        <form-input
+                            label="Город/Район"
+                            required
+                            v-model.trim="form.area"
+                            :validation-error="errors.area"
                         />
                     </div>
 
                     <div class="card-footer">
                         <form-save-button
                             :is-processing="form.processing"
-                            :is-editing="medicalClinic.id"
+                            :is-editing="location?.id"
                         />
 
                         <form-cancel-button
-                            :url="route('medical-clinics.index')"
+                            :url="route('locations.index')"
                             :is-processing="form.processing"
                         />
                     </div>
@@ -46,23 +53,24 @@ import FormCancelButton from "../../Shared/Form/FormCancelButton.vue";
 import FormInput from "../../Shared/Form/FormInput.vue";
 
 export default {
-    props: ['medicalClinic', 'errors'],
+    props: ['location', 'errors'],
     components: {FormInput, FormCancelButton, FormSaveButton, Head, Link},
     data() {
         return {
             form: useForm({
-                name: this.medicalClinic?.name,
+                region: this.location?.region,
+                area: this.location?.area,
             }),
         }
     },
     methods: {
         submit() {
-            if (!this.medicalClinic?.id) {
-                this.form.post('/medical-clinics');
+            if (!this.location?.id) {
+                this.form.post('/locations');
                 return;
             }
 
-            this.form.put(`/medical-clinics/${this.medicalClinic.id}`)
+            this.form.put(`/locations/${this.location.id}`)
         }
     }
 }

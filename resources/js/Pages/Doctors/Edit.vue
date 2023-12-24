@@ -1,11 +1,11 @@
 <template>
     <Head>
-        <title>{{doctor?.data.id ? 'Обновление данных врача' : 'Новый врач'}}</title>
+        <title>{{doctor?.id ? 'Обновление данных врача' : 'Новый врач'}}</title>
     </Head>
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">{{ doctor?.data.id ? 'Обновление данных врача' : 'Новый врач' }}</h1>
+            <h1 class="m-0">{{ doctor?.id ? 'Обновление данных врача' : 'Новый врач' }}</h1>
         </div>
     </div>
 
@@ -35,7 +35,7 @@
                     <div class="card-footer">
                         <form-save-button
                             :is-processing="form.processing"
-                            :is-editing="doctor?.data.id"
+                            :is-editing="doctor?.id"
                         />
 
                         <form-cancel-button
@@ -62,19 +62,19 @@ export default {
     data() {
         return {
             form: useForm({
-                name: this.doctor?.data.name,
-                phone: this.doctor?.data.phone,
+                name: this.doctor?.name,
+                phone: this.doctor?.phone,
             }),
         }
     },
     methods: {
         submit() {
-            if (!this.doctor?.data.id) {
+            if (!this.doctor?.id) {
                 this.form.post('/doctors');
                 return;
             }
 
-            this.form.put(`/doctors/${this.doctor.data.id}`)
+            this.form.put(`/doctors/${this.doctor.id}`)
         }
     }
 }

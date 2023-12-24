@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
+use App\Models\Location;
 use App\Models\MedicalClinic;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,7 +16,8 @@ class AutocompleteController extends Controller
     {
         return $this->transformCollection(
             items: Role::where(fn ($q) => $this->searchFinder($q, 'readable_name'))->get(),
-            textField: 'readable_name'
+            textField: 'readable_name',
+            idField: 'name',
         );
     }
 
@@ -41,9 +43,21 @@ class AutocompleteController extends Controller
         );
     }
 
-    private function searchFinder(Builder $q, string $field = 'name'): void
+    public function locations(): Collection
     {
-        $q->when(request('q'), static fn ($q, $v) => $q->where($field, 'like', '%'.$v.'%'));
+        return $this->transformCollection(
+            items: Location::where(fn ($q) => $this->searchFinder($q, ['region', 'area']))->get(),
+            textField: 'full_address'
+        );
+    }
+
+    private function searchFinder(Builder $q, array|string $field = 'name'): void
+    {
+        $q->when(request('q'), function ($q, $v) use ($field) {
+            foreach ((array) $field as $index => $f) {
+                $q->{$index > 0 ? 'orWhere' : 'where'}($f, 'like', '%'.$v.'%');
+            }
+        });
     }
 
     private function transformCollection(Collection $items, string $textField = 'name', string $idField = 'id'): Collection

@@ -35,6 +35,7 @@ class SyncPermissions extends Command
             ['name' => 'edit_medical_clinics', 'readable_name' => 'Редактирование учреждения'],
             ['name' => 'create_medical_clinics', 'readable_name' => 'Добавлять учреждения'],
             ['name' => 'delete_medical_clinics', 'readable_name' => 'Удалять учреждения'],
+            ['name' => 'manage_locations', 'readable_name' => 'Управлять локациями'],
         ];
 
         foreach ($permissions as $permission) {

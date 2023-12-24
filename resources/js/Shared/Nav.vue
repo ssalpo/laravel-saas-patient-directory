@@ -60,6 +60,13 @@
                                     Мед. учреждения
                                 </Link>
                             </li>
+                            <li v-if="$page.props.shared.userPermissions.includes('manage_locations')"
+                                :class="{ active : $page.url.startsWith('/locations')}"
+                            >
+                                <Link :href="route('locations.index')" class="nav-link">
+                                    Локации
+                                </Link>
+                            </li>
                             <li v-if="$page.props.shared.userPermissions.includes('read_roles')"
                                 :class="{ active : $page.url.startsWith('/roles')}"
                             >

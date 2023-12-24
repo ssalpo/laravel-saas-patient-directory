@@ -39,7 +39,7 @@ class PatientResource extends JsonResource
             'status' => $this->status,
             'photos' => PhotoResource::collection($this->whenLoaded('photos')),
             'hashid' => $this->hashid,
-            'place_of_residence' => $this->place_of_residence,
+            'location' => LocationResource::make($this->whenLoaded('location')),
             'print_date' => $this->print_date?->format('d.m.Y'),
             'created_at' => $this->created_at->format('d.m.Y'),
         ];

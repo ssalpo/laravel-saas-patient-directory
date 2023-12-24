@@ -32,7 +32,7 @@
                     <tr v-for="patient in patients.data">
                         <td>{{ patient.case_numbers }}</td>
                         <td>{{ patient.name }}</td>
-                        <td>{{ patient.place_of_residence }}</td>
+                        <td>{{ patient.location.full_address }}</td>
                         <td class="diagnosis-table" v-html="patient.microscopic_description"></td>
                         <td class="diagnosis-table" v-html="patient.diagnosis"></td>
                         <td class="diagnosis-table" v-html="patient.note"></td>
@@ -41,8 +41,8 @@
                         <td>{{ patient.birthday }}</td>
                         <td>{{ patient.age }}</td>
                         <td>{{ patient.gender ? 'М' : 'Ж' }}</td>
-                        <td>{{ patient.doctor?.data.name }}</td>
-                        <td>{{ patient.medical_clinic?.data.name }}</td>
+                        <td>{{ patient.doctor?.name }}</td>
+                        <td>{{ patient.medical_clinic?.name }}</td>
                         <td>{{ patient.anamnes }}</td>
                         <td>{{ patient.categories_formatted }}</td>
                     </tr>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MedicalClinicController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PaymentController;
@@ -48,6 +49,9 @@ Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static functio
 
     // Roles
     Route::resource('roles', RoleController::class);
+
+    // Locations
+    Route::resource('locations', LocationController::class);
 });
 
 // Auth

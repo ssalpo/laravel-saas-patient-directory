@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Patient;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,5 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Relation::morphMap([
             'patient' => Patient::class,
         ]);
+
+        JsonResource::withoutWrapping();
     }
 }

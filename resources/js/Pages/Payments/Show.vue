@@ -5,7 +5,7 @@
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">История выплат доктора {{doctor.data.name}}</h1>
+            <h1 class="m-0">История выплат доктора {{doctor.name}}</h1>
         </div>
     </div>
 

@@ -1,11 +1,11 @@
 <template>
     <Head>
-        <title>Пациенты: {{doctor.data.name}}</title>
+        <title>Пациенты: {{doctor.name}}</title>
     </Head>
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">Пациенты: {{doctor.data.name}}</h1>
+            <h1 class="m-0">Пациенты: {{doctor.name}}</h1>
         </div>
     </div>
 
@@ -50,7 +50,7 @@
                                     <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
                                 </td>
                                 <td :class="[patient.status === 1 ? 'text-danger' : 'text-success']">
-                                    {{ patient.status == 1 ? 'На проверке' : 'Проверено' }}
+                                    {{ patient.status === 1 ? 'На проверке' : 'Проверено' }}
                                 </td>
                                 <td v-if="$page.props.shared.userPermissions.includes('read_doctors')"
                                     class="text-center">
@@ -96,10 +96,10 @@ export default {
     },
     methods: {
         doSearch() {
-            this.$inertia.get(route('doctors.patients', {doctor: this.doctor.data.id}), pickBy(this.search), {preserveState: true})
+            this.$inertia.get(route('doctors.patients', {doctor: this.doctor.id}), pickBy(this.search), {preserveState: true})
         },
         reset() {
-            this.$inertia.visit(route('doctors.patients', {doctor: this.doctor.data.id}));
+            this.$inertia.visit(route('doctors.patients', {doctor: this.doctor.id}));
         }
     },
 }
