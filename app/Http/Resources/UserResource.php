@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'patients_count' => $this->whenCounted('patients'),
             'patients' => PatientResource::collection($this->whenLoaded('patients')),
             'roles' => RoleResource::collection($this->whenLoaded('roles')),
+            'medical_clinics' => MedicalClinicResource::collection($this->whenLoaded('medicalClinics')),
             'speciality' => SpecialityResource::make($this->whenLoaded('speciality')),
         ];
     }

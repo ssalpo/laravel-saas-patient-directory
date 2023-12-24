@@ -16,6 +16,13 @@
                 <form @submit.prevent="submit">
                     <div class="card-body">
 
+                        <form-select-multiple-medical-clinics
+                            v-model="form.medical_clinic_ids"
+                            :validation-error="errors.medical_clinic_ids"
+                            required
+                            label="Медицинские учреждения"
+                        />
+
                         <form-input
                             label="Имя"
                             required
@@ -84,10 +91,12 @@ import FormSaveButton from "../../Shared/Form/FormSaveButton.vue";
 import FormCancelButton from "../../Shared/Form/FormCancelButton.vue";
 import FormSelectSpecialities from "../../Shared/Form/FormSelectSpecialities.vue";
 import FormSelectDoctors from "../../Shared/Form/FormSelectDoctors.vue";
+import FormSelectMultipleMedicalClinics from "../../Shared/Form/FormSelectMultipleMedicalClinics.vue";
 
 export default {
     props: ['user', 'errors'],
     components: {
+        FormSelectMultipleMedicalClinics,
         FormSelectDoctors,
         FormSelectSpecialities,
         FormCancelButton, FormSaveButton, NewRoleModal, FormSelectRoles, FormInput, Head, Link},
@@ -98,7 +107,8 @@ export default {
                 username: this.user?.username,
                 password: null,
                 role: this.user?.roles[0].name || 'doctor',
-                speciality_id: this.user?.speciality?.id
+                speciality_id: this.user?.speciality?.id,
+                medical_clinic_ids: this.user?.medical_clinics?.map(e => e.id) || []
             }),
         }
     },

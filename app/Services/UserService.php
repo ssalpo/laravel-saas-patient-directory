@@ -17,6 +17,8 @@ class UserService
 
             $user->assignRole($data['role']);
 
+            $user->medicalClinics()->sync($data['medical_clinic_ids']);
+
             return $user;
         });
     }
@@ -32,6 +34,8 @@ class UserService
             $user->update($data);
 
             $user->syncRoles($data['role']);
+
+            $user->medicalClinics()->sync($data['medical_clinic_ids']);
 
             return $user;
         });

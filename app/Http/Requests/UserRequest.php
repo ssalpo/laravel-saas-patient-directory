@@ -29,6 +29,8 @@ class UserRequest extends FormRequest
             'password' => 'min:2|max:255'.($this->isMethod('PUT') ? '|nullable' : '|required'),
             'role' => 'required|exists:roles,name',
             'speciality_id' => 'required|exists:specialities,id',
+            'medical_clinic_ids' => 'required|array',
+            'medical_clinic_ids.*' => 'required|exists:medical_clinics,id',
         ];
     }
 }

@@ -59,7 +59,7 @@ class UserController extends Controller
      */
     public function edit(User $user): Response
     {
-        $user->load('roles', 'speciality');
+        $user->load('roles', 'speciality', 'medicalClinics');
 
         return inertia('Users/Edit', [
             'user' => UserResource::make($user),
