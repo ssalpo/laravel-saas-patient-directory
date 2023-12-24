@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Doctor;
 use App\Models\Location;
 use App\Models\MedicalClinic;
+use App\Models\Speciality;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Spatie\Permission\Models\Permission;
@@ -48,6 +49,13 @@ class AutocompleteController extends Controller
         return $this->transformCollection(
             items: Location::where(fn ($q) => $this->searchFinder($q, ['id', 'region', 'area']))->get(),
             textField: 'full_address'
+        );
+    }
+
+    public function specialities(): Collection
+    {
+        return $this->transformCollection(
+            Speciality::where(fn ($q) => $this->searchFinder($q))->get()
         );
     }
 

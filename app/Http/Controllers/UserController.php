@@ -27,7 +27,8 @@ class UserController extends Controller
     {
         $users = UserResource::collection(
             User::query()
-                ->with('roles')
+                ->with(['roles', 'speciality'])
+                ->withCount('patients')
                 ->orderByDESC('created_at')
                 ->paginate(100)
         );
@@ -58,7 +59,7 @@ class UserController extends Controller
      */
     public function edit(User $user): Response
     {
-        $user->load('roles');
+        $user->load('roles', 'speciality');
 
         return inertia('Users/Edit', [
             'user' => UserResource::make($user),

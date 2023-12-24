@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -26,6 +27,7 @@ class User extends Authenticatable
         'email',
         'password',
         'is_active',
+        'speciality_id',
     ];
 
     /**
@@ -45,7 +47,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'is_admin' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     public function setPasswordAttribute(?string $value): void
@@ -53,5 +55,25 @@ class User extends Authenticatable
         if ($value) {
             $this->attributes['password'] = Hash::make($value);
         }
+    }
+
+    public function patients(): HasMany
+    {
+        return $this->hasMany(Patient::class, 'created_by');
+    }
+
+    public function speciality(): BelongsTo
+    {
+        return $this->belongsTo(Speciality::class);
+    }
+
+    public function notPaidPatients(): HasMany
+    {
+        return $this->patients()->whereDoesntHave('payment');
+    }
+
+    public function paidPatients(): HasMany
+    {
+        return $this->patients()->whereHas('payment');
     }
 }

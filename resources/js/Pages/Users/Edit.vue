@@ -23,6 +23,15 @@
                             :validation-error="errors.name"
                         />
 
+                        <div class="form-group">
+                            <form-select-specialities
+                                label-required
+                                v-model="form.speciality_id"
+                                :invalid-text="errors.speciality_id"
+                                label="Спциальность"
+                            />
+                        </div>
+
                         <form-input
                             label="Логин для входа"
                             required
@@ -73,17 +82,23 @@ import FormSelectRoles from "../../Shared/Form/FormSelectRoles.vue";
 import NewRoleModal from "../../Shared/Modals/NewRoleModal.vue";
 import FormSaveButton from "../../Shared/Form/FormSaveButton.vue";
 import FormCancelButton from "../../Shared/Form/FormCancelButton.vue";
+import FormSelectSpecialities from "../../Shared/Form/FormSelectSpecialities.vue";
+import FormSelectDoctors from "../../Shared/Form/FormSelectDoctors.vue";
 
 export default {
     props: ['user', 'errors'],
-    components: {FormCancelButton, FormSaveButton, NewRoleModal, FormSelectRoles, FormInput, Head, Link},
+    components: {
+        FormSelectDoctors,
+        FormSelectSpecialities,
+        FormCancelButton, FormSaveButton, NewRoleModal, FormSelectRoles, FormInput, Head, Link},
     data() {
         return {
             form: useForm({
                 name: this.user?.name,
                 username: this.user?.username,
                 password: null,
-                role: this.user?.roles[0].name || 'doctor'
+                role: this.user?.roles[0].name || 'doctor',
+                speciality_id: this.user?.speciality?.id
             }),
         }
     },

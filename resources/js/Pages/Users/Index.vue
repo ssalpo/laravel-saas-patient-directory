@@ -30,7 +30,9 @@
                                 <th>Логин</th>
                                 <th>Дата создания</th>
                                 <th>Роль</th>
-                                <th>Активность</th>
+                                <th class="text-center">К-во п.</th>
+                                <th class="text-center">Специальность</th>
+                                <th class="text-center">Активность</th>
                                 <th width="40"></th>
                             </tr>
                             </thead>
@@ -41,7 +43,9 @@
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.created_at }}</td>
                                 <td>{{ user.roles.map(e => e.readable_name).join(', ') }}</td>
-                                <td>
+                                <td class="text-center">{{ user.patients_count }}</td>
+                                <td class="text-center">{{user.speciality?.name || '-'}}</td>
+                                <td class="text-center">
                                     <input type="checkbox" :checked="user.is_active" @change="$page.props.shared.userPermissions.includes('toggle_activity_users') ? toggleActivity(user.id) : null">
                                 </td>
                                 <td class="text-center"
