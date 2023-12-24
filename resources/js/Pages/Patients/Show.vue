@@ -33,7 +33,7 @@
                         <table class="table table-bordered">
                         <tbody>
                         <tr>
-                            <td width="400">Уникальный код клиента</td>
+                            <td width="400">Уникальный код пациента</td>
                             <td>{{ patient.uniq_code }}</td>
                         </tr>
                         <tr>
