@@ -15,6 +15,7 @@ class LocationController extends Controller
     public function __construct(
         protected readonly LocationService $locationService
     ) {
+        $this->middleware('can:manage_locations');
     }
 
     /**
