@@ -15,6 +15,14 @@
                 <!-- form start -->
                 <form @submit.prevent="submit">
                     <div class="card-body">
+
+                        <el-date-picker
+                            v-model="form.name"
+                            type="date"
+                            placeholder="Pick a day"
+                            size="large"
+                        />
+
                         <form-input
                             label="Имя"
                             required
@@ -54,10 +62,11 @@ import { vMaska } from "maska"
 import FormInput from "../../Shared/Form/FormInput.vue";
 import FormSaveButton from "../../Shared/Form/FormSaveButton.vue";
 import FormCancelButton from "../../Shared/Form/FormCancelButton.vue";
+import {ElInput, ElDatePicker} from "element-plus";
 
 export default {
     props: ['doctor', 'errors'],
-    components: {FormCancelButton, FormSaveButton, FormInput, Head, Link},
+    components: {FormCancelButton, FormSaveButton, FormInput, Head, Link, ElInput, ElDatePicker},
     directives: { maska: vMaska },
     data() {
         return {

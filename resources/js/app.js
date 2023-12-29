@@ -7,6 +7,11 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
 import DefaultLayout from './Layouts/DefaultLayout.vue';
 
+import { ElConfigProvider } from 'element-plus'
+// import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import ruRu from 'element-plus/dist/locale/ru.min.mjs'
+
 createInertiaApp({
     progress: {
         color: '#29d',
@@ -21,7 +26,7 @@ createInertiaApp({
         return page;
     },
     setup({ el, App, props, plugin }) {
-        const app = createApp({ render: () => h(App, props) })
+        const app = createApp({ render: () => h(ElConfigProvider, {locale: ruRu}, h(App, props)) })
             .mixin({ methods: {route}})
             .use(plugin)
             .use(VueLazyload)

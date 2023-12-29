@@ -1,101 +1,135 @@
 <template>
-    <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
-        <div class="container">
-            <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <el-menu
+        class="el-menu-demo"
+        mode="horizontal"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+        :default-active="`${activeIndex}`"
+    >
+        <el-menu-item :index="`${i}`" :key="`${i}`"
+                      v-for="(item, i) in parentItems"
+                      @click="() => $inertia.visit(item.route)"
+        >
+            {{ item.title }}
+        </el-menu-item>
 
-            <div v-if="$page.props.shared.isAuth" class="collapse navbar-collapse order-3" id="navbarCollapse">
-                <!-- Left navbar links -->
-                <ul class="navbar-nav">
-                    <li class="nav-item"
-                        :class="{ active : $page.component.startsWith('Patients/Index') }"
-                    >
-                        <Link :href="route('patients.index')" class="nav-link">
-                            Пациенты
-                        </Link>
-                    </li>
+        <el-sub-menu :index="`${i}`"
+                     :key="`${i}`"
+                     v-for="(item, i) in parentWithChilds"
+        >
+            <template #title>{{ item.title }}</template>
 
-                    <li class="nav-item"
-                        :class="{ active : $page.component.startsWith('Patients/All') }"
-                        v-if="$page.props.shared.userPermissions.includes('read_all_patients')">
-                        <Link :href="route('patients.all')" class="nav-link">
-                            Дерматопатология
-                        </Link>
-                    </li>
+            <el-menu-item
+                :index="`${i}-${chI}`"
+                :key="`${i}-${chI}`"
+                @click="() => $inertia.visit(child.route)"
+                v-for="(child, chI) in item.childs"
+            >
+                {{ child.title }}
+            </el-menu-item>
 
-                    <li class="nav-item"
-                        :class="{ active : $page.url.startsWith('/payments') }"
-                        v-if="$page.props.shared.userPermissions.includes('payments_manage')">
-                        <Link :href="route('payments.index')" class="nav-link">
-                            Выплаты
-                        </Link>
-                    </li>
-
-                    <li class="nav-item dropdown"
-                        :class="{ active : $page.url.startsWith('/doctors') || $page.url.startsWith('/users') || $page.url.startsWith('/roles') }"
-                        v-if="$page.props.shared.userPermissions.includes('read_doctors') || $page.props.shared.userPermissions.includes('read_users') || $page.props.shared.userPermissions.includes('read_roles')"
-                    >
-                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Управление</a>
-                        <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="left: 0px; right: inherit;">
-                            <li v-if="$page.props.shared.userPermissions.includes('read_doctors')"
-                                :class="{ active : $page.url.startsWith('/doctors')}"
-                            >
-                                <Link :href="route('doctors.index')" class="nav-link">
-                                    Врачи
-                                </Link>
-                            </li>
-                            <li v-if="$page.props.shared.userPermissions.includes('read_users')"
-                                :class="{ active : $page.url.startsWith('/users')}"
-                            >
-                                <Link :href="route('users.index')" class="nav-link">
-                                    Пользователи
-                                </Link>
-                            </li>
-                            <li v-if="$page.props.shared.userPermissions.includes('read_medical_clinics')"
-                                :class="{ active : $page.url.startsWith('/medical-clinics')}"
-                            >
-                                <Link :href="route('medical-clinics.index')" class="nav-link">
-                                    Мед. учреждения
-                                </Link>
-                            </li>
-                            <li v-if="$page.props.shared.userPermissions.includes('manage_locations')"
-                                :class="{ active : $page.url.startsWith('/locations')}"
-                            >
-                                <Link :href="route('locations.index')" class="nav-link">
-                                    Локации
-                                </Link>
-                            </li>
-                            <li v-if="$page.props.shared.userPermissions.includes('read_roles')"
-                                :class="{ active : $page.url.startsWith('/roles')}"
-                            >
-                                <Link :href="route('roles.index')" class="nav-link">
-                                    Роли
-                                </Link>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Right navbar links -->
-            <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-                <li class="nav-item">
-                    <Link :href="route('logout')" method="delete" class="btn btn-link" as="button">
-                        Выйти
-                    </Link>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <!-- /.navbar -->
+        </el-sub-menu>
+    </el-menu>
 </template>
 
 <script>
-import {Link} from "@inertiajs/vue3";
+import {Link, router} from "@inertiajs/vue3";
+import {ElMenu, ElSubMenu, ElMenuItem} from "element-plus";
+import PermissionCheck from "../Mixins/PermissionCheck";
 
 export default {
-    components: {Link}
+    components: {Link, ElMenu, ElSubMenu, ElMenuItem},
+    mixins: [PermissionCheck],
+    created() {
+        this.findDefaultIndex(window.location.href)
+
+        router.on('start', (event) => {
+            this.findDefaultIndex(event.detail.visit.url.href)
+        })
+    },
+    data: () => ({
+        activeIndex: null,
+        menuItems: [
+            {
+                title: 'Пациенты',
+                route: route('patients.index'),
+                permissions: []
+            },
+            {
+                title: 'Дерматопатология',
+                route: route('patients.all'),
+                permissions: ['read_all_patients']
+            },
+            {
+                title: 'Выплаты',
+                route: route('payments.index'),
+                permissions: ['payments_manage']
+            },
+            {
+                title: 'Управление',
+                permissions: ['read_doctors', 'read_users', 'read_roles'],
+                childs: [
+                    {
+                        title: 'Врачи',
+                        route: route('doctors.index'),
+                        permissions: ['read_doctors']
+                    },
+                    {
+                        title: 'Пользователи',
+                        route: route('users.index'),
+                        permissions: ['read_users']
+                    },
+                    {
+                        title: 'Мед. учреждения',
+                        route: route('medical-clinics.index'),
+                        permissions: ['medical-clinics.index']
+                    },
+                    {
+                        title: 'Локации',
+                        route: route('locations.index'),
+                        permissions: ['read_locations']
+                    },
+                    {
+                        title: 'Роли',
+                        route: route('roles.index'),
+                        permissions: ['read_roles']
+                    },
+                ]
+            },
+        ]
+    }),
+    computed: {
+        parentItems() {
+          return this.menuItems
+              .filter(
+                  e => e.childs === undefined && this.hasAnyPermission(e.permissions)
+              )
+        },
+        parentWithChilds() {
+            return this.menuItems
+                .filter(
+                    e => e.childs !== undefined && this.hasAnyPermission(e.permissions)
+                )
+        }
+    },
+    methods: {
+        findDefaultIndex(url) {
+            let childItems = [];
+
+            for (let [i, item] of this.parentWithChilds.entries()) {
+                for (let [chI, chItem] of item.childs.entries()) {
+                    if(chItem.route === url) {
+                        this.activeIndex =  `${i}-${chI}`
+                        return;
+                    }
+                }
+            }
+
+            let index = [...this.parentItems.map(e => e.route), ...childItems].indexOf(url);
+
+            this.activeIndex = index
+        }
+    }
 }
 </script>

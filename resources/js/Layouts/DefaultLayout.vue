@@ -1,28 +1,23 @@
 <template>
-    <div class="wrapper">
-        <Nav/>
 
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <div class="container">
-                <slot/>
-            </div>
-        </div>
-        <!-- /.content-wrapper -->
-
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
-
+    <div class="common-layout">
+        <el-container>
+            <el-header>
+                <Nav/>
+            </el-header>
+            <el-main>
+                <slot />
+            </el-main>
+        </el-container>
     </div>
 </template>
 
 <script>
+import {ElHeader, ElMain} from "element-plus";
+
 import Nav from "../Shared/Nav.vue";
 
 export default {
-    components: {Nav}
+    components: {Nav, ElHeader, ElMain}
 }
 </script>
