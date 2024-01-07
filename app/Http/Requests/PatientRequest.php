@@ -24,50 +24,23 @@ class PatientRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
+        return [
             'name' => 'required|string|min:1|max:255',
+            'medical_card_number' => 'nullable|string|min:1|max:255',
+            'place_of_residence' => 'nullable|string|min:1|max:255',
             'phone' => 'nullable|string|min:1|max:255',
             'birthday' => 'required|date:Y-m-d',
             'gender' => 'required|boolean',
-            'sampling_date' => 'required|date_format:Y-m-d H:i',
-            'sample_receipt_date' => 'required|date_format:Y-m-d H:i',
-            'anamnes' => 'nullable|string',
-            'categories' => 'required|array',
-            'categories.*.code' => 'required|string|min:2|max:5',
-            'categories.*.biopsyCustom' => 'required|bool',
-            'categories.*.biopsyCustomValue' => 'required_without:categories.*.biopsy|max:255',
-            'categories.*.biopsy' => 'required_without:categories.*.biopsyCustomValue|max:255',
-            'categories.*.description' => 'required|string|min:2|max:255',
-            'photos' => 'nullable|array',
-            'photos.*' => 'required|mimes:jpg,jpeg,png|max:200000',
             'created_by' => 'required|integer',
-            'location_id' => 'nullable|exists:locations,id',
-            'medical_clinic_id' => 'required|exists:medical_clinics,id',
         ];
-
-        if ($this->user()?->can('select_doctor_patients')) {
-            $rules['doctor_id'] = 'required|exists:doctors,id';
-        }
-
-        return $rules;
     }
 
     protected function prepareForValidation()
     {
         return $this->merge([
             'created_by' => auth()->id(),
-            'gender' => $this->gender == 1,
+            'gender' => $this->boolean('gender'),
             'birthday' => $this->birthday ? Carbon::parse($this->birthday)->format('Y-m-d') : null,
-            'sampling_date' => $this->sampling_date ? Carbon::parse($this->sampling_date)->format('Y-m-d H:i') : null,
-            'sample_receipt_date' => $this->sample_receipt_date ? Carbon::parse($this->sample_receipt_date)->format('Y-m-d H:i') : null,
         ]);
-    }
-
-    public function messages(): array
-    {
-        return [
-            'categories.*.biopsy.required_without' => 'Обязательно для заполнения',
-            'categories.*.biopsyCustomValue.required_without' => 'Обязательно для заполнения',
-        ];
     }
 }

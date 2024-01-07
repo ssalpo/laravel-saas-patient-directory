@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Doctor;
-use App\Models\Location;
-use App\Models\MedicalClinic;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Spatie\Permission\Models\Permission;
@@ -26,28 +23,6 @@ class AutocompleteController extends Controller
         return $this->transformCollection(
             items: Permission::where(fn ($q) => $this->searchFinder($q, 'readable_name'))->get(),
             textField: 'readable_name'
-        );
-    }
-
-    public function doctors(): Collection
-    {
-        return $this->transformCollection(
-            Doctor::where(fn ($q) => $this->searchFinder($q))->orderByDesc('created_at')->get()
-        );
-    }
-
-    public function medicalClinics(): Collection
-    {
-        return $this->transformCollection(
-            MedicalClinic::where(fn ($q) => $this->searchFinder($q))->get()
-        );
-    }
-
-    public function locations(): Collection
-    {
-        return $this->transformCollection(
-            items: Location::where(fn ($q) => $this->searchFinder($q, ['id', 'region', 'area']))->get(),
-            textField: 'full_address'
         );
     }
 

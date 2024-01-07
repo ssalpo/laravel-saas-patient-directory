@@ -20,17 +20,17 @@
                         :validation-error="errors.name"
                     />
 
-                    <div class="form-group">
-                        <form-select-locations
-                            ref="selectLocations"
-                            v-model="form.location_id"
-                            :invalid-text="errors.location_id"
-                            label="Место проживания"
-                            @selected="selectedLocation = $event"
-                        />
+                    <form-input
+                        label="Место проживания"
+                        v-model.trim="form.place_of_residence"
+                        :validation-error="errors.place_of_residence"
+                    />
 
-                        <new-location-modal @success="setLocation" />
-                    </div>
+                    <form-input
+                        label="Номер медицинской записи"
+                        v-model.trim="form.medical_card_number"
+                        :validation-error="errors.medical_card_number"
+                    />
 
                     <form-input
                         label="Номер телефона"
@@ -75,144 +75,6 @@
                         </div>
                     </div>
 
-                    <form-input
-                        label="Дата/время забора образца"
-                        required
-                        v-maska data-maska="##.##.#### ##:##"
-                        placeholder="ДД.ММ.ГГГГ ЧЧ:ММ"
-                        v-model.trim="form.sampling_date"
-                        :validation-error="errors.sampling_date"
-                    />
-
-                    <form-input
-                        label="Дата/время получения образца"
-                        required
-                        v-maska data-maska="##.##.#### ##:##"
-                        placeholder="ДД.ММ.ГГГГ ЧЧ:ММ"
-                        v-model.trim="form.sample_receipt_date"
-                        :validation-error="errors.sample_receipt_date"
-                    />
-
-                    <form-textarea
-                        label="Анамнез"
-                        v-model.trim="form.anamnes"
-                        :validation-error="errors.anamnes"
-                    />
-
-                    <div class="form-group">
-                        <label class="form-asterisk">Тип/Место забора образца</label>
-
-                        <div v-for="(category, index) in form.categories">
-                            <div class="row mt-2">
-                                <div class="col-3 col-sm-2 pb-2 pb-sm-0">
-                                    <input type="text" v-model="category.code" class="form-control form-control-sm"
-                                           placeholder="Введите код, например A1 или B1">
-                                </div>
-                                <div class="col-9 col-sm-4 pb-2 pb-sm-0">
-                                    <div class="row" v-if="!category?.biopsyCustom" >
-                                        <div class="col-12">
-                                            <select @change="biopsyCustomToggle(category, $event.target.value === 'свой вариант')" class="form-control form-control-sm" v-model="category.biopsy">
-                                                <option value="" disabled>Выберите тип биопсии</option>
-                                                <option :value="biopsy" v-for="biopsy in biopsyTypes">{{biopsy}}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row" v-else>
-                                        <div class="col-10">
-                                            <input type="text" class="form-control form-control-sm" v-model="category.biopsyCustomValue">
-                                        </div>
-                                        <div class="col-2">
-                                            <button class="btn btn-sm" @click="biopsyCustomToggle(category, false)">
-                                                <span class="fa fa-times"></span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-10 col-sm-4">
-                                    <input type="text" v-model="category.description"
-                                           class="form-control form-control-sm"
-                                           placeholder="Введите описание, например рука">
-                                </div>
-                                <div class="col-2">
-                                    <button type="button" @click="removeCategory(index)" class="btn btn-sm btn-warning">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-
-                            <div class="row mt-2" v-if="errors[`categories.${index}.code`] || errors[`categories.${index}.description`] || errors[`categories.${index}.biopsy`] || errors[`categories.${index}.biopsyCustomValue`] || errors[`categories.${index}.biopsyCustom`]">
-                                <div class="col-3 col-sm-2 pb-2 pb-sm-0">
-                                    <div v-if="errors[`categories.${index}.code`]" class="invalid-feedback-simple">
-                                        {{errors[`categories.${index}.code`]}}
-                                    </div>
-                                </div>
-                                <div class="col-9 col-sm-4 pb-2 pb-sm-0">
-                                    <div v-if="errors[`categories.${index}.biopsy`] || errors[`categories.${index}.biopsyCustomValue`] || errors[`categories.${index}.biopsyCustom`]" class="invalid-feedback-simple">
-                                        {{errors[`categories.${index}.biopsy`] || errors[`categories.${index}.biopsyCustomValue`] || errors[`categories.${index}.biopsyCustom`]}}
-                                    </div>
-                                </div>
-                                <div class="col-10 col-sm-4">
-                                    <div v-if="errors[`categories.${index}.description`]" class="invalid-feedback-simple">
-                                        {{errors[`categories.${index}.description`]}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <button type="button" @click="addCategory" class="btn btn-sm btn-info mt-2">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <form-select-doctors
-                            label-required
-                            v-if="$page.props.shared.userPermissions.includes('select_doctor_patients')"
-                            ref="selectDoctors"
-                            v-model="form.doctor_id"
-                            :invalid-text="errors.doctor_id"
-                            label="Направивший врач"
-                            @selected="selectedDoctor = $event"
-                        />
-
-                        <new-doctor-modal @success="setDoctor" />
-                    </div>
-
-                    <div class="form-group">
-                        <form-select-medical-clinics
-                            label-required
-                            ref="selectMedicalClinics"
-                            v-model="form.medical_clinic_id"
-                            :invalid-text="errors.medical_clinic_id"
-                            label="Направившее учреждение"
-                            @selected="selectedMedicalClinic = $event"
-                        />
-
-                        <new-medical-clinic-modal @success="setMedicalClinic" />
-                    </div>
-
-                    <div class="form-group">
-                        <label>Фото</label>
-
-                        <div class="custom-file">
-                            <input type="file" :class="{'is-invalid': errors.photos}"
-                                   multiple
-                                   @input="resizeImages($event.target.files)"
-                                   class="custom-file-input">
-                            <label class="custom-file-label">
-                                {{
-                                    form.photos.length ? `Выбранных файлов ${form.photos.length}` : 'Выбрать файлы'
-                                }}
-                            </label>
-                        </div>
-
-                        <div v-if="errors.photos" class="error invalid-feedback">
-                            {{ errors.photos }}
-                        </div>
-                    </div>
                 </div>
                 <!-- /.card-body -->
 
@@ -256,43 +118,11 @@
                         </tr>
                         <tr>
                             <td>Место проживания</td>
-                            <td>{{ selectedLocation?.text || form.location_id }}</td>
+                            <td>{{ form.place_of_residence }}</td>
                         </tr>
                         <tr>
                             <td>Пол</td>
                             <td>{{ form.gender ? 'Мужской' : 'Женский' }}</td>
-                        </tr>
-                        <tr>
-                            <td>Дата/время забора образца</td>
-                            <td>{{ form.sampling_date }}</td>
-                        </tr>
-                        <tr>
-                            <td>Дата/время получения образца</td>
-                            <td>{{ form.sample_receipt_date }}</td>
-                        </tr>
-                        <tr>
-                            <td>Анамнез</td>
-                            <td>{{ form.anamnes }}</td>
-                        </tr>
-                        <tr>
-                            <td>Тип/Место забора образца</td>
-                            <td>
-                                <div v-for="category in form.categories">{{ category.code }}
-                                    ({{category.biopsy ? (category?.biopsyCustom ? category.biopsyCustomValue : category.biopsy) + ',' : ''}} {{ category.description }})
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Направивший врач</td>
-                            <td>{{ selectedDoctor?.text || selectedDoctor?.name || form.doctor_id }}</td>
-                        </tr>
-                        <tr>
-                            <td>Направившее учреждение</td>
-                            <td>{{ selectedMedicalClinic?.text || selectedMedicalClinic?.name || form.medical_clinic_id }}</td>
-                        </tr>
-                        <tr>
-                            <td>Количество прикрепленных фото</td>
-                            <td>{{ form.photos.length }}</td>
                         </tr>
                     </table>
                 </div>
@@ -319,51 +149,35 @@
 </template>
 <script>
 import {Head, Link, useForm} from "@inertiajs/vue3";
-import { vMaska } from "maska"
+import {vMaska} from "maska"
 import resizeImage from "../../utils/resizeImage";
 import FormInput from "../../Shared/Form/FormInput.vue";
 import FormTextarea from "../../Shared/Form/FormTextarea.vue";
 import FormCancelButton from "../../Shared/Form/FormCancelButton.vue";
 import FormSaveButton from "../../Shared/Form/FormSaveButton.vue";
-import FormSelectDoctors from "../../Shared/Form/FormSelectDoctors.vue";
 import FormSelectRoles from "../../Shared/Form/FormSelectRoles.vue";
-import NewDoctorModal from "../../Shared/Modals/NewDoctorModal.vue";
-import NewMedicalClinicModal from "../../Shared/Modals/NewMedicalClinicModal.vue";
-import FormSelectMedicalClinics from "../../Shared/Form/FormSelectMedicalClinics.vue";
-import FormSelectLocations from "../../Shared/Form/FormSelectLocations.vue";
-import NewLocationModal from "../../Shared/Modals/NewLocationModal.vue";
 
 export default {
-    props: ['doctors', 'medicalClinics', 'patient', 'errors'],
+    props: ['patient', 'errors'],
     components: {
-        NewLocationModal,
-        FormSelectLocations,
-        FormSelectMedicalClinics,
-        NewMedicalClinicModal,
-        NewDoctorModal,
         FormSelectRoles,
-        FormSelectDoctors, FormSaveButton, FormCancelButton, FormTextarea, FormInput, Head, Link},
-    directives: { maska: vMaska },
+        FormSaveButton,
+        FormCancelButton,
+        FormTextarea,
+        FormInput,
+        Head,
+        Link
+    },
+    directives: {maska: vMaska},
     data() {
         return {
-            customBiopsyToggle: [],
-            selectedDoctor: null,
-            selectedMedicalClinic: null,
-            selectedLocation: null,
-            biopsyTypes: ['шейв-биопсия', 'панч-биопсия', 'свой вариант'],
             form: useForm({
-                name: this.patient.name,
-                phone: this.patient.phone,
-                birthday: this.patient.birthday || '',
-                gender: this.patient.gender !== undefined ? this.patient.gender : 1,
-                sampling_date: this.patient.sampling_date,
-                sample_receipt_date: this.patient.sample_receipt_date,
-                anamnes: this.patient.anamnes,
-                doctor_id: this.patient.doctor_id || null,
-                categories: this.patient.categories || [{code: 'A1', biopsy: 'шейв-биопсия', biopsyCustomValue: null, biopsyCustom: false, description: ''}],
-                photos: this.patient.photos || [],
-                location_id: this.patient.location?.id,
-                medical_clinic_id: this.patient.medical_clinic_id || null,
+                name: this.patient?.name,
+                medical_card_number: this.patient?.medical_card_number,
+                place_of_residence: this.patient?.place_of_residence,
+                phone: this.patient?.phone,
+                birthday: this.patient?.birthday || '',
+                gender: this.patient?.gender !== undefined ? this.patient?.gender : 1,
             }),
         }
     },
@@ -381,63 +195,6 @@ export default {
                     return data;
                 })
                 .post(`/patients/${this.patient.id}`, {forceFormData: true})
-        },
-        addCategory() {
-            this.form.categories.push({code: '', biopsy: null, biopsyCustom: false, biopsyCustomValue: null, description: ''})
-        },
-        biopsyCustomToggle(category, isCustom) {
-            category.biopsyCustom = isCustom
-
-            if(isCustom) {
-                category.biopcy = null
-            } else {
-                category.biopsyCustomValue = null
-            }
-        },
-        removeCategory(index) {
-            this.form.categories.splice(index, 1);
-        },
-        setDoctor(doctor) {
-            this.$refs.selectDoctors.refreshData()
-
-            this.form.doctor_id = doctor.id
-
-            this.selectedDoctor = doctor
-
-            this.form.clearErrors()
-        },
-        setMedicalClinic(medicalClinic) {
-            this.$refs.selectMedicalClinics.refreshData()
-
-            this.form.medical_clinic_id = medicalClinic.id
-
-            this.selectedMedicalClinic = medicalClinic
-
-            this.form.clearErrors()
-        },
-        setLocation(location) {
-            this.$refs.selectLocations.refreshData()
-
-            this.form.location_id = location.id
-
-            this.selectedLocation = location
-
-            this.form.clearErrors()
-        },
-        resizeImages: async function (values) {
-            let resizedImages = [];
-
-            for (let i = 0; i < values.length; i++) {
-
-                const config = {
-                    file: values[i],
-                    maxSize: 1800
-                };
-
-                resizedImages.push(await resizeImage(config))
-            }
-
-            this.form.photos = resizedImages;
         }
     }
 }

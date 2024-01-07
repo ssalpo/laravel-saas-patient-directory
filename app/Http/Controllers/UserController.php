@@ -14,10 +14,7 @@ class UserController extends Controller
     public function __construct(
         protected readonly UserService $userService
     ) {
-        $this->middleware('can:read_users')->only('index');
-        $this->middleware('can:create_users')->only(['create', 'store']);
-        $this->middleware('can:edit_users')->only(['edit', 'update']);
-        $this->middleware('can:toggle_activity_users')->only('toggleActivity');
+        $this->middleware('can:manage_users');
     }
 
     /**

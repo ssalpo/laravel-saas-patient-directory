@@ -5,7 +5,17 @@
 
     <div class="content-header">
         <div class="container">
-            <h1 class="m-0">Список пациентов</h1>
+            <div class="row mb-2">
+                <div class="col-12 col-sm-6">
+                    <h1 class="m-0">Список пациентов</h1>
+                </div>
+
+                <div class="col-12 col-sm-6 text-left text-sm-right mt-3 mt-sm-0">
+                    <Link class="btn btn-outline-primary" :href="route('patients.full_records')">
+                        <i class="fa fa-list"></i> Все пациенты
+                    </Link>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -20,10 +30,9 @@
                                    @blur="doSearch"
                                    @keydown.enter="doSearch"
                                    class="form-control form-control-sm"
-                                   placeholder="Ф.И.О, код"/>
+                                   placeholder="Имя пациента"/>
                         </div>
-                        <div class="col-lg-9 col-md-8 col-sm-6 col-12 mt-3 mt-sm-0 text-right"
-                             v-if="$page.props.shared.userPermissions.includes('create_patients')">
+                        <div class="col-lg-9 col-md-8 col-sm-6 col-12 mt-3 mt-sm-0 text-right">
                             <Link :href="route('patients.create')" class="btn btn-success btn-sm px-3">
                                 Новый пациент
                             </Link>
@@ -36,23 +45,18 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th>Номер кейса</th>
                                 <th>Ф.И.О</th>
-                                <th>Статус</th>
-                                <th v-if="$page.props.shared.userPermissions.includes('edit_patients')"></th>
+                                <th width="200">Дата добавления</th>
+                                <th width="80"></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr v-for="patient in patients.data">
-                                <td>{{ patient.case_numbers }}</td>
                                 <td>
                                     <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
                                 </td>
-                                <td :class="[patient.status === 1 ? 'text-danger' : 'text-success']">
-                                    {{ patient.status === 1 ? 'На проверке' : 'Проверено' }}
-                                </td>
-                                <td v-if="$page.props.shared.userPermissions.includes('edit_patients')"
-                                    class="text-center">
+                                <td>{{patient.created_at}}</td>
+                                <td class="text-center">
                                     <Link :href="route('patients.edit', patient.id)">
                                         <i class="fa fa-pencil-alt"></i>
                                     </Link>
@@ -75,7 +79,6 @@
 <script>
 import {Head, Link} from "@inertiajs/vue3";
 import Pagination from "../../Shared/Pagination.vue";
-import debounce from 'lodash/debounce'
 import pickBy from 'lodash/pickBy'
 
 export default {

@@ -12,7 +12,7 @@
     <div class="content">
         <div class="container">
             <div class="card">
-                <div class="card-header" v-if="$page.props.shared.userPermissions.includes('create_roles')">
+                <div class="card-header">
                     <div class="card-tools">
                         <Link :href="route('roles.create')" class="btn btn-success btn-sm px-3">
                             Новая роль
@@ -34,7 +34,7 @@
                         <tr v-for="(role, index) in roles.data">
                             <td>{{ ((roles.meta.current_page - 1) * roles.meta.per_page) + index + 1 }}</td>
                             <td>{{ role.readable_name }}</td>
-                            <td class="text-center" v-if="$page.props.shared.userPermissions.includes('edit_roles')">
+                            <td class="text-center">
                                 <Link :href="route('roles.edit', role.id)">
                                     <i class="fa fa-pencil-alt"></i>
                                 </Link>
