@@ -31,7 +31,6 @@ class SyncPermissions extends Command
         $permissions = [
             ['name' => 'manage_users', 'readable_name' => 'Управлять пользователями'],
             ['name' => 'manage_roles', 'readable_name' => 'Управлять ролями'],
-            ['name' => 'add_comment', 'readable_name' => 'Добавлять комментарий'],
         ];
 
         foreach ($permissions as $permission) {

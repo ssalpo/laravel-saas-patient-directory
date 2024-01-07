@@ -64,22 +64,17 @@
                             <tr>
                                 <td width="400">Заметка</td>
                                 <td>
-                                    <div v-if="$page.props.shared.userPermissions.includes('add_report')">
-                                        <QuillEditor theme="snow"
-                                                     @blur="saveReport"
-                                                     @ready="focusOnReady"
-                                                     v-if="editBlock === 'note' || !patient.note"
-                                                     contentType="html"
-                                                     :toolbar="['bold', 'italic', 'underline']"
-                                                     v-model:content="form.note"/>
+                                    <QuillEditor theme="snow"
+                                                 @blur="saveReport"
+                                                 @ready="focusOnReady"
+                                                 v-if="editBlock === 'note' || !patient.note"
+                                                 contentType="html"
+                                                 :toolbar="['bold', 'italic', 'underline']"
+                                                 v-model:content="form.note"/>
 
-                                        <div v-else>
-                                            <div class="editor-content" v-html="patient.note"></div>
-                                            <a href="" @click.prevent="editBlock = 'note'"><small>Редактировать</small></a>
-                                        </div>
-                                    </div>
                                     <div v-else>
-                                        <span v-if="patient.status === 2">{{ patient.note }}</span>
+                                        <div class="editor-content" v-html="patient.note"></div>
+                                        <a href="" @click.prevent="editBlock = 'note'"><small>Редактировать</small></a>
                                     </div>
                                 </td>
                             </tr>
@@ -95,23 +90,18 @@
                                     <b>Комментарий</b>
                                 </td>
                                 <td>
-                                    <div v-if="$page.props.shared.userPermissions.includes('add_comment')">
-                                        <QuillEditor theme="snow"
-                                                     @blur="saveComment"
-                                                     @ready="focusOnReady"
-                                                     v-if="editBlock === 'comment' || !patient.comment"
-                                                     contentType="html"
-                                                     :toolbar="['bold', 'italic', 'underline']"
-                                                     v-model:content="formComment.comment"/>
+                                    <QuillEditor theme="snow"
+                                                 @blur="saveComment"
+                                                 @ready="focusOnReady"
+                                                 v-if="editBlock === 'comment' || !patient.comment"
+                                                 contentType="html"
+                                                 :toolbar="['bold', 'italic', 'underline']"
+                                                 v-model:content="formComment.comment"/>
 
-                                        <div v-else>
-                                            <div class="editor-content" v-html="patient.comment"></div>
-                                            <a href=""
-                                               @click.prevent="editBlock = 'comment'"><small>Редактировать</small></a>
-                                        </div>
-                                    </div>
                                     <div v-else>
-                                        <span v-html="patient.comment"></span>
+                                        <div class="editor-content" v-html="patient.comment"></div>
+                                        <a href=""
+                                           @click.prevent="editBlock = 'comment'"><small>Редактировать</small></a>
                                     </div>
                                 </td>
                             </tr>
@@ -129,8 +119,6 @@
                                 class="btn btn-default btn-sm mr-1">Фото {{ index + 1 }}
                         </button>
                         <button type="button"
-                                v-if="$page.props.shared.userPermissions.includes('edit_patients')"
-
                                 class="btn btn-danger btn-sm mr-1" @click="deletePhoto(photo.id)">
                             <span class="fa fa-trash"></span>
                         </button>
