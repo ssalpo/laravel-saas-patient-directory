@@ -26,11 +26,63 @@
 
     <div class="content">
         <div class="container">
-            <div class="card">
+
+            <div class="card card-primary d-block d-md-none">
+                <div class="card-body">
+                    <div>
+                        <strong>ФИО пациента</strong>
+                        <p class="text-muted">
+                            {{ patient.name }}
+                        </p>
+                        <hr>
+                    </div>
+
+                    <div>
+                        <strong>Номер медицинской записи</strong>
+                        <p class="text-muted">
+                            {{ patient.medical_card_number }}
+                        </p>
+                        <hr>
+                    </div>
+
+                    <div>
+                        <strong>Место проживания</strong>
+                        <p class="text-muted">
+                            {{ patient.place_of_residence }}
+                        </p>
+                        <hr>
+                    </div>
+
+                    <div>
+                        <strong>Номер телефона</strong>
+                        <p class="text-muted">
+                            {{ patient.phone }}
+                        </p>
+                        <hr>
+                    </div>
+
+                    <div>
+                        <strong>Дата рождения</strong>
+                        <p class="text-muted">
+                            {{ patient.birthday }}
+                        </p>
+                        <hr>
+                    </div>
+
+                    <div>
+                        <strong>Пол</strong>
+                        <p class="text-muted mb-0">
+                            {{ patient.gender ? 'Мужской' : 'Женский' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card d-none d-md-block">
                 <div class="card-body">
                     <h4 class="mt-2 mb-3">Общие данные</h4>
 
-                    <div class="table-responsive">
+                    <div class="table-responsive d-none d-md-block">
                         <table class="table table-bordered">
                             <tbody>
                             <tr>
@@ -62,9 +114,9 @@
                         </table>
                     </div>
 
-                    <h4 class="mt-5 mb-3">Гистопатологическое заключение</h4>
+                    <h4 class="mt-5 mb-3 d-none d-md-block">Гистопатологическое заключение</h4>
 
-                    <div class="table-responsive">
+                    <div class="table-responsive d-none d-md-block">
                         <table class="table table-bordered">
                             <tbody>
                             <tr>
@@ -91,7 +143,7 @@
                         </table>
                     </div>
 
-                    <div class="table-responsive">
+                    <div class="table-responsive d-none d-md-block">
                         <table class="table table-bordered">
                             <tbody>
                             <tr>
@@ -144,14 +196,15 @@
 
             <div class="card card-outline card-success" v-for="consultation in consultations">
                 <div class="card-header">
-                    <div>Пользователь: <b>{{ consultation.user.name }}</b></div>
+                    <div class="user-block">
+                        <span class="username ml-0">
+                            <a href="javascript:void(0)">{{ consultation.user.name }}</a>
+                        </span>
+                        <span class="description ml-0">Дата добавления: {{ consultation.created_at }}</span>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div v-html="consultation.content"></div>
-
-                    <div class="small text-danger mt-2  text-sm-left text-md-right">Дата добавления:
-                        {{ consultation.created_at }}
-                    </div>
                 </div>
             </div>
         </div>

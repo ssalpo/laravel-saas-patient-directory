@@ -36,6 +36,6 @@ export default defineComponent({
             :validation-error="errors.content"
         />
 
-        <form-save-button class="btn btn-sm" />
+        <form-save-button class="btn btn-sm btn-outline-primary" />
     </form>
 </template>
