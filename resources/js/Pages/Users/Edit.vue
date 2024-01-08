@@ -83,7 +83,7 @@ export default {
                 name: this.user?.name,
                 username: this.user?.username,
                 password: null,
-                role: this.user?.roles[0].name || 'doctor'
+                role: this.user?.roles[0]?.name || null
             }),
         }
     },
