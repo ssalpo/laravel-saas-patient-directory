@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PatientConsultationController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PatientPhotoController;
 use App\Http\Controllers\PatientShareController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -21,9 +22,10 @@ Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static functio
     Route::get('/patients/full-records', [PatientController::class, 'fullRecords'])->name('patients.full_records');
     Route::post('/patients/{patient}/report', [PatientController::class, 'saveReport'])->name('patients.save.report');
     Route::post('/patients/{patient}/comment', [PatientController::class, 'saveComment'])->name('patients.save.comment');
-    Route::delete('/patients/{patient}/photos/{photo}', [PatientController::class, 'deletePhoto'])->name('patients.photos.delete');
     Route::resource('patients', PatientController::class)->except('index');
 
+    // Patient Photos
+    Route::resource('patients.photos', PatientPhotoController::class);
     // Shared Patients
     Route::resource('patient-shares', PatientShareController::class);
 

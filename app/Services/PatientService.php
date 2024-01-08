@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Models\Patient;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class PatientService
 {
@@ -58,23 +56,6 @@ class PatientService
     }
 
     /**
-     * Удаляет загруженное фото пациента по ID фотографии
-     */
-    public function deletePhoto(int $id, int $photoId): void
-    {
-        $patient = Patient::my('created_by')->findOrFail($id);
-
-        DB::transaction(function () use ($patient, $photoId) {
-            $patient->photos()
-                ->whereId($photoId)
-                ->firstOrFail()
-                ->delete();
-
-            Storage::disk('public')->delete($photo->url ?? '');
-        });
-    }
-
-    /**
      * Делится пациентом с другим врачом для получения консультации
      */
     public function share(array $data): Patient
@@ -97,17 +78,5 @@ class PatientService
         return Patient::whereIn('id', $patientIds)->update([
             'is_share_notification_viewed' => true,
         ]);
-    }
-
-    /**
-     * Загружает фотографии пациентов
-     */
-    private function uploadPhotos(Patient $patient, array $photos): void
-    {
-        foreach ($photos as $photo) {
-            $patient->photos()->create([
-                'url' => $photo?->store('photos', 'public'),
-            ]);
-        }
     }
 }
