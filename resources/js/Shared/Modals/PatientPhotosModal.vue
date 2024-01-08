@@ -94,6 +94,7 @@ export default defineComponent({
             {{photo.label || `Фото ${index + 1}`}}
         </button>
         <button type="button"
+                v-if="$page.props.shared.userId === patient.created_by"
                 class="btn btn-danger btn-sm mr-1" @click="deletePhoto(photo.id)">
             <span class="fa fa-trash"></span>
         </button>

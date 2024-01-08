@@ -121,13 +121,15 @@
                         </table>
                     </div>
 
-                    <h4 class="mt-5 mb-3">Прикрепленные фотография</h4>
+                    <h4 class="mt-5 mb-3" v-if="$page.props.shared.userId === patient.created_by || patient.photos.length">Прикрепленные фотография</h4>
 
-                    <PatientPhotoUpload :errors="errors" :patient-id="patient.id" />
+                    <div v-if="$page.props.shared.userId === patient.created_by">
+                        <PatientPhotoUpload :errors="errors" :patient-id="patient.id"/>
 
-                    <hr>
+                        <hr>
+                    </div>
 
-                    <PatientPhotosModal :patient="patient" />
+                    <PatientPhotosModal :patient="patient"/>
                 </div>
             </div>
 
@@ -142,12 +144,14 @@
 
             <div class="card card-outline card-success" v-for="consultation in consultations">
                 <div class="card-header">
-                   <div>Пользователь: <b>{{consultation.user.name}}</b></div>
+                    <div>Пользователь: <b>{{ consultation.user.name }}</b></div>
                 </div>
                 <div class="card-body">
                     <div v-html="consultation.content"></div>
 
-                    <div class="small text-danger mt-2  text-sm-left text-md-right">Дата добавления: {{consultation.created_at}}</div>
+                    <div class="small text-danger mt-2  text-sm-left text-md-right">Дата добавления:
+                        {{ consultation.created_at }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -164,7 +168,8 @@ import PatientPhotosModal from "../../Shared/Modals/PatientPhotosModal.vue";
 export default {
     components: {
         PatientPhotosModal,
-        PatientPhotoUpload, SendPatientConsultation, PatientShareModal, Head, Link, QuillEditor},
+        PatientPhotoUpload, SendPatientConsultation, PatientShareModal, Head, Link, QuillEditor
+    },
     props: ['patient', 'qrCode', 'errors'],
     data: function () {
         return {
