@@ -187,6 +187,7 @@
             <h2 class="mt-4 mb-3" v-show="consultations.length">Консультации</h2>
 
             <SendPatientConsultation
+                v-if="patient.share_to_user_id === $page.props.shared.userId"
                 :errors="errors"
                 :patient-id="patient.id"
                 class="mb-4"

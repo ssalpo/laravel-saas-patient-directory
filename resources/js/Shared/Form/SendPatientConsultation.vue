@@ -18,7 +18,11 @@ export default defineComponent({
     },
     methods: {
         submit() {
-            this.form.post(route('patient-consultations.store'), {preserveState: true, preserveScroll: true})
+            this.form.post(route('patient-consultations.store'), {
+                preserveState: true,
+                preserveScroll: true,
+                onSuccess: () => this.form.reset('content'),
+            })
         }
     }
 })

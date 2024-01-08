@@ -22,7 +22,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="patient in patients.data">
+                    <tr v-for="patient in patients">
                         <td>{{ patient.name }}</td>
                         <td>{{ patient.place_of_residence }}</td>
                         <td class="diagnosis-table" v-html="patient.note"></td>
@@ -32,7 +32,6 @@
                         <td>{{ patient.age }}</td>
                         <td>{{ patient.gender ? 'М' : 'Ж' }}</td>
                     </tr>
-
                     </tbody>
                 </table>
             </div>
