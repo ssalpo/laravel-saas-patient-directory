@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Spatie\Permission\Models\Permission;
@@ -23,6 +24,13 @@ class AutocompleteController extends Controller
         return $this->transformCollection(
             items: Permission::where(fn ($q) => $this->searchFinder($q, 'readable_name'))->get(),
             textField: 'readable_name'
+        );
+    }
+
+    public function users(): Collection
+    {
+        return $this->transformCollection(
+            items: User::where(fn ($q) => $this->searchFinder($q))->get()
         );
     }
 

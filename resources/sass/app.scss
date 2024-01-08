@@ -94,3 +94,23 @@
         margin-bottom: 0;
     }
 }
+
+.navbar .counter {
+    position: absolute !important;
+    padding: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    color: #ffffff;
+    background-color: #fe1212;
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 50% !important;
+    -webkit-border-radius: 50% !important;
+    line-height: 18px !important;
+    font-size: 10px !important;
+    text-align: center !important;
+    cursor: pointer;
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    left: 20px !important;
+}

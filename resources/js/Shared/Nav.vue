@@ -16,12 +16,13 @@
                             Пациенты
                         </Link>
                     </li>
-
                     <li class="nav-item"
-                        :class="{ active : $page.url.startsWith('/payments') }"
-                        v-if="$page.props.shared.userPermissions.includes('payments_manage')">
-                        <Link :href="route('payments.index')" class="nav-link">
-                            Выплаты
+                        :class="{ active : $page.component.startsWith('PatientShares/Index') }"
+                    >
+                        <Link :href="route('patient-shares.index')" class="nav-link">
+                            Shared <span class="badge badge-danger" v-show="$page.props.counts.sharedPatients" title="Пациенты поделившиеся со мной">
+                            {{$page.props.counts.sharedPatients}}
+                        </span>
                         </Link>
                     </li>
 

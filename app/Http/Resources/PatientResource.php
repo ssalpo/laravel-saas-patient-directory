@@ -16,6 +16,8 @@ class PatientResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'share_to_user_id' => $this->share_to_user_id,
+            'created_by' => $this->created_by,
             'name' => $this->name,
             'place_of_residence' => $this->place_of_residence,
             'medical_card_number' => $this->medical_card_number,
@@ -28,6 +30,9 @@ class PatientResource extends JsonResource
             'comment' => $this->comment,
             'photos' => PhotoResource::collection($this->whenLoaded('photos')),
             'created_at' => $this->created_at->format('d.m.Y'),
+            'current_user_consultations_count' => $this->whenCounted('currentUserConsultations'),
+            'currentUserConsultations' => PatientConsultationResource::collection($this->whenLoaded('currentUserConsultations')),
+            'consultations' => PatientConsultationResource::collection($this->whenLoaded('consultations')),
         ];
     }
 }

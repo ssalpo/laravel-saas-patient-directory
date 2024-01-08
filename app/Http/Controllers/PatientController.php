@@ -71,9 +71,17 @@ class PatientController extends Controller
      */
     public function show(int $id): Response
     {
-        $patient = Patient::my('created_by')
+        $patient = Patient::myOrSharedWithMe(auth()->id(), 'created_by')
             ->with('photos')
             ->findOrFail($id);
+
+        $relationKey = $patient->created_by === auth()->id()
+            ? 'consultations'
+            : 'currentUserConsultations';
+
+        $patient->load([
+            $relationKey => fn ($q) => $q->with('user')->orderByDesc('created_at'),
+        ]);
 
         return inertia('Patients/Show', [
             'patient' => PatientResource::make($patient),

@@ -9,8 +9,14 @@
                 <div class="col-sm-6">
                     <h1 class="m-0">Данные пациента</h1>
                 </div><!-- /.col -->
-                <div class="col-sm-6 text-right">
-                    <Link :href="route('patients.edit', {patient: patient.id})" class="btn btn-primary">
+                <div class="col-sm-6 text-right" v-if="$page.props.shared.userId === patient.created_by">
+                    <PatientShareModal
+                        :patient="patient"
+                        btn-class="mr-2"
+                    />
+
+                    <Link :href="route('patients.edit', {patient: patient.id})"
+                          class="btn btn-primary">
                         <i class="fa fa-pencil-alt"></i>
                     </Link>
                 </div><!-- /.col -->
@@ -64,18 +70,21 @@
                             <tr>
                                 <td width="400">Заметка</td>
                                 <td>
-                                    <QuillEditor theme="snow"
-                                                 @blur="saveReport"
-                                                 @ready="focusOnReady"
-                                                 v-if="editBlock === 'note' || !patient.note"
-                                                 contentType="html"
-                                                 :toolbar="['bold', 'italic', 'underline']"
-                                                 v-model:content="form.note"/>
+                                    <div v-if="$page.props.shared.userId === patient.created_by">
+                                        <QuillEditor theme="snow"
+                                                     @blur="saveReport"
+                                                     @ready="focusOnReady"
+                                                     v-if="editBlock === 'note' || !patient.note"
+                                                     contentType="html"
+                                                     :toolbar="['bold', 'italic', 'underline']"
+                                                     v-model:content="form.note"/>
 
-                                    <div v-else>
-                                        <div class="editor-content" v-html="patient.note"></div>
-                                        <a href="" @click.prevent="editBlock = 'note'"><small>Редактировать</small></a>
+                                        <div v-else>
+                                            <div class="editor-content" v-html="patient.note"></div>
+                                            <a href="" @click.prevent="editBlock = 'note'"><small>Редактировать</small></a>
+                                        </div>
                                     </div>
+                                    <div v-else v-html="patient.note"></div>
                                 </td>
                             </tr>
                             </tbody>
@@ -90,19 +99,22 @@
                                     <b>Комментарий</b>
                                 </td>
                                 <td>
-                                    <QuillEditor theme="snow"
-                                                 @blur="saveComment"
-                                                 @ready="focusOnReady"
-                                                 v-if="editBlock === 'comment' || !patient.comment"
-                                                 contentType="html"
-                                                 :toolbar="['bold', 'italic', 'underline']"
-                                                 v-model:content="formComment.comment"/>
+                                    <div v-if="$page.props.shared.userId === patient.created_by">
+                                        <QuillEditor theme="snow"
+                                                     @blur="saveComment"
+                                                     @ready="focusOnReady"
+                                                     v-if="editBlock === 'comment' || !patient.comment"
+                                                     contentType="html"
+                                                     :toolbar="['bold', 'italic', 'underline']"
+                                                     v-model:content="formComment.comment"/>
 
-                                    <div v-else>
-                                        <div class="editor-content" v-html="patient.comment"></div>
-                                        <a href=""
-                                           @click.prevent="editBlock = 'comment'"><small>Редактировать</small></a>
+                                        <div v-else>
+                                            <div class="editor-content" v-html="patient.comment"></div>
+                                            <a href=""
+                                               @click.prevent="editBlock = 'comment'"><small>Редактировать</small></a>
+                                        </div>
                                     </div>
+                                    <div v-else v-html="patient.comment"></div>
                                 </td>
                             </tr>
                             </tbody>
@@ -171,16 +183,37 @@
                     <!-- /.modal -->
                 </div>
             </div>
+
+            <h2 class="mt-4 mb-3" v-show="consultations.length">Консультации</h2>
+
+            <SendPatientConsultation
+                :errors="errors"
+                :patient-id="patient.id"
+                class="mb-4"
+            />
+
+            <div class="card card-outline card-success" v-for="consultation in consultations">
+                <div class="card-header">
+                   <div>Пользователь: <b>{{consultation.user.name}}</b></div>
+                </div>
+                <div class="card-body">
+                    <div v-html="consultation.content"></div>
+
+                    <div class="small text-danger mt-2  text-sm-left text-md-right">Дата добавления: {{consultation.created_at}}</div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 <script>
 import {Head, Link, useForm} from "@inertiajs/vue3";
 import {QuillEditor} from '@vueup/vue-quill';
+import PatientShareModal from "../../Shared/Modals/PatientShareModal.vue";
+import SendPatientConsultation from "../../Shared/Form/SendPatientConsultation.vue";
 
 export default {
-    components: {Head, Link, QuillEditor},
-    props: ['patient', 'qrCode'],
+    components: {SendPatientConsultation, PatientShareModal, Head, Link, QuillEditor},
+    props: ['patient', 'qrCode', 'errors'],
     data: function () {
         return {
             originalPhotoShowed: false,
@@ -214,6 +247,11 @@ export default {
         $(document).on('hide.bs.modal', '#photo-view-modal', () => {
             this.originalPhotoShowed = false
         });
+    },
+    computed: {
+        consultations() {
+            return this.patient?.currentUserConsultations || this.patient?.consultations || []
+        }
     },
     methods: {
         saveReport() {

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\PatientConsultationController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PatientShareController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +23,12 @@ Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static functio
     Route::post('/patients/{patient}/comment', [PatientController::class, 'saveComment'])->name('patients.save.comment');
     Route::delete('/patients/{patient}/photos/{photo}', [PatientController::class, 'deletePhoto'])->name('patients.photos.delete');
     Route::resource('patients', PatientController::class)->except('index');
+
+    // Shared Patients
+    Route::resource('patient-shares', PatientShareController::class);
+
+    // Patient Consultation
+    Route::resource('patient-consultations', PatientConsultationController::class);
 
     // Users
     Route::post('/users/{user}/toggle-activity', [UserController::class, 'toggleActivity'])->name('users.toggle_activity');

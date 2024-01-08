@@ -75,6 +75,31 @@ class PatientService
     }
 
     /**
+     * Делится пациентом с другим врачом для получения консультации
+     */
+    public function share(array $data): Patient
+    {
+        $patient = Patient::findOrFail($data['patient_id']);
+
+        $patient->update([
+            'share_to_user_id' => $data['user_id'],
+            'is_share_notification_viewed' => false,
+        ]);
+
+        return $patient;
+    }
+
+    /**
+     * Устанавливает статус для поделенных пациентов
+     */
+    public function markSharedAsViewed(array $patientIds)
+    {
+        return Patient::whereIn('id', $patientIds)->update([
+            'is_share_notification_viewed' => true,
+        ]);
+    }
+
+    /**
      * Загружает фотографии пациентов
      */
     private function uploadPhotos(Patient $patient, array $photos): void

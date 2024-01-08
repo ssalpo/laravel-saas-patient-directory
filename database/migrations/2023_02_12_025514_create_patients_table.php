@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('share_to_user_id')->nullable()->constrained('users');
+            $table->boolean('is_share_notification_viewed')->default(false);
             $table->string('name');
             $table->string('medical_card_number');
             $table->date('birthday');
