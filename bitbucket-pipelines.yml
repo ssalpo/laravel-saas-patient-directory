@@ -1,0 +1,10 @@
+pipelines:
+  branches:
+    short-product-for-doctors:
+      - step:
+          script:
+            - pipe: atlassian/ssh-run:0.6.1
+              variables:
+                SSH_USER: $SERVER_DEPLOYER_USER
+                SERVER: $SERVER_IP
+                COMMAND: "cd $TEST_API_PATH && $SERVER_DEPLOYER_BIN deploy"
