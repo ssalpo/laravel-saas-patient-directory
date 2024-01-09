@@ -32,27 +32,12 @@ class PatientService
      */
     public function saveReport(int $id, array $data)
     {
-        $patient = Patient::my('created_by')->findOrFail($id);
+        $fieldsToSave = ['note', 'morbi', 'comment', 'vitae', 'lab_workup', 'diagnosis', 'mkb', 'treatment', 'stain'];
 
-        $patient->update(
-            Arr::only($data, [
-                'note',
-            ])
+        return tap(
+            Patient::my('created_by')->findOrFail($id),
+            fn ($p) => $p->update(Arr::only($data, $fieldsToSave))
         );
-
-        return $patient;
-    }
-
-    /**
-     * Сохраняет комментарий по итоговому результату диагноза
-     */
-    public function saveComment(int $id, string $comment): Patient
-    {
-        $patient = Patient::my('created_by')->findOrFail($id);
-
-        $patient->update(['comment' => $comment]);
-
-        return $patient;
     }
 
     /**

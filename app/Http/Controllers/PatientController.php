@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PatientCommentRequest;
 use App\Http\Requests\PatientReportRequest;
 use App\Http\Requests\PatientRequest;
 use App\Http\Resources\PatientResource;
@@ -118,26 +117,6 @@ class PatientController extends Controller
     public function saveReport(int $id, PatientReportRequest $request): RedirectResponse
     {
         $this->patientService->saveReport($id, $request->validated());
-
-        return redirect()->route('patients.show', $id);
-    }
-
-    /**
-     * Сохраняет комментарий по итоговому результату диагноза
-     */
-    public function saveComment(int $id, PatientCommentRequest $request): RedirectResponse
-    {
-        $this->patientService->saveComment($id, $request->comment);
-
-        return redirect()->route('patients.show', $id);
-    }
-
-    /**
-     * Удаляет загруженное фото пациента по ID фотографии
-     */
-    public function deletePhoto(int $id, int $photo): RedirectResponse
-    {
-        $this->patientService->deletePhoto($id, $photo);
 
         return back();
     }

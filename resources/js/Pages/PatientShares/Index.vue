@@ -1,13 +1,13 @@
 <template>
     <Head>
-        <title>Поделились со мной</title>
+        <title>Поделенные со мной</title>
     </Head>
 
     <div class="content-header">
         <div class="container">
             <div class="row mb-2">
                 <div class="col-12 col-sm-6">
-                    <h1 class="m-0">Поделились со мной</h1>
+                    <h1 class="m-0">Поделенные со мной</h1>
                 </div>
             </div>
         </div>

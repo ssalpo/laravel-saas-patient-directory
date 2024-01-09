@@ -11,14 +11,15 @@
                 <table class="table table-hover table-bordered" style="width: 3000px">
                     <thead>
                     <tr>
-                        <th width="250">Ф.И.О</th>
-                        <th width="250">Место проживания</th>
-                        <th width="500">Заметка</th>
-                        <th width="500">Комментарий</th>
-                        <th>Номер телефона</th>
-                        <th>Дата рождения</th>
-                        <th>Возраст</th>
-                        <th>Пол</th>
+                        <th class="align-middle" width="500">Ф.И.О</th>
+                        <th class="align-middle" width="500">Место проживания</th>
+                        <th class="align-middle" width="500">Заметка</th>
+                        <th class="align-middle" width="500">Комментарий</th>
+                        <th class="align-middle" width="400">Номер телефона</th>
+                        <th class="align-middle" width="400">Дата рождения</th>
+                        <th class="align-middle">Возраст</th>
+                        <th class="align-middle">Пол</th>
+                        <th class="align-middle" v-for="block in blocks" :width="block.headerWidth">{{block.label}}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -31,6 +32,9 @@
                         <td>{{ patient.birthday }}</td>
                         <td>{{ patient.age }}</td>
                         <td>{{ patient.gender ? 'М' : 'Ж' }}</td>
+                        <td v-for="block in blocks">
+                            {{patient[block.key]}}
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -45,6 +49,19 @@ import AuthLayout from "../../Layouts/AuthLayout.vue";
 export default {
     components: {AuthLayout, Head, Link},
     props: ['patients'],
-    layout: AuthLayout
+    layout: AuthLayout,
+    data: function () {
+        return {
+            blocks: [
+                {label: 'Жалобы и история настоящего заболевания', key: 'morbi', headerWidth: 500},
+                {label: 'История перенесённых заболеваний и хирургическая история', key: 'vitae', headerWidth: 800},
+                {label: 'Данные дополнительных методов исследования, заключения консультантов', key: 'lab_workup', headerWidth: 900},
+                {label: 'Диагноз основного заболевания', key: 'diagnosis', headerWidth: 600},
+                {label: 'Код по МКБ10', key: 'mkb', headerWidth: 500},
+                {label: 'Лечение и проведённые процедуры', key: 'treatment', headerWidth: 500},
+                {label: 'Комментарий', key: 'comment', headerWidth: 400},
+            ]
+        }
+    },
 }
 </script>

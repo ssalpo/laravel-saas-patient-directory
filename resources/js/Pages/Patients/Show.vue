@@ -27,6 +27,32 @@
     <div class="content">
         <div class="container">
 
+            <div class="card card-primary d-block d-md-none"
+                v-for="block in blocks"
+            >
+                <div class="card-header">
+                    {{block.label}}
+                </div>
+                <div class="card-body">
+                    <div v-for="child in block.childs">
+                        <strong>{{child.label}}</strong>
+
+                        <PatientEditable
+                            :patient-id="patient.id"
+                            :value="patient[child.key]"
+                            :field="child.key"
+                        >
+                            <template v-slot:text="{value}">
+                                <p class="text-muted">
+                                    {{value}}
+                                </p>
+                            </template>
+                        </PatientEditable>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+
             <div class="card card-primary d-block d-md-none">
                 <div class="card-body">
                     <div>
@@ -114,63 +140,27 @@
                         </table>
                     </div>
 
-                    <h4 class="mt-5 mb-3 d-none d-md-block">Гистопатологическое заключение</h4>
+                    <div v-for="block in blocks">
+                        <h4 class="mt-5 mb-3 d-none d-md-block">{{block.label}}</h4>
 
-                    <div class="table-responsive d-none d-md-block">
-                        <table class="table table-bordered">
-                            <tbody>
-                            <tr>
-                                <td width="400">Заметка</td>
-                                <td>
-                                    <div v-if="$page.props.shared.userId === patient.created_by">
-                                        <QuillEditor theme="snow"
-                                                     @blur="saveReport"
-                                                     @ready="focusOnReady"
-                                                     v-if="editBlock === 'note' || !patient.note"
-                                                     contentType="html"
-                                                     :toolbar="['bold', 'italic', 'underline']"
-                                                     v-model:content="form.note"/>
+                        <div class="table-responsive d-none d-md-block">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr v-for="child in block.childs">
+                                    <td width="400">{{ child.label }}</td>
+                                    <td>
+                                        <PatientEditable
+                                            :patient-id="patient.id"
+                                            :value="patient[child.key]"
+                                            :canEdit="$page.props.shared.userId === patient.created_by"
+                                            :field="child.key"
+                                        />
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                                        <div v-else>
-                                            <div class="editor-content" v-html="patient.note"></div>
-                                            <a href="" @click.prevent="editBlock = 'note'"><small>Редактировать</small></a>
-                                        </div>
-                                    </div>
-                                    <div v-else v-html="patient.note"></div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="table-responsive d-none d-md-block">
-                        <table class="table table-bordered">
-                            <tbody>
-                            <tr>
-                                <td width="400">
-                                    <b>Комментарий</b>
-                                </td>
-                                <td>
-                                    <div v-if="$page.props.shared.userId === patient.created_by">
-                                        <QuillEditor theme="snow"
-                                                     @blur="saveComment"
-                                                     @ready="focusOnReady"
-                                                     v-if="editBlock === 'comment' || !patient.comment"
-                                                     contentType="html"
-                                                     :toolbar="['bold', 'italic', 'underline']"
-                                                     v-model:content="formComment.comment"/>
-
-                                        <div v-else>
-                                            <div class="editor-content" v-html="patient.comment"></div>
-                                            <a href=""
-                                               @click.prevent="editBlock = 'comment'"><small>Редактировать</small></a>
-                                        </div>
-                                    </div>
-                                    <div v-else v-html="patient.comment"></div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
                     </div>
 
                     <h4 class="mt-5 mb-3" v-if="$page.props.shared.userId === patient.created_by || patient.photos.length">Прикрепленные фотография</h4>
@@ -217,45 +207,41 @@ import PatientShareModal from "../../Shared/Modals/PatientShareModal.vue";
 import SendPatientConsultation from "../../Shared/Form/SendPatientConsultation.vue";
 import PatientPhotoUpload from "../../Shared/Form/PatientPhotoUpload.vue";
 import PatientPhotosModal from "../../Shared/Modals/PatientPhotosModal.vue";
+import PatientEditable from "../../Shared/PatientEditable.vue";
 
 export default {
     components: {
+        PatientEditable,
         PatientPhotosModal,
         PatientPhotoUpload, SendPatientConsultation, PatientShareModal, Head, Link, QuillEditor
     },
     props: ['patient', 'qrCode', 'errors'],
     data: function () {
         return {
-            editBlock: '',
-            form: useForm({
-                note: this.patient.note || ''
-            }),
-            formComment: useForm({
-                comment: this.patient?.comment || ''
-            })
+            blocks: [
+                {
+                    label: 'Анамнез',
+                    childs: [
+                        {label: 'Жалобы и история настоящего заболевания', key: 'morbi'},
+                        {label: 'История перенесённых заболеваний и хирургическая история', key: 'vitae'},
+                        {label: 'Данные дополнительных методов исследования, заключения консультантов', key: 'lab_workup'},
+                    ]
+                },
+                {
+                    label: 'Диагноз',
+                    childs: [
+                        {label: 'Диагноз основного заболевания', key: 'diagnosis'},
+                        {label: 'Код по МКБ10', key: 'mkb'},
+                        {label: 'Лечение и проведённые процедуры', key: 'treatment'},
+                        {label: 'Комментарий', key: 'comment'},
+                    ]
+                },
+            ]
         }
     },
     computed: {
         consultations() {
             return this.patient?.currentUserConsultations || this.patient?.consultations || []
-        }
-    },
-    methods: {
-        saveReport() {
-            this.form.post(route('patients.save.report', this.patient.id), {preserveState: true, preserveScroll: true})
-
-            this.editBlock = ''
-        },
-        saveComment() {
-            this.formComment.post(route('patients.save.comment', this.patient.id), {
-                preserveState: true,
-                preserveScroll: true
-            })
-
-            this.editBlock = ''
-        },
-        focusOnReady(editor) {
-            if (this.editBlock) editor.focus();
         }
     }
 }

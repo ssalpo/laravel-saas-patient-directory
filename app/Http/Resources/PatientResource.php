@@ -33,6 +33,13 @@ class PatientResource extends JsonResource
             'current_user_consultations_count' => $this->whenCounted('currentUserConsultations'),
             'currentUserConsultations' => PatientConsultationResource::collection($this->whenLoaded('currentUserConsultations')),
             'consultations' => PatientConsultationResource::collection($this->whenLoaded('consultations')),
+
+            'morbi' => $this->morbi,
+            'vitae' => $this->vitae,
+            'lab_workup' => $this->lab_workup,
+            'diagnosis' => $this->diagnosis,
+            'mkb' => $this->mkb,
+            'treatment' => $this->treatment,
         ];
     }
 }

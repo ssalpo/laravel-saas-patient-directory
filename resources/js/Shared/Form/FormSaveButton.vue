@@ -25,7 +25,7 @@ export default defineComponent({
 <template>
     <button type="submit" :disabled="isProcessing" :class="$attrs.class || 'btn btn-primary'">
         <span v-if="isProcessing">
-            <i class="fa fa-sync fa-spin"></i> {{processingBtnLabel}}
+            <i class="fa fa-sync fa-spin mr-1"></i> {{processingBtnLabel}}
         </span>
 
         <span v-else>{{ isEditing ? editBtnLabel : addBtnLabel }}</span>

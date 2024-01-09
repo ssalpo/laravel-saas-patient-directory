@@ -20,7 +20,7 @@
                         :class="{ active : $page.component.startsWith('PatientShares/Index') }"
                     >
                         <Link :href="route('patient-shares.index')" class="nav-link">
-                            Shared <span class="badge badge-danger" v-show="$page.props.counts.sharedPatients" title="Пациенты поделившиеся со мной">
+                            Поделенные со мной <span class="badge badge-danger" v-show="$page.props.counts.sharedPatients" title="Пациенты поделившиеся со мной">
                             {{$page.props.counts.sharedPatients}}
                         </span>
                         </Link>
