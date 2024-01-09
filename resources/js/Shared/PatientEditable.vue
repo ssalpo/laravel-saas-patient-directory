@@ -67,7 +67,7 @@ export default defineComponent({
     <div v-if="!isEditing">
         <slot name="text" :value="form[field]">
             <p>
-                <pre>{{value}}</pre>
+                <pre style="all: unset; white-space: pre-wrap;">{{value}}</pre>
             </p>
         </slot>
 
