@@ -27,32 +27,6 @@
     <div class="content">
         <div class="container">
 
-            <div class="card card-primary d-block d-md-none"
-                v-for="block in blocks"
-            >
-                <div class="card-header">
-                    {{block.label}}
-                </div>
-                <div class="card-body">
-                    <div v-for="child in block.childs">
-                        <strong>{{child.label}}</strong>
-
-                        <PatientEditable
-                            :patient-id="patient.id"
-                            :value="patient[child.key]"
-                            :field="child.key"
-                        >
-                            <template v-slot:text="{value}">
-                                <p class="text-muted">
-                                    {{value}}
-                                </p>
-                            </template>
-                        </PatientEditable>
-                        <hr>
-                    </div>
-                </div>
-            </div>
-
             <div class="card card-primary d-block d-md-none">
                 <div class="card-body">
                     <div>
@@ -172,6 +146,32 @@
                     </div>
 
                     <PatientPhotosModal :patient="patient"/>
+                </div>
+            </div>
+
+            <div class="card card-primary d-block d-md-none"
+                 v-for="block in blocks"
+            >
+                <div class="card-header">
+                    {{block.label}}
+                </div>
+                <div class="card-body">
+                    <div v-for="child in block.childs">
+                        <strong>{{child.label}}</strong>
+
+                        <PatientEditable
+                            :patient-id="patient.id"
+                            :value="patient[child.key]"
+                            :field="child.key"
+                        >
+                            <template v-slot:text="{value}">
+                                <p class="text-muted">
+                                    {{value}}
+                                </p>
+                            </template>
+                        </PatientEditable>
+                        <hr>
+                    </div>
                 </div>
             </div>
 
