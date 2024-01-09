@@ -34,7 +34,6 @@
 
                     <form-input
                         label="Номер телефона"
-                        required
                         v-maska data-maska="+############"
                         placeholder="пример: +992929927233"
                         v-model.trim="form.phone"

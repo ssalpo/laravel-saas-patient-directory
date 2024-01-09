@@ -8,7 +8,7 @@
         @submit="submit"
     >
         <template #btn="{show}">
-            <button type="button" @click="show" class="btn btn-danger" :class="btnClass">
+            <button type="button" @click="show" :class="btnClass || 'btn btn-danger'">
                 <i class="fa fa-share-alt"></i>
             </button>
         </template>

@@ -1,26 +1,24 @@
 <template>
     <Head>
-        <title>Данные пациента</title>
+        <title>Карточка пациента</title>
     </Head>
 
     <div class="content-header">
-        <div class="container">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Данные пациента</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6 text-right" v-if="$page.props.shared.userId === patient.created_by">
-                    <PatientShareModal
-                        :patient="patient"
-                        btn-class="mr-2"
-                    />
+        <div class="row mb-2">
+            <div class="col-sm-12 col-md-8">
+                <h1 class="m-0">Карточка пациента</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-12 col-md-4 text-sm-left pt-3 text-md-right pt-md-0" v-if="$page.props.shared.userId === patient.created_by">
+                <PatientShareModal
+                    :patient="patient"
+                    btn-class="btn btn-danger mr-2"
+                />
 
-                    <Link :href="route('patients.edit', {patient: patient.id})"
-                          class="btn btn-primary">
-                        <i class="fa fa-pencil-alt"></i>
-                    </Link>
-                </div><!-- /.col -->
-            </div>
+                <Link :href="route('patients.edit', {patient: patient.id})"
+                      class="btn btn-primary">
+                    <i class="fa fa-pencil-alt"></i>
+                </Link>
+            </div><!-- /.col -->
         </div>
     </div>
 
@@ -28,6 +26,9 @@
         <div class="container">
 
             <div class="card card-primary d-block d-md-none">
+                <div class="card-header">
+                    Общие данные
+                </div>
                 <div class="card-body">
                     <div>
                         <strong>ФИО пациента</strong>
@@ -157,12 +158,13 @@
                 </div>
                 <div class="card-body">
                     <div v-for="child in block.childs">
-                        <strong>{{child.label}}</strong>
+                        <strong style="font-size: 20px; font-weight: 600; line-height: 18px;">{{child.label}}</strong>
 
                         <PatientEditable
                             :patient-id="patient.id"
                             :value="patient[child.key]"
                             :field="child.key"
+                            :canEdit="$page.props.shared.userId === patient.created_by"
                         >
                             <template v-slot:text="{value}">
                                 <p class="text-muted">

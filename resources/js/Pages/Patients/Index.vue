@@ -47,16 +47,20 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr class="d-none d-md-table-row">
-                                <th width="200">Ф.И.О</th>
+                                <td class="text-center d-none d-md-table-cell" width="10">№</td>
+                                <th>Ф.И.О</th>
                                 <th width="200">Дата добавления</th>
                                 <th width="60"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="patient in patients.data">
+                            <tr v-for="(patient, index) in patients.data">
+                                <td class="text-center d-none d-md-table-cell">{{ ((patients.meta.current_page - 1) * patients.meta.per_page) + index + 1 }}</td>
                                 <td>
                                     <h5 class="d-block d-md-none">
-                                        <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
+                                        <Link :href="route('patients.show', patient.id)">
+                                            {{ patient.name }}
+                                        </Link>
                                     </h5>
 
                                     <Link :href="route('patients.show', patient.id)" class="d-none d-md-block">{{ patient.name }}</Link>
