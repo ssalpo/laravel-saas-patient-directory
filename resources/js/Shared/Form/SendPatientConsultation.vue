@@ -34,6 +34,7 @@ export default defineComponent({
             v-model="form.content"
             placeholder="Введите текст комментария"
             :validation-error="errors.content"
+            autoresize
         />
 
         <form-save-button class="btn btn-sm btn-outline-primary" />

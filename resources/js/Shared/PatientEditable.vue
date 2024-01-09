@@ -53,6 +53,7 @@ export default defineComponent({
     <form v-if="isEditing && canEdit" @submit.prevent="submit">
         <FormTextarea
             v-model="form[field]"
+            autoresize
             :validation-error="$page.props.errors[field] || null"
         />
 
@@ -65,7 +66,9 @@ export default defineComponent({
 
     <div v-if="!isEditing">
         <slot name="text" :value="form[field]">
-            <p>{{value}}</p>
+            <p>
+                <pre>{{value}}</pre>
+            </p>
         </slot>
 
         <a
