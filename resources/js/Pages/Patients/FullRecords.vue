@@ -30,7 +30,7 @@
                     </thead>
                     <tbody>
                     <tr v-for="patient in patients.data">
-                        <td>{{ patient.case_numbers }}</td>
+                        <td>{{ patient.case_numbers_joined }}</td>
                         <td>{{ patient.name }}</td>
                         <td>{{ patient.location.full_address }}</td>
                         <td class="diagnosis-table" v-html="patient.microscopic_description"></td>

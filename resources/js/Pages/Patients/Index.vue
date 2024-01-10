@@ -44,7 +44,7 @@
                             </thead>
                             <tbody>
                             <tr v-for="patient in patients.data">
-                                <td>{{ patient.case_numbers }}</td>
+                                <td>{{ patient.case_numbers_joined }}</td>
                                 <td>
                                     <Link :href="route('patients.show', patient.id)">{{ patient.name }}</Link>
                                 </td>

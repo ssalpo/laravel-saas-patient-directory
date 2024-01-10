@@ -42,7 +42,7 @@
                         </tr>
                         <tr>
                             <td width="400">Место проживания</td>
-                            <td>{{ patient.location.full_address }}</td>
+                            <td>{{ patient.location?.full_address }}</td>
                         </tr>
                         <tr>
                             <td width="400">Номер телефона</td>
@@ -71,7 +71,7 @@
                         <tr :class="{'animate-background': $page.props.flash.isCreated === true}">
                             <td>Номер кейса</td>
                             <td>
-                                <div v-for="case_number in patient.case_numbers">{{ case_number }}</div>
+                                <div v-for="case_number in patient.case_numbers">{{ case_number.formatted }}</div>
                             </td>
                         </tr>
                         <tr>

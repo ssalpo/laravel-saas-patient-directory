@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\PatientStatusEnum;
 use App\Jobs\AddUniqCodeForPatient;
 use App\Models\Patient;
+use Facades\App\Services\PatientCaseNumberService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +21,11 @@ class PatientService
         return DB::transaction(function () use ($data) {
             $patient = Patient::create($data);
 
-            $patient->update([
-                'case_numbers' => $this->generateCaseNumbers($patient->id, $patient->categories),
-            ]);
+            PatientCaseNumberService::generate(
+                $patient->id,
+                $patient->created_at->format('Y'),
+                array_column($patient->categories, 'code')
+            );
 
             $this->uploadPhotos($patient, $data['photos']);
 
@@ -40,9 +43,13 @@ class PatientService
         return DB::transaction(function () use ($id, $data) {
             $patient = Patient::findOrFail($id);
 
-            $data['case_numbers'] = $this->generateCaseNumbers($patient->id, $patient->categories);
-
             $patient->update($data);
+
+            PatientCaseNumberService::generate(
+                $patient->id,
+                $patient->created_at->format('Y'),
+                array_column($patient->categories, 'code')
+            );
 
             $this->uploadPhotos($patient, $data['photos']);
 
@@ -67,7 +74,7 @@ class PatientService
     /**
      * Сохраняет ответ итогового результата диагноза
      */
-    public function saveReport(int $id, array $data)
+    public function saveReport(int $id, array $data): Patient
     {
         $patient = Patient::findOrFail($id);
 
@@ -107,7 +114,7 @@ class PatientService
     /**
      * Сохраняет дату печати карточки клиента
      */
-    public function changePrintDate(int $id, string $printDate)
+    public function changePrintDate(int $id, string $printDate): bool
     {
         return Patient::findOrFail($id)->update([
             'print_date' => $printDate,
@@ -129,25 +136,6 @@ class PatientService
 
             Storage::disk('public')->delete($photo->url ?? '');
         });
-    }
-
-    /**
-     * Генерирует номер кейса пациента
-     */
-    public function generateCaseNumbers(int $id, array $categories): array
-    {
-        $caseNumbers = [];
-
-        foreach ($categories as $category) {
-            $caseNumbers[] = sprintf(
-                'D%s/%s %s',
-                date('y'),
-                sprintf('%02d', $id),
-                $category['code']
-            );
-        }
-
-        return $caseNumbers;
     }
 
     /**
