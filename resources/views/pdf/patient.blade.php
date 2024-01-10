@@ -45,7 +45,7 @@
     </tr>
     <tr>
         <td width="200">Место проживания</td>
-        <td>{{$patient->location->full_address}}</td>
+        <td>{{$patient->location?->full_address ?? $patient->place_of_residence}}</td>
     </tr>
     <tr>
         <td>Дата рождения</td>

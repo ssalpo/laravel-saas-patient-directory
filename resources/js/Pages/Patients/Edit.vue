@@ -362,7 +362,7 @@ export default {
                 doctor_id: this.patient?.doctor_id || null,
                 categories: this.patient?.categories || [{code: 'A1', biopsy: 'шейв-биопсия', biopsyCustomValue: null, biopsyCustom: false, description: ''}],
                 photos: this.patient?.photos || [],
-                location_id: this.patient?.location.id,
+                location_id: this.patient?.location?.id,
                 medical_clinic_id: this.patient?.medical_clinic_id || null,
             }),
         }
