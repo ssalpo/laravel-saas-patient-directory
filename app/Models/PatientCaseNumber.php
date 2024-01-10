@@ -25,9 +25,9 @@ class PatientCaseNumber extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    public static function currentYearMaxNumber()
+    public static function currentYearMaxNumber(?int $year = null)
     {
-        return self::where('year', date('Y'))->max('number');
+        return self::where('year', $year ?: date('Y'))->max('number');
     }
 
     public static function hasAnyDiffInStructure(int $patientId, int $year, array $codes): bool

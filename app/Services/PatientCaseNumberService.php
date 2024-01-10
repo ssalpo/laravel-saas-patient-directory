@@ -14,7 +14,7 @@ class PatientCaseNumberService
         return \DB::transaction(function () use ($id, $year, $codes) {
             $result = [];
 
-            $currentNumber = PatientCaseNumber::currentYearMaxNumber() + 1;
+            $currentNumber = PatientCaseNumber::currentYearMaxNumber($year) + 1;
 
             $cleared = $this->clearIfDiffCodesExists($id, $year, $codes);
 
