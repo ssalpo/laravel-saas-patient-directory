@@ -29,10 +29,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="patient in patients.data">
+                    <tr v-for="patient in patients">
                         <td>{{ patient.case_numbers_joined }}</td>
                         <td>{{ patient.name }}</td>
-                        <td>{{ patient.location.full_address || patient.place_of_residence }}</td>
+                        <td>{{ patient.location?.full_address || patient.place_of_residence }}</td>
                         <td class="diagnosis-table" v-html="patient.microscopic_description"></td>
                         <td class="diagnosis-table" v-html="patient.diagnosis"></td>
                         <td class="diagnosis-table" v-html="patient.note"></td>
