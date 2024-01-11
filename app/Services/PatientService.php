@@ -147,7 +147,7 @@ class PatientService
             $code = random_int(100000, 999999);
         } while (Patient::where('uniq_code', $code)->exists());
 
-        Patient::whereId($id)->findOrFail()->update(['uniq_code' => $code]);
+        Patient::findOrFail($id)->update(['uniq_code' => $code]);
 
         return $code;
     }
