@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class SyncPermissions extends Command
 {
@@ -44,6 +45,10 @@ class SyncPermissions extends Command
 
                 $this->info(sprintf('Created %s permission', $permission['name']));
             }
+        }
+
+        if ($role = Role::where('name', 'admin')->first()) {
+            $role->syncPermissions(array_column($permissions, 'name'));
         }
 
         return Command::SUCCESS;
