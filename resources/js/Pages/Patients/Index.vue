@@ -50,7 +50,7 @@
                                 <td class="text-center d-none d-md-table-cell" width="10">№</td>
                                 <th>Ф.И.О</th>
                                 <th width="200">Дата добавления</th>
-                                <th width="60"></th>
+<!--                                <th width="60"></th>-->
                             </tr>
                             </thead>
                             <tbody>
@@ -70,11 +70,11 @@
                                     </div>
                                 </td>
                                 <td class="d-none d-md-table-cell">{{ patient.created_at }}</td>
-                                <td class="text-center align-middle" >
+<!--                                <td class="text-center align-middle" >
                                     <Link :href="route('patients.edit', patient.id)">
                                         <i class="fa fa-pencil-alt"></i>
                                     </Link>
-                                </td>
+                                </td>-->
                             </tr>
 
                             </tbody>

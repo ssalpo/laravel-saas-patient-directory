@@ -79,10 +79,11 @@
                 </div>
             </div>
 
-            <div class="card d-none d-md-block">
+            <div class="card card-primary d-none d-md-block">
+                <div class="card-header">
+                    Общие данные
+                </div>
                 <div class="card-body">
-                    <h4 class="mt-2 mb-3">Общие данные</h4>
-
                     <div class="table-responsive d-none d-md-block">
                         <table class="table table-bordered">
                             <tbody>
@@ -114,51 +115,44 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <div v-for="block in blocks">
-                        <h4 class="mt-5 mb-3 d-none d-md-block">{{block.label}}</h4>
-
-                        <div class="table-responsive d-none d-md-block">
-                            <table class="table table-bordered">
-                                <tbody>
-                                <tr v-for="child in block.childs">
-                                    <td width="400">{{ child.label }}</td>
-                                    <td>
-                                        <PatientEditable
-                                            :patient-id="patient.id"
-                                            :value="patient[child.key]"
-                                            :canEdit="$page.props.shared.userId === patient.created_by"
-                                            :field="child.key"
-                                        />
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-
-                    <h4 class="mt-5 mb-3" v-if="$page.props.shared.userId === patient.created_by || patient.photos.length">Прикрепленные фотография</h4>
-
-                    <div v-if="$page.props.shared.userId === patient.created_by">
-                        <PatientPhotoUpload :errors="errors" :patient-id="patient.id"/>
-
-                        <hr>
-                    </div>
-
-                    <PatientPhotosModal :patient="patient"/>
                 </div>
             </div>
 
-            <div class="card card-primary d-block d-md-none"
-                 v-for="block in blocks"
-            >
+            <!-- Desktop -->
+            <div class="card card-primary d-none d-md-block" v-for="block in blocks">
                 <div class="card-header">
                     {{block.label}}
                 </div>
                 <div class="card-body">
+                    <div class="table-responsive d-none d-md-block">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr v-for="child in block.childs">
+                                <td width="400" v-if="child.label">{{ child.label }}</td>
+                                <td>
+                                    <PatientEditable
+                                        :patient-id="patient.id"
+                                        :value="patient[child.key]"
+                                        :canEdit="$page.props.shared.userId === patient.created_by"
+                                        :field="child.key"
+                                    />
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- End Desktop -->
+
+            <!-- Mobile -->
+            <div class="card card-primary d-block d-md-none" v-for="block in blocks">
+                <div class="card-header" v-show="block.label">
+                    {{block.label}}
+                </div>
+                <div class="card-body">
                     <div v-for="child in block.childs">
-                        <strong style="font-size: 20px; font-weight: 600; line-height: 18px;">{{child.label}}</strong>
+                        <strong style="font-size: 20px; font-weight: 600; line-height: 18px;" v-if="child.label">{{child.label}}</strong>
 
                         <PatientEditable
                             :patient-id="patient.id"
@@ -174,6 +168,20 @@
                         </PatientEditable>
                         <hr>
                     </div>
+                </div>
+            </div>
+            <!-- End Mobile -->
+
+            <div class="card card-primary" v-if="$page.props.shared.userId === patient.created_by || patient.photos.length">
+                <div class="card-header">
+                    Прикрепленные фотография
+                </div>
+                <div class="card-body">
+                    <PatientPhotosModal :patient="patient"/>
+
+                    <hr v-show="patient.photos.length" />
+
+                    <PatientPhotoUpload :errors="errors" :patient-id="patient.id"/>
                 </div>
             </div>
 
@@ -236,6 +244,18 @@ export default {
                         {label: 'Код по МКБ10', key: 'mkb'},
                         {label: 'Лечение и проведённые процедуры', key: 'treatment'},
                         {label: 'Комментарий', key: 'comment'},
+                    ]
+                },
+                {
+                    label: 'Лечение',
+                    childs: [
+                        {label: 'Лечение и проведённые процедуры', key: 'treatment'},
+                    ]
+                },
+                {
+                    label: 'Комментарий',
+                    childs: [
+                        {label: false, key: 'comment'},
                     ]
                 },
             ]
