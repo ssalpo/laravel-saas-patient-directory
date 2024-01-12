@@ -9,12 +9,9 @@
             remote
             :remote-url="route('autocomplete.users')"
             full
+            :invalid-text="validationError"
             placeholder="Выберите роль"
         />
-
-        <div v-if="validationError" class="error invalid-feedback">
-            {{ validationError }}
-        </div>
     </div>
 </template>
 

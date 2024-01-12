@@ -1,9 +1,11 @@
 <script>
 import {defineComponent} from 'vue'
-import {useForm} from "@inertiajs/vue3";
+import {router, useForm} from "@inertiajs/vue3";
+import PatientPhotoLabelEditModal from "./PatientPhotoLabelEditModal.vue";
 
 export default defineComponent({
     name: "PatientPhotosModal",
+    components: {PatientPhotoLabelEditModal},
     props: ['patient'],
     data: function () {
         return {
@@ -45,6 +47,9 @@ export default defineComponent({
         });
     },
     methods: {
+        router() {
+            return router
+        },
         deletePhoto(photo) {
             if (!confirm('Вы уверены что хотите удалить фотографию?')) return;
 
@@ -79,6 +84,9 @@ export default defineComponent({
             }
 
             this.selectedPhoto = this.patient.photos.find((_, i) => i === this.selectedPhotoIndex);
+        },
+        reloadPage() {
+            router.reload({only: ['patient']})
         }
     }
 })
@@ -92,6 +100,12 @@ export default defineComponent({
                 data-toggle="modal" data-target="#photo-view-modal"
                 class="btn btn-default btn-sm mr-1">
             {{photo.label || `Фото ${index + 1}`}}
+        </button>
+        <button type="button"
+                @click="$refs.photoLabelEdit.edit(photo.label, patient.id, photo.id)"
+                v-if="$page.props.shared.userId === patient.created_by"
+                class="btn btn-primary btn-sm mr-1">
+            <span class="fa fa-pencil-alt"></span>
         </button>
         <button type="button"
                 v-if="$page.props.shared.userId === patient.created_by"
@@ -133,8 +147,8 @@ export default defineComponent({
 
                     <span class="mt-2" v-if="photoLoading">Фотография загружается...</span>
                     <span class="mt-2" v-if="photoLoadingError">
-                                        Ошибка загрузки фотографии, попробуйте еще раз.
-                                    </span>
+                        Ошибка загрузки фотографии, попробуйте еще раз.
+                    </span>
 
                     <div>
                         <img v-lazy="selectedPhotoUrl"
@@ -147,8 +161,9 @@ export default defineComponent({
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+
+    <PatientPhotoLabelEditModal
+        @success="reloadPage"
+        ref="photoLabelEdit"
+    />
 </template>
-
-<style scoped>
-
-</style>

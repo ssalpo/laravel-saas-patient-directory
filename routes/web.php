@@ -26,6 +26,8 @@ Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static functio
 
     // Patient Photos
     Route::resource('patients.photos', PatientPhotoController::class);
+    Route::post('/patients/{patient}/photos/{photo}/update-label', [PatientPhotoController::class, 'updateLabel'])->name('patients.photos.update-label');
+
     // Shared Patients
     Route::resource('patient-shares', PatientShareController::class);
 

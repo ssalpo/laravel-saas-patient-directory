@@ -11,6 +11,7 @@
             <div class="col-sm-12 col-md-4 text-sm-left pt-3 text-md-right pt-md-0" v-if="$page.props.shared.userId === patient.created_by">
                 <PatientShareModal
                     :patient="patient"
+                    @success="refreshPageData"
                     btn-class="btn btn-danger mr-2"
                 />
 
@@ -88,27 +89,27 @@
                         <table class="table table-bordered">
                             <tbody>
                             <tr>
-                                <td width="400">ФИО пациента</td>
+                                <td width="400" class="font-weight-bold">ФИО пациента</td>
                                 <td>{{ patient.name }}</td>
                             </tr>
                             <tr>
-                                <td width="400">Место проживания</td>
+                                <td width="400" class="font-weight-bold">Место проживания</td>
                                 <td>{{ patient.place_of_residence }}</td>
                             </tr>
                             <tr>
-                                <td width="400">Номер телефона</td>
+                                <td width="400" class="font-weight-bold">Номер телефона</td>
                                 <td>{{ patient.phone }}</td>
                             </tr>
                             <tr>
-                                <td>Дата рождения</td>
+                                <td class="font-weight-bold">Дата рождения</td>
                                 <td>{{ patient.birthday }}</td>
                             </tr>
                             <tr>
-                                <td>Пол</td>
+                                <td class="font-weight-bold">Пол</td>
                                 <td>{{ patient.gender ? 'М' : 'Ж' }}</td>
                             </tr>
                             <tr>
-                                <td>Номер медицинской записи</td>
+                                <td class="font-weight-bold">Номер медицинской записи</td>
                                 <td>{{ patient.medical_card_number }}</td>
                             </tr>
 
@@ -128,7 +129,7 @@
                         <table class="table table-bordered">
                             <tbody>
                             <tr v-for="child in block.childs">
-                                <td width="400" v-if="child.label">{{ child.label }}</td>
+                                <td width="400" class="font-weight-bold" v-if="child.label">{{ child.label }}</td>
                                 <td>
                                     <PatientEditable
                                         :patient-id="patient.id"
@@ -211,7 +212,7 @@
     </div>
 </template>
 <script>
-import {Head, Link, useForm} from "@inertiajs/vue3";
+import {Head, Link, router} from "@inertiajs/vue3";
 import {QuillEditor} from '@vueup/vue-quill';
 import PatientShareModal from "../../Shared/Modals/PatientShareModal.vue";
 import SendPatientConsultation from "../../Shared/Form/SendPatientConsultation.vue";
@@ -264,6 +265,13 @@ export default {
     computed: {
         consultations() {
             return this.patient?.currentUserConsultations || this.patient?.consultations || []
+        }
+    },
+    methods: {
+        refreshPageData() {
+            router.reload({
+                only: ['patient']
+            })
         }
     }
 }

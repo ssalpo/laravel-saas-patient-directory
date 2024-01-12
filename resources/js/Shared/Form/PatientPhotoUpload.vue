@@ -16,21 +16,17 @@ export default defineComponent({
         }
     },
     methods: {
-        submit() {
+        upload(photos) {
+            this.form.photos = photos;
+
             this.form.post(route('patients.photos.store', {patient: this.patientId}), {
                 forceFormData: true,
-                onSuccess: () => this.form.reset('photos'),
+                onSuccess: () => {
+                    this.$refs.photos.files = null;
+                    this.form.reset('photos')
+                },
                 preserveState: true,
                 preserveScroll: true,
-            })
-        },
-        remove(index) {
-            this.form.photos.splice(index, 1)
-        },
-        add() {
-            this.form.photos.push({
-                file: null,
-                label: null
             })
         }
     }
@@ -38,55 +34,30 @@ export default defineComponent({
 </script>
 
 <template>
-    <form @submit.prevent="submit">
+    <div v-if="form.progress">
+        <progress :value="form.progress.percentage" max="100">
+            {{ form.progress.percentage }}%
+        </progress>
+    </div>
 
-        <div class="row" v-for="(photo, index) in form.photos">
-            <div class="col-md">
-                <div class="form-group">
-                    <div class="custom-file">
-                        <input @input="photo.file = $event.target.files[0]"
-                               :class="{'is-invalid': errors[`photos.${index}.file`]}"
-                               type="file" class="custom-file-input">
-                        <label class="custom-file-label">
-                            {{ photo.file?.name || 'Выберите фото' }}
-                        </label>
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <div class="custom-file">
+                <input @input="upload($event.target.files)"
+                       ref="photos"
+                       multiple
+                       :disabled="form.processing"
+                       :class="{'is-invalid': $page.props.errors.photos}"
+                       type="file" class="custom-file-input"/>
 
-                        <div v-if="errors[`photos.${index}.file`]" class="error invalid-feedback">
-                            {{ errors[`photos.${index}.file`] }}
-                        </div>
-                    </div>
+                <label class="custom-file-label">
+                    {{ form.photos.length ? `Выбрано ${form.photos.length}` : 'Выберите фотографии' }}
+                </label>
+
+                <div v-if="$page.props.errors.photos" class="error invalid-feedback">
+                    {{ $page.props.errors.photos }}
                 </div>
             </div>
-            <div class="col-md">
-                <FormInput v-model="photo.label"
-                           :validation-error="errors[`photos.${index}.label`]"
-                           placeholder="Введите название при необходимости"/>
-            </div>
-            <div class="col-md">
-                <button @click="remove(index)" type="button" class="btn btn-outline-danger">
-                    <span class="fa fa-trash mr-2 mr-md-0"></span>
-                    <span class="d-sm-inline-block d-md-none">Удалить фото</span>
-                </button>
-            </div>
-
-            <div class="col-md d-sm-block d-md-none">
-                <hr/>
-            </div>
         </div>
-
-        <div v-if="form.progress">
-            <progress :value="form.progress.percentage" max="100">
-                {{ form.progress.percentage }}%
-            </progress>
-        </div>
-
-        <button type="button" @click="add" :disabled="form.processing" class="btn btn-sm btn-outline-primary pr-3 pl-3 mr-2">+</button>
-
-        <form-save-button
-            class="btn btn-sm btn-outline-danger"
-            v-if="form.photos.length"
-            :is-processing="form.processing"
-            add-btn-label="Сохранить"
-        />
-    </form>
+    </div>
 </template>

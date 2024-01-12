@@ -14,8 +14,7 @@ class PatientPhotoService
 
         foreach ($photos as $photo) {
             $patient->photos()->create([
-                'label' => $photo['label'],
-                'url' => $photo['file']?->store('photos', 'public'),
+                'url' => $photo?->store('photos', 'public'),
             ]);
         }
     }
@@ -33,5 +32,14 @@ class PatientPhotoService
 
             Storage::disk('public')->delete($photo->url ?? '');
         });
+    }
+
+    public function updateLabel(int $patientId, int $photoId, string $label): void
+    {
+        Patient::my('created_by')
+            ->findOrFail($patientId)
+            ->photos()
+            ->findOrFail($photoId)
+            ->update(['label' => $label]);
     }
 }

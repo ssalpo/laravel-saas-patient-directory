@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PatientPhotoLabelUpdateRequest;
 use App\Http\Requests\PatientPhotoRequest;
 use App\Services\PatientPhotoService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 
 class PatientPhotoController extends Controller
 {
@@ -27,5 +29,16 @@ class PatientPhotoController extends Controller
         );
 
         return back();
+    }
+
+    public function updateLabel(int $patientId, int $photoId, PatientPhotoLabelUpdateRequest $request): Response
+    {
+        $this->patientPhotoService->updateLabel(
+            $patientId,
+            $photoId,
+            $request->post('label')
+        );
+
+        return response()->noContent();
     }
 }
