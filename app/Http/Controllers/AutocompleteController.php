@@ -38,9 +38,13 @@ class AutocompleteController extends Controller
     {
         $q->when(request('q'), function ($q, $v) use ($field) {
             foreach ((array) $field as $index => $f) {
-                $q->{$index > 0 ? 'orWhere' : 'where'}($f, 'like', '%'.$v.'%');
+                $q->where(
+                    fn ($q) => $q->{$index > 0 ? 'orWhere' : 'where'}($f, 'like', '%'.$v.'%')
+                );
             }
         });
+
+        $q->when($this->getExceptValues(), fn ($q, $v) => $q->whereNotIn('id', $v));
     }
 
     private function transformCollection(Collection $items, string $textField = 'name', string $idField = 'id'): Collection
@@ -49,5 +53,14 @@ class AutocompleteController extends Controller
             'id' => $m->{$idField},
             'text' => $m->{$textField},
         ]);
+    }
+
+    public function getExceptValues(): ?array
+    {
+        if ($except = request('except')) {
+            return explode(',', $except);
+        }
+
+        return null;
     }
 }

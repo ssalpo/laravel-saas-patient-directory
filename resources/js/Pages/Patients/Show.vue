@@ -205,7 +205,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div v-html="consultation.content"></div>
+                    <pre style="all: unset; white-space: pre-wrap;">{{consultation.content}}</pre>
                 </div>
             </div>
         </div>

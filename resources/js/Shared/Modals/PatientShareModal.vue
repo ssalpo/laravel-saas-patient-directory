@@ -16,13 +16,14 @@
         <form-select-users
             v-model="form.user_id"
             prefetch
+            :except="[$page.props.shared.userId]"
             label="Выберите пользователя"
             :validation-error="form.errors.get('user_id')"
         />
 
         <template #footer="{hide}">
             <button class="btn btn-primary" :disabled="form.busy">
-                Добавить
+                Отправить
             </button>
 
             <button type="button" @click="hide" class="btn btn-link link-secondary ms-auto">
