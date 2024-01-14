@@ -175,7 +175,7 @@
 
             <div class="card card-primary" v-if="$page.props.shared.userId === patient.created_by || patient.photos.length">
                 <div class="card-header">
-                    Прикрепленные фотография
+                    Прикрепленные файлы
                 </div>
                 <div class="card-body">
                     <PatientPhotosModal :patient="patient"/>
@@ -243,8 +243,6 @@ export default {
                     childs: [
                         {label: 'Диагноз основного заболевания', key: 'diagnosis'},
                         {label: 'Код по МКБ10', key: 'mkb'},
-                        {label: 'Лечение и проведённые процедуры', key: 'treatment'},
-                        {label: 'Комментарий', key: 'comment'},
                     ]
                 },
                 {
@@ -254,7 +252,7 @@ export default {
                     ]
                 },
                 {
-                    label: 'Комментарий',
+                    label: 'Комментарии',
                     childs: [
                         {label: false, key: 'comment'},
                     ]
