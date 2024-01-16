@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/external/admin-lte/css/adminlte.min.css">
 
     @isset($home)
+        <script type="module" crossorigin="" src="/external/main.js"></script>
         <link rel="stylesheet" href="/external/home.css">
     @endisset
 

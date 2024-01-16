@@ -27,7 +27,7 @@
         <div class="container">
 
             <div class="card card-primary d-block d-md-none">
-                <div class="card-header">
+                <div class="card-header custom-card-header-size">
                     Общие данные
                 </div>
                 <div class="card-body">
@@ -81,7 +81,7 @@
             </div>
 
             <div class="card card-primary d-none d-md-block">
-                <div class="card-header">
+                <div class="card-header custom-card-header-size">
                     Общие данные
                 </div>
                 <div class="card-body">
@@ -121,7 +121,7 @@
 
             <!-- Desktop -->
             <div class="card card-primary d-none d-md-block" v-for="block in blocks">
-                <div class="card-header">
+                <div class="card-header custom-card-header-size">
                     {{block.label}}
                 </div>
                 <div class="card-body">
@@ -148,7 +148,7 @@
 
             <!-- Mobile -->
             <div class="card card-primary d-block d-md-none" v-for="block in blocks">
-                <div class="card-header" v-show="block.label">
+                <div class="card-header custom-card-header-size" v-show="block.label">
                     {{block.label}}
                 </div>
                 <div class="card-body">
@@ -174,7 +174,7 @@
             <!-- End Mobile -->
 
             <div class="card card-primary" v-if="$page.props.shared.userId === patient.created_by || patient.photos.length">
-                <div class="card-header">
+                <div class="card-header custom-card-header-size">
                     Прикрепленные файлы
                 </div>
                 <div class="card-body">
@@ -196,7 +196,7 @@
             />
 
             <div class="card card-outline card-success" v-for="consultation in consultations">
-                <div class="card-header">
+                <div class="card-header custom-card-header-size">
                     <div class="user-block">
                         <span class="username ml-0">
                             <a href="javascript:void(0)">{{ consultation.user.name }}</a>

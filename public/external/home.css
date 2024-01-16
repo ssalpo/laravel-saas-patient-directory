@@ -2,7 +2,7 @@
     font-family: TildaSans;
     font-style: normal;
     font-weight: 250 1000;
-    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations")
+    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations")
 }
 
 @font-face {
@@ -10,7 +10,7 @@
     font-style: normal;
     font-weight: 300;
     src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Light.eot);
-    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Light.eot?#iefix) format("embedded-opentype"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Light.woff2) format("woff2"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Light.woff) format("woff")
+    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Light.eot?#iefix) format("embedded-opentype"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Light.woff2) format("woff2"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Light.woff) format("woff")
 }
 
 @font-face {
@@ -18,7 +18,7 @@
     font-style: normal;
     font-weight: 400;
     src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Regular.eot);
-    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Regular.eot?#iefix) format("embedded-opentype"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Regular.woff2) format("woff2"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Regular.woff) format("woff")
+    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Regular.eot?#iefix) format("embedded-opentype"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Regular.woff2) format("woff2"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Regular.woff) format("woff")
 }
 
 @font-face {
@@ -26,7 +26,7 @@
     font-style: normal;
     font-weight: 500;
     src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Medium.eot);
-    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Medium.eot?#iefix) format("embedded-opentype"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Medium.woff2) format("woff2"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Medium.woff) format("woff")
+    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Medium.eot?#iefix) format("embedded-opentype"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Medium.woff2) format("woff2"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Medium.woff) format("woff")
 }
 
 @font-face {
@@ -34,7 +34,7 @@
     font-style: normal;
     font-weight: 600;
     src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Semibold.eot);
-    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Semibold.eot?#iefix) format("embedded-opentype"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Semibold.woff2) format("woff2"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Semibold.woff) format("woff")
+    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Semibold.eot?#iefix) format("embedded-opentype"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Semibold.woff2) format("woff2"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Semibold.woff) format("woff")
 }
 
 @font-face {
@@ -42,7 +42,7 @@
     font-style: normal;
     font-weight: 700;
     src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Bold.eot);
-    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Bold.eot?#iefix) format("embedded-opentype"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Bold.woff2) format("woff2"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Bold.woff) format("woff")
+    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Bold.eot?#iefix) format("embedded-opentype"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Bold.woff2) format("woff2"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Bold.woff) format("woff")
 }
 
 @font-face {
@@ -50,7 +50,7 @@
     font-style: normal;
     font-weight: 800;
     src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Extrabold.eot);
-    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Extrabold.eot?#iefix) format("embedded-opentype"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Extrabold.woff2) format("woff2"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Extrabold.woff) format("woff")
+    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Extrabold.eot?#iefix) format("embedded-opentype"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Extrabold.woff2) format("woff2"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Extrabold.woff) format("woff")
 }
 
 @font-face {
@@ -58,16 +58,16 @@
     font-style: normal;
     font-weight: 900;
     src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Black.eot);
-    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Black.eot?#iefix) format("embedded-opentype"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Black.woff2) format("woff2"),url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Black.woff) format("woff")
+    src: url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Black.eot?#iefix) format("embedded-opentype"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff2) format("woff2-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-VF.woff) format("woff-variations"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Black.woff2) format("woff2"), url(https://static.tildacdn.com/fonts/tildasans/TildaSans-Black.woff) format("woff")
 }
 
-*,*:before,*:after {
+*, *:before, *:after {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box
 }
 
-div,span,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,code,img,b,u,i,center,table,tr,th,td,video {
+div, span, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, code, img, b, u, i, center, table, tr, th, td, video {
     margin: 0;
     padding: 0;
     border: 0
@@ -101,7 +101,7 @@ sub {
     padding: 0
 }
 
-.t-container.flexx,.t-container_flex {
+.t-container.flexx, .t-container_flex {
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -130,13 +130,13 @@ sub {
     padding: 0
 }
 
-.t-container:before,.t-container:after,.t-container_10:before,.t-container_10:after,.t-container_8:before,.t-container_8:after,.t-container_100:before,.t-container_100:after {
+.t-container:before, .t-container:after, .t-container_10:before, .t-container_10:after, .t-container_8:before, .t-container_8:after, .t-container_100:before, .t-container_100:after {
     display: table;
     content: " ";
     width: 0
 }
 
-.t-container:after,.t-container_10:after,.t-container_8:after,.t-container_100:after {
+.t-container:after, .t-container_10:after, .t-container_8:after, .t-container_100:after {
     clear: both
 }
 
@@ -148,7 +148,7 @@ sub {
     width: 100%
 }
 
-.t-col.flexx,.t-col_flex {
+.t-col.flexx, .t-col_flex {
     align-items: stretch;
     height: inherit;
     margin-top: auto;
@@ -337,7 +337,7 @@ sub {
 
 @media screen and (max-width: 1200px) {
     .t-container {
-        max-width:960px;
+        max-width: 960px;
         padding: 0
     }
 
@@ -508,10 +508,10 @@ sub {
 
 @media screen and (max-width: 960px) {
     .t-container {
-        max-width:640px
+        max-width: 640px
     }
 
-    .t-container.flexx,.t-container_flex {
+    .t-container.flexx, .t-container_flex {
         display: block
     }
 
@@ -526,12 +526,12 @@ sub {
         box-sizing: border-box
     }
 
-    .t-col_1,.t-col_2,.t-col_3,.t-col_4,.t-col_5,.t-col_6,.t-col_7,.t-col_8,.t-col_9,.t-col_10,.t-col_11,.t-col_12 {
+    .t-col_1, .t-col_2, .t-col_3, .t-col_4, .t-col_5, .t-col_6, .t-col_7, .t-col_8, .t-col_9, .t-col_10, .t-col_11, .t-col_12 {
         width: 100%;
         max-width: 100%
     }
 
-    .t-prefix_1,.t-prefix_2,.t-prefix_3,.t-prefix_4,.t-prefix_5,.t-prefix_6,.t-prefix_7,.t-prefix_8,.t-prefix_9,.t-prefix_10,.t-prefix_11,.t-prefix_12 {
+    .t-prefix_1, .t-prefix_2, .t-prefix_3, .t-prefix_4, .t-prefix_5, .t-prefix_6, .t-prefix_7, .t-prefix_8, .t-prefix_9, .t-prefix_10, .t-prefix_11, .t-prefix_12 {
         padding-left: 10px;
         padding-right: 10px
     }
@@ -568,12 +568,12 @@ sub {
     padding-left: 20px
 }
 
-#allrecords b,#allrecords strong {
+#allrecords b, #allrecords strong {
     font-weight: 700
 }
 
 @media print {
-    body,html {
+    body, html {
         min-width: 1200px;
         max-width: 1200px;
         padding: 0;
@@ -657,7 +657,7 @@ img:not([src]) {
 }
 
 .t-text {
-    font-family: TildaSans,Arial,sans-serif;
+    font-family: TildaSans, Arial, sans-serif;
     font-weight: 300;
     color: #000
 }
@@ -678,7 +678,7 @@ img:not([src]) {
 }
 
 .t-name {
-    font-family: TildaSans,Arial,sans-serif;
+    font-family: TildaSans, Arial, sans-serif;
     font-weight: 600;
     color: #000
 }
@@ -689,7 +689,7 @@ img:not([src]) {
 }
 
 .t-heading {
-    font-family: TildaSans,Arial,sans-serif;
+    font-family: TildaSans, Arial, sans-serif;
     font-weight: 600;
     color: #000
 }
@@ -705,7 +705,7 @@ img:not([src]) {
 }
 
 .t-title {
-    font-family: TildaSans,Arial,sans-serif;
+    font-family: TildaSans, Arial, sans-serif;
     font-weight: 600;
     color: #000
 }
@@ -726,7 +726,7 @@ img:not([src]) {
 }
 
 .t-descr {
-    font-family: TildaSans,Arial,sans-serif;
+    font-family: TildaSans, Arial, sans-serif;
     font-weight: 300;
     color: #000
 }
@@ -778,7 +778,7 @@ img:not([src]) {
     opacity: .4
 }
 
-.t-tildalabel-free__main:hover,.t-tildalabel-free__txt-link:hover {
+.t-tildalabel-free__main:hover, .t-tildalabel-free__txt-link:hover {
     opacity: 1
 }
 
@@ -846,7 +846,7 @@ img:not([src]) {
 
 @media screen and (max-width: 1200px) {
     .t-text_xs {
-        font-size:14px
+        font-size: 14px
     }
 
     .t-text_sm {
@@ -888,7 +888,7 @@ img:not([src]) {
 
 @media screen and (max-width: 1024px) {
     .t-rec_pb_60 {
-        padding-bottom:30px
+        padding-bottom: 30px
     }
 
     .t-rec_pt_60 {
@@ -898,11 +898,11 @@ img:not([src]) {
 
 @media screen and (max-width: 640px) {
     .t456 .t456__list_item {
-        padding-right:0
+        padding-right: 0
     }
 
     .t456 .t456__list_item a {
-        font-size: 18px!important
+        font-size: 18px !important
     }
 
     .t-text_xs {
@@ -941,7 +941,7 @@ img:not([src]) {
         font-size: 16px
     }
 
-    .t-heading_sm,.t-heading_md {
+    .t-heading_sm, .t-heading_md {
         font-size: 24px
     }
 
@@ -956,7 +956,7 @@ img:not([src]) {
 
 @media screen and (max-width: 480px) {
     .t-title_xxl {
-        font-size:30px
+        font-size: 30px
     }
 
     .t-rec_pt_0 {
@@ -976,7 +976,7 @@ img:not([src]) {
     }
 
     .t-rec_pt_150 {
-        padding-top: 90px!important
+        padding-top: 90px !important
     }
 
     .t-rec_pb_0 {
@@ -996,7 +996,7 @@ img:not([src]) {
     }
 
     .t-rec_pb_150 {
-        padding-bottom: 90px!important
+        padding-bottom: 90px !important
     }
 }
 
@@ -1056,18 +1056,18 @@ img:not([src]) {
 
 @media screen and (max-width: 380px) {
     .t456 .t456__list_item {
-        padding:5px 0;
+        padding: 5px 0;
         display: block
     }
 
     .t456 .t456__list_item a {
-        font-size: 16px!important
+        font-size: 16px !important
     }
 }
 
 @media screen and (max-width: 1200px) {
     .t456__leftwrapper {
-        padding-left:20px
+        padding-left: 20px
     }
 
     .t456__rightwrapper {
@@ -1115,12 +1115,12 @@ img:not([src]) {
 .t456__list {
     list-style-type: none;
     margin: 0;
-    padding: 0!important
+    padding: 0 !important
 }
 
 .t456__list_item {
     clear: both;
-    font-family: TildaSans,Arial,sans-serif;
+    font-family: TildaSans, Arial, sans-serif;
     font-size: 16px;
     display: inline-block;
     padding-left: 15px;
@@ -1142,7 +1142,7 @@ img:not([src]) {
     padding-right: 0
 }
 
-.t456 a,#allrecords .t456 a {
+.t456 a, #allrecords .t456 a {
     text-decoration: none;
     color: #000
 }
@@ -1165,7 +1165,7 @@ img:not([src]) {
 
 @media screen and (max-width: 980px) {
     .t456__linewrapper {
-        display:none
+        display: none
     }
 
     .t456 {
@@ -1174,22 +1174,22 @@ img:not([src]) {
         display: block;
         margin: 0;
         padding: 0;
-        height: auto!important
+        height: auto !important
     }
 
-    .t456.t456__positionabsolute,.t456.t456__positionfixed,.t456.t456__positionstatic {
+    .t456.t456__positionabsolute, .t456.t456__positionfixed, .t456.t456__positionstatic {
         position: relative
     }
 
     .t456__imglogo {
-        width: auto!important;
+        width: auto !important;
         box-sizing: border-box;
         padding: 20px;
         margin: 0 auto
     }
 
     .t456__imglogomobile.t456__imglogo {
-        width: 100%!important
+        width: 100% !important
     }
 
     .t456__logo {
@@ -1217,8 +1217,8 @@ img:not([src]) {
         position: static
     }
 
-    .t456__leftwrapper,.t456__rightwrapper {
-        width: 100%!important;
+    .t456__leftwrapper, .t456__rightwrapper {
+        width: 100% !important;
         display: block
     }
 
@@ -1228,13 +1228,13 @@ img:not([src]) {
     }
 
     .t456__rightwrapper {
-        padding: 10px 0!important;
+        padding: 10px 0 !important;
         box-sizing: border-box
     }
 
     .t456__list {
         display: block;
-        padding: 0!important
+        padding: 0 !important
     }
 }
 
@@ -1326,7 +1326,7 @@ img:not([src]) {
 
 @media screen and (max-width: 960px) {
     .t165__btn-wrapper {
-        padding-top:30px;
+        padding-top: 30px;
         padding-bottom: 20px
     }
 
@@ -1337,7 +1337,7 @@ img:not([src]) {
 
 @media screen and (max-width: 640px) {
     .t165 .t-container {
-        display:block
+        display: block
     }
 
     .t165__img {
@@ -1430,7 +1430,7 @@ img:not([src]) {
 
 @media screen and (max-width: 640px) {
     .t670 .t-slds__wrapper {
-        padding:0!important
+        padding: 0 !important
     }
 }
 
@@ -1475,7 +1475,7 @@ img:not([src]) {
 }
 
 .t512 .t-list__item:first-child {
-    margin-top: 0!important
+    margin-top: 0 !important
 }
 
 .t512__textwr_leftpadding {
@@ -1513,7 +1513,7 @@ img:not([src]) {
 
 @media screen and (max-width: 960px) {
     .t512 .t-section__bottomwrapper {
-        margin-top:45px
+        margin-top: 45px
     }
 
     .t512 .t-section__topwrapper {
@@ -1525,7 +1525,7 @@ img:not([src]) {
     }
 
     .t512 .t-list__item {
-        margin-top: 40px!important
+        margin-top: 40px !important
     }
 
     .t512__imgwrapper {
@@ -1538,13 +1538,13 @@ img:not([src]) {
     }
 
     .t512__textwrapper {
-        padding-left: 20px!important
+        padding-left: 20px !important
     }
 }
 
 @media screen and (max-width: 640px) {
     .t512__imgwrapper {
-        max-width:50px
+        max-width: 50px
     }
 
     .t512__bgimg {
@@ -1601,14 +1601,14 @@ img:not([src]) {
 
 @media screen and (max-width: 960px) {
     .t230__videoblock {
-        margin-top:20px;
+        margin-top: 20px;
         margin-bottom: 20px
     }
 }
 
 @media screen and (max-width: 640px) {
     .t230__videoblock {
-        width:100%!important
+        width: 100% !important
     }
 }
 
@@ -1618,7 +1618,7 @@ img:not([src]) {
     padding-bottom: 4px
 }
 
-.t555__mainblock:after,.t555__mainblock:before {
+.t555__mainblock:after, .t555__mainblock:before {
     content: "";
     display: table;
     clear: both
@@ -1663,41 +1663,41 @@ img:not([src]) {
 
 @media screen and (max-width: 960px) {
     .t555__contentwrapper {
-        padding:40px
+        padding: 40px
     }
 
     .t555__map {
-        padding: 0!important
+        padding: 0 !important
     }
 }
 
 @media screen and (max-width: 750px) {
     .t555__contentwrapper {
-        padding:30px 20px
+        padding: 30px 20px
     }
 
     .t555__mainblock {
-        min-height: auto!important
+        min-height: auto !important
     }
 
     .t555__col {
         float: none;
         width: 100%;
-        min-height: auto!important
+        min-height: auto !important
     }
 
     .t555__contentbox {
         float: none;
         width: 100%;
-        height: auto!important
+        height: auto !important
     }
 
     .t555__map {
-        height: 300px!important
+        height: 300px !important
     }
 
     .t555__map .t-map {
-        height: inherit!important
+        height: inherit !important
     }
 
     .t555__title {
@@ -1725,7 +1725,7 @@ img:not([src]) {
     color: red;
     border: 1px solid #ff0000;
     font-size: 14px;
-    font-family: tfutura,Arial
+    font-family: tfutura, Arial
 }
 
 .slider-image {
@@ -1800,14 +1800,14 @@ img:not([src]) {
 
 @media screen and (max-width: 1024px) {
     .work_box_cont_img {
-        width:16.6875rem;
+        width: 16.6875rem;
         height: 16.6875rem
     }
 }
 
 @media screen and (max-width: 640px) {
     .work_box_cont_img {
-        width:14.6875rem;
+        width: 14.6875rem;
         height: 14.6875rem
     }
 }
@@ -1815,19 +1815,23 @@ img:not([src]) {
 .header-title {
     color: #fff;
     font-size: 50px;
-    font-family: TildaSans,Arial,sans-serif;
+    font-family: TildaSans, Arial, sans-serif;
     padding: 11px 0 14px
+}
+
+.header-title_main {
+    font-size: 34px
 }
 
 @media screen and (max-width: 1024px) {
     .header-title {
-        font-size:32px
+        font-size: 22px
     }
 }
 
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 768px) {
     .header-title {
-        font-size:26px
+        font-size: 19px
     }
 }
 
@@ -1840,7 +1844,7 @@ img:not([src]) {
 
 @media screen and (max-width: 768px) {
     .code-block {
-        height:200px
+        height: 200px
     }
 }
 
@@ -1870,7 +1874,7 @@ img:not([src]) {
     flex-direction: column;
     justify-content: center;
     margin: auto;
-    font-family: TildaSans,sans-serif
+    font-family: TildaSans, sans-serif
 }
 
 .code-block-form__content-top {
@@ -1881,7 +1885,7 @@ img:not([src]) {
 
 @media screen and (max-width: 480px) {
     .code-block-form__content-top {
-        flex-direction:column;
+        flex-direction: column;
         align-items: stretch
     }
 }
@@ -1892,19 +1896,19 @@ img:not([src]) {
     border-radius: 7px;
     font-size: 22px;
     line-height: 36px;
-    font-family: TildaSans,Arial,sans-serif;
+    font-family: TildaSans, Arial, sans-serif;
     text-align: center
 }
 
 @media screen and (max-width: 480px) {
     .code-block-form input {
-        margin-bottom:10px
+        margin-bottom: 10px
     }
 }
 
 @media screen and (max-width: 375px) {
     .code-block-form input {
-        font-size:18px
+        font-size: 18px
     }
 }
 
@@ -1927,7 +1931,7 @@ img:not([src]) {
 
 @media screen and (max-width: 480px) {
     .code-block-form__btn-submit {
-        display:block;
+        display: block;
         margin-left: 0
     }
 }
@@ -1945,7 +1949,65 @@ img:not([src]) {
 
 @media screen and (max-width: 480px) {
     .code-block-form__input-error {
-        padding:3px
+        padding: 3px
+    }
+}
+
+#navbar {
+    margin-right: 0;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 15px;
+    justify-content: center
+}
+
+#navbar .t456__list_item {
+    padding: 0;
+    margin: 3px 10px
+}
+
+.main-heading {
+    font-size: 44px
+}
+
+.main-heading-container {
+    display: flex;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-right: 1px solid #f3f5f7
+}
+
+@media screen and (max-width: 1200px) {
+    .main-heading {
+        font-size: 34px
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .main-heading {
+        font-size: 24px
+    }
+
+    .main-heading-container .t-heading {
+        padding-bottom: 0
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .main-heading {
+        font-size: 36px;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 40px
+    }
+
+    .main-heading-container {
+        border-right: none
+    }
+
+    .main-heading-container .t165__textwrapper {
+        padding-right: 0
     }
 }
 
@@ -1994,7 +2056,7 @@ hr {
 }
 
 pre {
-    font-family: monospace,monospace;
+    font-family: monospace, monospace;
     font-size: 1em
 }
 
@@ -2008,12 +2070,12 @@ abbr[title] {
     text-decoration: underline dotted
 }
 
-b,strong {
+b, strong {
     font-weight: bolder
 }
 
-code,kbd,samp {
-    font-family: monospace,monospace;
+code, kbd, samp {
+    font-family: monospace, monospace;
     font-size: 1em
 }
 
@@ -2021,7 +2083,7 @@ small {
     font-size: 80%
 }
 
-sub,sup {
+sub, sup {
     font-size: 75%;
     line-height: 0;
     position: relative;
@@ -2040,31 +2102,31 @@ img {
     border-style: none
 }
 
-button,input,optgroup,select,textarea {
+button, input, optgroup, select, textarea {
     font-family: inherit;
     font-size: 100%;
     line-height: 1.15;
     margin: 0
 }
 
-button,input {
+button, input {
     overflow: visible
 }
 
-button,select {
+button, select {
     text-transform: none
 }
 
-button,[type=button],[type=reset],[type=submit] {
+button, [type=button], [type=reset], [type=submit] {
     -webkit-appearance: button
 }
 
-button::-moz-focus-inner,[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner {
+button::-moz-focus-inner, [type=button]::-moz-focus-inner, [type=reset]::-moz-focus-inner, [type=submit]::-moz-focus-inner {
     border-style: none;
     padding: 0
 }
 
-button:-moz-focusring,[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring {
+button:-moz-focusring, [type=button]:-moz-focusring, [type=reset]:-moz-focusring, [type=submit]:-moz-focusring {
     outline: 1px dotted ButtonText
 }
 
@@ -2089,12 +2151,12 @@ textarea {
     overflow: auto
 }
 
-[type=checkbox],[type=radio] {
+[type=checkbox], [type=radio] {
     box-sizing: border-box;
     padding: 0
 }
 
-[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button {
+[type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
     height: auto
 }
 
