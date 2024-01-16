@@ -930,7 +930,7 @@ img:not([src]) {
     }
 
     .t-title_xs {
-        font-size: 30px
+        font-size: 23px
     }
 
     .t-title_xxl {
@@ -1996,7 +1996,7 @@ img:not([src]) {
 
 @media screen and (max-width: 640px) {
     .main-heading {
-        font-size: 36px;
+        font-size: 28px;
         text-align: center;
         margin-top: 0;
         margin-bottom: 40px

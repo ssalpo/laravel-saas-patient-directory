@@ -51,7 +51,7 @@
                 <div class="t-section__container t-container">
                     <div class="t-col t-col_12">
                         <div class=" t-align_center">
-                            <div class="t-section__title t-title t-title_xs" field="btitle">Про дерматопатологию...</div>
+                            <div class="t-section__title t-title t-title_xs" style="text-align: left" field="btitle">Про дерматопатологию...</div>
                         </div>
                     </div>
                     <div class="t-col t-col_12">
@@ -123,7 +123,7 @@
                         </div>
                     </div>
                     <div class="t-col t-col_7 ">
-                        <iframe class="mapFrame" src="https://yandex.ru/map-widget/v1/?um=constructor%3A458480c84e2afe9b21a7d7faed0764d32dfefa338bbf3209d70868452463c508&amp;source=constructor" width="500" height="400" frameborder="0"></iframe>
+
                     </div>
                 </div>
             </div>
