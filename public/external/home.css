@@ -1803,6 +1803,10 @@ img:not([src]) {
         width: 16.6875rem;
         height: 16.6875rem
     }
+
+    .main-map {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 640px) {

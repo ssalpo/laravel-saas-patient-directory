@@ -122,8 +122,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="t-col t-col_7 ">
-
+                    <div class="t-col t-col_7 main-map">
+                        <iframe class="mapFrame" src="https://yandex.ru/map-widget/v1/?um=constructor%3A458480c84e2afe9b21a7d7faed0764d32dfefa338bbf3209d70868452463c508&amp;source=constructor" width="500" height="400" frameborder="0"></iframe>
                     </div>
                 </div>
             </div>
