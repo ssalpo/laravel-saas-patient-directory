@@ -55,7 +55,7 @@
                             </thead>
                             <tbody>
                             <tr v-for="(patient, index) in patients.data">
-                                <td class="text-center d-none d-md-table-cell">{{ ((patients.meta.current_page - 1) * patients.meta.per_page) + index + 1 }}</td>
+                                <td class="text-center d-none d-md-table-cell">{{ patients.meta.total - (((patients.meta.current_page - 1) * patients.meta.per_page) + index) }}</td>
                                 <td>
                                     <h5 class="d-block d-md-none">
                                         <Link :href="route('patients.show', patient.id)">
