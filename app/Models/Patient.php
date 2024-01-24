@@ -88,7 +88,7 @@ class Patient extends Model
             $biopsy = $c['biopsyCustomValue'] ?? $c['biopsy'] ?? '';
 
             return sprintf('%s (%s)', $c['code'], ($biopsy ? $biopsy.', ' : '').$c['description']);
-        }, $this->categories);
+        }, $this->categories ?? []);
     }
 
     public function doctor(): BelongsTo
