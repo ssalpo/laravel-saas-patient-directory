@@ -76,6 +76,11 @@ class Patient extends Model
         );
     }
 
+    public function isReportReady(): bool
+    {
+        return $this->status === PatientStatusEnum::CHECKED;
+    }
+
     public function scopeMyByPermission(Builder $q, string $field = 'created_by'): void
     {
         $q->when(

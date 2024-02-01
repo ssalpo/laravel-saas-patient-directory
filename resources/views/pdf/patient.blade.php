@@ -70,7 +70,7 @@
     <tr>
         <td>Номер кейса</td>
         <td>
-            @foreach($patient->case_numbers as $caseNumber)
+            @foreach($patient->case_numbers ?? [] as $caseNumber)
                 <div>{{$caseNumber}}</div>
             @endforeach
         </td>
@@ -91,7 +91,7 @@
     <tr>
         <td>Микроскопическое описание</td>
         <td class="editor-content">
-            @if($patient->status === 2)
+            @if($patient->isReportReady())
                 {!! $patient->microscopic_description !!}
             @endif
         </td>
@@ -99,7 +99,7 @@
     <tr>
         <td><b>Диагноз</b></td>
         <td class="editor-content">
-            @if($patient->status === 2)
+            @if($patient->isReportReady())
                 {!! $patient->diagnosis !!}
             @endif
         </td>
@@ -107,7 +107,7 @@
     <tr>
         <td>Заметка</td>
         <td class="editor-content">
-            @if($patient->status === 2)
+            @if($patient->isReportReady())
                 {!! $patient->note !!}
             @endif
         </td>
