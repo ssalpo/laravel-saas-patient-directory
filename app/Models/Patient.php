@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PatientStatusEnum;
 use App\Models\Traits\CurrentUser;
 use Hashids\Hashids;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,6 +51,7 @@ class Patient extends Model
         'print_date' => 'date',
         'sampling_date' => 'datetime',
         'sample_receipt_date' => 'datetime',
+        'status' => PatientStatusEnum::class,
     ];
 
     protected static function booted(): void
