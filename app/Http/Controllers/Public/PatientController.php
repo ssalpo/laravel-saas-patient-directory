@@ -45,7 +45,7 @@ class PatientController extends Controller
     public function show(string $hash): Response
     {
         $patient = Patient::where('hashid', $hash)
-            ->with('location')
+            ->with('doctor', 'medicalClinic', 'location', 'caseNumbers')
             ->firstOrFail();
 
         return Pdf::loadView(
