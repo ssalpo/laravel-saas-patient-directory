@@ -19,11 +19,11 @@
             <tbody>
             <tr>
                 <td width="300">Уникальный код пациента</td>
-                <td>{{ patient.name }}</td>
+                <td>{{ patient.uniq_code }}</td>
             </tr>
             <tr>
                 <td width="300">ФИО пациента</td>
-                <td>{{ patient.uniq_code }}</td>
+                <td>{{ patient.name }}</td>
             </tr>
             <tr>
                 <td width="300">Место проживания</td>
