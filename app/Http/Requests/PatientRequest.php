@@ -24,7 +24,7 @@ class PatientRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
+        return [
             'name' => 'required|string|min:1|max:255',
             'phone' => 'nullable|string|min:1|max:255',
             'birthday' => 'required|date:Y-m-d',
@@ -43,24 +43,25 @@ class PatientRequest extends FormRequest
             'created_by' => 'required|integer',
             'location_id' => 'nullable|exists:locations,id',
             'medical_clinic_id' => 'required|exists:medical_clinics,id',
+            'doctor_id' => 'required|exists:doctors,id',
         ];
-
-        if ($this->user()?->can('select_doctor_patients')) {
-            $rules['doctor_id'] = 'required|exists:doctors,id';
-        }
-
-        return $rules;
     }
 
     protected function prepareForValidation()
     {
-        return $this->merge([
+        $fields = [
             'created_by' => auth()->id(),
             'gender' => $this->gender == 1,
             'birthday' => $this->birthday ? Carbon::parse($this->birthday)->format('Y-m-d') : null,
             'sampling_date' => $this->sampling_date ? Carbon::parse($this->sampling_date)->format('Y-m-d H:i') : null,
             'sample_receipt_date' => $this->sample_receipt_date ? Carbon::parse($this->sample_receipt_date)->format('Y-m-d H:i') : null,
-        ]);
+        ];
+
+        if (! $this->user()?->can('select_doctor_patients')) {
+            $fields['doctor_id'] = auth()->id();
+        }
+
+        return $this->merge($fields);
     }
 
     public function messages(): array

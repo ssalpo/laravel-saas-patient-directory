@@ -52,7 +52,7 @@
             <tr>
                 <td>Номер кейса</td>
                 <td>
-                    <div v-for="case_number in patient.case_numbers">{{ case_number }}</div>
+                    <div v-for="case_number in patient.case_numbers">{{ case_number.formatted }}</div>
                 </td>
             </tr>
             </tbody>
