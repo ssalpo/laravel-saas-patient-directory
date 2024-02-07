@@ -180,7 +180,7 @@ class PatientController extends Controller
      */
     public function print(Patient $patient): Response
     {
-        $patient->load(['doctor', 'location']);
+        $patient->load(['doctor', 'location', 'caseNumbers']);
 
         return inertia('Patients/Print', [
             'currentDate' => now()->format('d.m.Y'),
