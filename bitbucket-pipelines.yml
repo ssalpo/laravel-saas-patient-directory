@@ -1,6 +1,6 @@
 pipelines:
   branches:
-    short-product-for-doctors:
+    main:
       - step:
           script:
             - pipe: atlassian/ssh-run:0.6.1
