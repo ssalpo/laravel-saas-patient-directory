@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ResetPasswordFirstlyController;
 use App\Http\Controllers\PatientConsultationController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientPhotoController;
@@ -16,7 +17,10 @@ Route::get('/', function () {
     return inertia('Home');
 });
 
-Route::middleware(['auth:sanctum', 'user.activity.check'])->group(static function () {
+// Reset Password Firstly
+Route::resource('reset-password-firstly', ResetPasswordFirstlyController::class)->only(['create', 'store']);
+
+Route::middleware(['auth:sanctum', 'user.activity.check', 'check.password.reset'])->group(static function () {
     // Patients
     Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
     Route::get('/patients/full-records', [PatientController::class, 'fullRecords'])->name('patients.full_records');

@@ -26,6 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
         'is_active',
+        'is_password_reset',
     ];
 
     /**
@@ -46,6 +47,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
+        'is_password_reset' => 'boolean',
     ];
 
     public function setPasswordAttribute(?string $value): void

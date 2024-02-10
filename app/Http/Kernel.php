@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckPasswordAlreadyReset;
+use App\Http\Middleware\CheckPasswordReset;
 use App\Http\Middleware\UserActivityCheck;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -66,5 +68,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'user.activity.check' => UserActivityCheck::class,
+        'check.password.reset' => CheckPasswordReset::class,
+        'check.password.already.reset' => CheckPasswordAlreadyReset::class,
     ];
 }
