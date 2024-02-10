@@ -16,8 +16,10 @@ class PhotoResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'label' => $this->label,
             'url' => $this->url,
             'has_thumb' => $this->has_thumb,
+            'created_at' => $this->created_at->format('d.m.Y h:i'),
         ];
     }
 }

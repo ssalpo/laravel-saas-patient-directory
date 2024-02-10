@@ -24,8 +24,15 @@ class PatientReportRequest extends FormRequest
     public function rules()
     {
         return [
-            'microscopic_description' => 'nullable|string',
-            'diagnosis' => 'nullable|string',
+            'morbi' => 'nullable|min:5|max:60000',
+            'vitae' => 'nullable|min:5|max:60000',
+            'lab_workup' => 'nullable|min:5|max:60000',
+
+            'diagnosis' => 'nullable|min:5|max:60000',
+            'mkb' => 'nullable|min:5|max:60000',
+            'treatment' => 'nullable|min:5|max:60000',
+
+            'comment' => 'nullable|min:5|max:60000',
             'note' => 'nullable|string',
         ];
     }

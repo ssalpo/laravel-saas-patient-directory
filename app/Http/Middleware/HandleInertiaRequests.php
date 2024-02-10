@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Spatie\Permission\Models\Permission;
@@ -41,6 +42,9 @@ class HandleInertiaRequests extends Middleware
         }
 
         return array_merge(parent::share($request), [
+            'counts' => [
+                'sharedPatients' => Patient::sharedWithMeCount(auth()->id()),
+            ],
             'shared' => [
                 'isAuth' => auth()->check(),
                 'userId' => auth()->id(),

@@ -2,15 +2,11 @@
 
 namespace App\Models;
 
-use App\Enums\PatientStatusEnum;
 use App\Models\Traits\CurrentUser;
-use Hashids\Hashids;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
@@ -20,87 +16,49 @@ class Patient extends Model
     use CurrentUser, HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'hashid',
-        'case_numbers',
-        'status',
+        'created_by',
+        'share_to_user_id',
+        'is_share_notification_viewed',
         'name',
-        'phone',
+        'medical_card_number',
         'birthday',
         'gender',
-        'sampling_date',
-        'sample_receipt_date',
-        'anamnes',
-        'categories',
-        'doctor_id',
-        'microscopic_description',
-        'diagnosis',
-        'note',
-        'print_date',
-        'created_by',
-        'comment',
-        'uniq_code',
         'place_of_residence',
-        'location_id',
-        'medical_clinic_id',
+        'phone',
+        'note',
+        'comment',
+        'morbi',
+        'vitae',
+        'lab_workup',
+        'diagnosis',
+        'mkb',
+        'treatment',
     ];
 
     protected $casts = [
-        'case_numbers' => 'array',
-        'categories' => 'array',
+        'is_share_notification_viewed' => 'bool',
         'birthday' => 'date',
-        'print_date' => 'date',
-        'sampling_date' => 'datetime',
-        'sample_receipt_date' => 'datetime',
-        'status' => PatientStatusEnum::class,
     ];
-
-    protected static function booted(): void
-    {
-        static::created(function (Patient $patient) {
-            $patient->update(['hashid' => (new Hashids())->encode($patient->id)]);
-        });
-    }
 
     public function scopeFilter(Builder $q, array $data): void
     {
         $q->when(
             Arr::get($data, 'query'),
             fn ($q, $search) => $q->where('name', 'LIKE', '%'.$search.'%')
-                ->orWhere('diagnosis', 'LIKE', '%'.$search.'%')
-                ->orWhereRaw("JSON_SEARCH(case_numbers, 'all', ?) IS NOT NULL", ["%{$search}%"])
-        );
-
-        $q->when(
-            Arr::get($data, 'status'),
-            fn ($q, $status) => $q->whereStatus($status)
         );
     }
 
-    public function isReportReady(): bool
+    public function scopeSharedToMe(Builder $q, int $sharedUserId): void
     {
-        return $this->status === PatientStatusEnum::CHECKED;
+        $q->where('share_to_user_id', $sharedUserId)
+            ->orWhereHas('currentUserConsultations');
     }
 
-    public function scopeMyByPermission(Builder $q, string $field = 'created_by'): void
+    public function scopeMyOrSharedWithMe(Builder $q, int $sharedUserId, string $currentUserField = 'user_id'): void
     {
-        $q->when(
-            ! auth()->user()?->can('read_all_patients'),
-            fn ($q) => $q->my($field)
-        );
-    }
-
-    public function getCategoriesFormattedAttribute(): array
-    {
-        return array_map(function ($c) {
-            $biopsy = $c['biopsyCustomValue'] ?? $c['biopsy'] ?? '';
-
-            return sprintf('%s (%s)', $c['code'], ($biopsy ? $biopsy.', ' : '').$c['description']);
-        }, $this->categories ?? []);
-    }
-
-    public function doctor(): BelongsTo
-    {
-        return $this->belongsTo(Doctor::class);
+        $q->my($currentUserField)
+            ->orWhere('share_to_user_id', $sharedUserId)
+            ->orWhereHas('currentUserConsultations');
     }
 
     public function photos(): MorphMany
@@ -108,23 +66,24 @@ class Patient extends Model
         return $this->morphMany(Photo::class, 'photoable');
     }
 
-    public function payment(): HasOne
+    public static function sharedWithMeCount(?int $currentUserId): int
     {
-        return $this->hasOne(Payment::class);
+        if (is_null($currentUserId)) {
+            return 0;
+        }
+
+        return self::sharedToMe($currentUserId)
+            ->where('is_share_notification_viewed', false)
+            ->count();
     }
 
-    public function location(): BelongsTo
+    public function consultations(): HasMany
     {
-        return $this->belongsTo(Location::class);
+        return $this->hasMany(PatientConsultation::class);
     }
 
-    public function medicalClinic(): BelongsTo
+    public function currentUserConsultations(): HasMany
     {
-        return $this->belongsTo(MedicalClinic::class);
-    }
-
-    public function caseNumbers(): HasMany
-    {
-        return $this->hasMany(PatientCaseNumber::class);
+        return $this->consultations()->where('user_id', auth()->id());
     }
 }

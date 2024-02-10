@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Doctor;
-use App\Models\Location;
-use App\Models\MedicalClinic;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Spatie\Permission\Models\Permission;
@@ -29,25 +27,10 @@ class AutocompleteController extends Controller
         );
     }
 
-    public function doctors(): Collection
+    public function users(): Collection
     {
         return $this->transformCollection(
-            Doctor::where(fn ($q) => $this->searchFinder($q))->orderByDesc('created_at')->get()
-        );
-    }
-
-    public function medicalClinics(): Collection
-    {
-        return $this->transformCollection(
-            MedicalClinic::where(fn ($q) => $this->searchFinder($q))->get()
-        );
-    }
-
-    public function locations(): Collection
-    {
-        return $this->transformCollection(
-            items: Location::where(fn ($q) => $this->searchFinder($q, ['id', 'region', 'area']))->get(),
-            textField: 'full_address'
+            items: User::where(fn ($q) => $this->searchFinder($q))->get()
         );
     }
 
@@ -55,9 +38,13 @@ class AutocompleteController extends Controller
     {
         $q->when(request('q'), function ($q, $v) use ($field) {
             foreach ((array) $field as $index => $f) {
-                $q->{$index > 0 ? 'orWhere' : 'where'}($f, 'like', '%'.$v.'%');
+                $q->where(
+                    fn ($q) => $q->{$index > 0 ? 'orWhere' : 'where'}($f, 'like', '%'.$v.'%')
+                );
             }
         });
+
+        $q->when($this->getExceptValues(), fn ($q, $v) => $q->whereNotIn('id', $v));
     }
 
     private function transformCollection(Collection $items, string $textField = 'name', string $idField = 'id'): Collection
@@ -66,5 +53,14 @@ class AutocompleteController extends Controller
             'id' => $m->{$idField},
             'text' => $m->{$textField},
         ]);
+    }
+
+    public function getExceptValues(): ?array
+    {
+        if ($except = request('except')) {
+            return explode(',', $except);
+        }
+
+        return null;
     }
 }

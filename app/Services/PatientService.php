@@ -2,14 +2,8 @@
 
 namespace App\Services;
 
-use App\Enums\PatientStatusEnum;
-use App\Jobs\AddUniqCodeForPatient;
 use App\Models\Patient;
-use Facades\App\Services\PatientCaseNumberService;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class PatientService
 {
@@ -18,21 +12,7 @@ class PatientService
      */
     public function store(array $data)
     {
-        return DB::transaction(function () use ($data) {
-            $patient = Patient::create($data);
-
-            PatientCaseNumberService::generate(
-                $patient->id,
-                $patient->created_at->format('Y'),
-                array_column($patient->categories, 'code')
-            );
-
-            $this->uploadPhotos($patient, $data['photos']);
-
-            AddUniqCodeForPatient::dispatch($patient);
-
-            return $patient;
-        });
+        return Patient::create($data);
     }
 
     /**
@@ -40,127 +20,48 @@ class PatientService
      */
     public function update(int $id, array $data)
     {
-        return DB::transaction(function () use ($id, $data) {
-            $patient = Patient::findOrFail($id);
+        $patient = Patient::my('created_by')->findOrFail($id);
 
-            $patient->update($data);
+        $patient->update($data);
 
-            PatientCaseNumberService::generate(
-                $patient->id,
-                $patient->created_at->format('Y'),
-                array_column($patient->categories, 'code')
-            );
-
-            $this->uploadPhotos($patient, $data['photos']);
-
-            return $patient;
-        });
-    }
-
-    /**
-     * Возвращает статистику по приему пациентов сгруппированный по дням
-     */
-    public function dailyStatistics(): Collection
-    {
-        return Patient::select(
-            DB::raw('CAST(sampling_date AS DATE) s_date'),
-            DB::raw('COUNT(*) AS total')
-        )
-            ->orderBy('s_date', 'DESC')
-            ->groupBy('s_date')
-            ->get();
+        return $patient;
     }
 
     /**
      * Сохраняет ответ итогового результата диагноза
      */
-    public function saveReport(int $id, array $data): Patient
+    public function saveReport(int $id, array $data)
     {
-        $patient = Patient::findOrFail($id);
+        $fieldsToSave = ['note', 'morbi', 'comment', 'vitae', 'lab_workup', 'diagnosis', 'mkb', 'treatment', 'stain'];
 
-        $patient->update(
-            Arr::only($data, [
-                'microscopic_description',
-                'diagnosis',
-                'note',
-            ])
+        return tap(
+            Patient::my('created_by')->findOrFail($id),
+            fn ($p) => $p->update(Arr::only($data, $fieldsToSave))
         );
+    }
+
+    /**
+     * Делится пациентом с другим врачом для получения консультации
+     */
+    public function share(array $data): Patient
+    {
+        $patient = Patient::findOrFail($data['patient_id']);
+
+        $patient->update([
+            'share_to_user_id' => $data['user_id'],
+            'is_share_notification_viewed' => false,
+        ]);
 
         return $patient;
     }
 
     /**
-     * Сохраняет комментарий по итоговому результату диагноза
+     * Устанавливает статус для поделенных пациентов
      */
-    public function saveComment(int $id, string $comment): Patient
+    public function markSharedAsViewed(array $patientIds)
     {
-        $patient = Patient::findOrFail($id);
-
-        $patient->update(['comment' => $comment]);
-
-        return $patient;
-    }
-
-    /**
-     * Меняет статус результата на Проверено
-     */
-    public function markAsChecked(int $id)
-    {
-        return Patient::findOrFail($id)->update([
-            'status' => PatientStatusEnum::CHECKED,
+        return Patient::whereIn('id', $patientIds)->update([
+            'is_share_notification_viewed' => true,
         ]);
-    }
-
-    /**
-     * Сохраняет дату печати карточки клиента
-     */
-    public function changePrintDate(int $id, string $printDate): bool
-    {
-        return Patient::findOrFail($id)->update([
-            'print_date' => $printDate,
-        ]);
-    }
-
-    /**
-     * Удаляет загруженное фото пациента по ID фотографии
-     */
-    public function deletePhoto(int $id, int $photoId): void
-    {
-        $patient = Patient::findOrFail($id);
-
-        DB::transaction(function () use ($patient, $photoId) {
-            $patient->photos()
-                ->whereId($photoId)
-                ->firstOrFail()
-                ->delete();
-
-            Storage::disk('public')->delete($photo->url ?? '');
-        });
-    }
-
-    /**
-     * Генерирует уникальный код доступа для пациента
-     */
-    public function generateUniqAccessCode(int $id): int
-    {
-        do {
-            $code = random_int(100000, 999999);
-        } while (Patient::where('uniq_code', $code)->exists());
-
-        Patient::findOrFail($id)->update(['uniq_code' => $code]);
-
-        return $code;
-    }
-
-    /**
-     * Загружает фотографии пациентов
-     */
-    private function uploadPhotos(Patient $patient, array $photos): void
-    {
-        foreach ($photos as $photo) {
-            $patient->photos()->create([
-                'url' => $photo?->store('photos', 'public'),
-            ]);
-        }
     }
 }

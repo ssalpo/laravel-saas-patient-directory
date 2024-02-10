@@ -11,7 +11,7 @@ class Photo extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['url', 'has_thumb'];
+    protected $fillable = ['label', 'url', 'has_thumb'];
 
     protected $casts = [
         'has_thumb' => 'boolean',

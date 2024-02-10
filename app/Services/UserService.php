@@ -15,7 +15,7 @@ class UserService
         return DB::transaction(function () use ($data) {
             $user = User::create($data);
 
-            $user->assignRole($data['role']);
+            $user->assignRole($data['role'] ?? null);
 
             return $user;
         });
@@ -31,7 +31,7 @@ class UserService
         return DB::transaction(function () use ($data, $user) {
             $user->update($data);
 
-            $user->syncRoles($data['role']);
+            $user->syncRoles($data['role'] ?? null);
 
             return $user;
         });

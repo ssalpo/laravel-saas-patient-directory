@@ -104,7 +104,8 @@ export default {
             type: [String, Number],
             default: null
         },
-        autoPosition: Boolean
+        autoPosition: Boolean,
+        except: Array
     },
     data() {
         return {
@@ -197,9 +198,11 @@ export default {
         getData(query = null) {
             if (this.remote && this.remoteUrl) {
                 this.loading = true;
-                let q = query || this.searchQuery;
 
-                axios.get(this.remoteUrl + `?q=${q}`)
+                let q = query || this.searchQuery;
+                let except = this.except ? this.except.join(',') : ''
+
+                axios.get(this.remoteUrl + `?q=${q}&except=${except}`)
                     .then((r) => {
                         this.listOptions = r.data
 

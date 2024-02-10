@@ -15,20 +15,17 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->jsonb('case_numbers')->nullable();
-            $table->tinyInteger('status')->default(\App\Enums\PatientStatusEnum::CHECKING);
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('share_to_user_id')->nullable()->constrained('users');
+            $table->boolean('is_share_notification_viewed')->default(false);
             $table->string('name');
+            $table->string('medical_card_number');
             $table->date('birthday');
             $table->boolean('gender');
-            $table->dateTime('sampling_date')->comment('Дата и время забора образца');
-            $table->dateTime('sample_receipt_date')->comment('Дата и время получения образца');
-            $table->text('anamnes')->nullable();
-            $table->jsonb('categories')->nullable();
-            $table->foreignId('doctor_id')->constrained();
-            $table->text('microscopic_description')->nullable()->comment('Микроскопическое описание');
-            $table->text('diagnosis')->nullable()->comment('Диагноз');
+            $table->string('place_of_residence')->nullable();
+            $table->string('phone')->nullable();
             $table->text('note')->nullable()->comment('заметка');
-            $table->foreignId('created_by')->constrained('users');
+            $table->text('comment')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

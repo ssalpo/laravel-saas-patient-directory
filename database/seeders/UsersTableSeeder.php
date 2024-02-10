@@ -21,25 +21,22 @@ class UsersTableSeeder extends Seeder
                     'name' => 'User 1',
                     'username' => 'user1',
                     'password' => 'secret',
-                    'role' => 'admin',
                 ],
                 [
                     'name' => 'User 2',
                     'username' => 'user2',
                     'password' => 'secret',
-                    'role' => 'resident',
                 ],
                 [
                     'name' => 'User 3',
                     'username' => 'user3',
                     'password' => 'secret',
-                    'role' => 'doctor',
                 ],
                 [
                     'name' => 'User 4',
                     'username' => 'user4',
                     'password' => 'secret',
-                    'role' => 'doctor',
+                    'role' => 'admin',
                 ],
             ]
             : [
@@ -54,7 +51,9 @@ class UsersTableSeeder extends Seeder
         foreach ($users as $userData) {
             $user = User::create(array_merge(Arr::except($userData, 'role'), ['password' => $userData['password']]));
 
-            $user->assignRole($userData['role']);
+            if (isset($userData['role'])) {
+                $user->assignRole($userData['role']);
+            }
         }
     }
 }

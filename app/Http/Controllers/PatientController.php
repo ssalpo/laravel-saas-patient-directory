@@ -2,45 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PatientCommentRequest;
 use App\Http\Requests\PatientReportRequest;
 use App\Http\Requests\PatientRequest;
-use App\Http\Requests\PrintDateRequest;
 use App\Http\Resources\PatientResource;
 use App\Models\Patient;
 use App\Services\PatientService;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PatientController extends Controller
 {
     public function __construct(
         protected readonly PatientService $patientService
     ) {
-        $this->middleware('can:read_all_patients')->only(['all', 'fullRecords']);
-        $this->middleware('can:create_patients')->only(['create', 'store']);
-        $this->middleware('can:edit_patients,read_all_patients')->only(['edit', 'update']);
-        $this->middleware('can:edit_patients')->only('deletePhoto');
-        $this->middleware('can:add_report')->only(['saveReport', 'submit']);
-        $this->middleware('can:add_comment')->only(['saveComment']);
-    }
-
-    /**
-     * Возвращает все записи пациентов
-     */
-    public function all(): Response
-    {
-        $patients = Patient::filter(request()?->all())
-            ->with('location', 'caseNumbers')
-            ->orderBy('created_at', 'DESC')
-            ->paginate(100)
-            ->onEachSide(0)
-            ->withQueryString();
-
-        return inertia('Patients/All', [
-            'patients' => PatientResource::collection($patients),
-        ]);
     }
 
     /**
@@ -49,20 +23,10 @@ class PatientController extends Controller
     public function fullRecords(): Response
     {
         $patients = PatientResource::collection(
-            Patient::orderByDesc('created_at')->with('location', 'caseNumbers')->get()
+            Patient::my('created_by')->orderByDesc('created_at')->get()
         );
 
         return inertia('Patients/FullRecords', compact('patients'));
-    }
-
-    /**
-     * Возвращает статистику по приему пациентов сгруппированный по дням
-     */
-    public function dailyStatistics(): Response
-    {
-        $statistics = $this->patientService->dailyStatistics();
-
-        return inertia('Patients/DailyStatistics', compact('statistics'));
     }
 
     /**
@@ -71,7 +35,6 @@ class PatientController extends Controller
     public function index(): Response
     {
         $patients = Patient::my('created_by')
-            ->with('caseNumbers')
             ->filter(request()?->all())
             ->orderByDesc('created_at')
             ->paginate(100)
@@ -97,9 +60,7 @@ class PatientController extends Controller
      */
     public function store(PatientRequest $request): RedirectResponse
     {
-        $patient = $this->patientService->store(
-            $request->validated() + ['photos' => $request->file('photos', [])]
-        );
+        $patient = $this->patientService->store($request->validated());
 
         return redirect()->route('patients.show', $patient->id)->with('isCreated', true);
     }
@@ -109,12 +70,19 @@ class PatientController extends Controller
      */
     public function show(int $id): Response
     {
-        $patient = Patient::myByPermission()
-            ->with('photos', 'doctor', 'medicalClinic', 'location', 'caseNumbers')
+        $patient = Patient::myOrSharedWithMe(auth()->id(), 'created_by')
+            ->with('photos')
             ->findOrFail($id);
 
+        $relationKey = $patient->created_by === auth()->id()
+            ? 'consultations'
+            : 'currentUserConsultations';
+
+        $patient->load([
+            $relationKey => fn ($q) => $q->with('user')->orderByDesc('created_at'),
+        ]);
+
         return inertia('Patients/Show', [
-            'qrCode' => (string) QrCode::size(100)->generate(route('public.patients.show', $patient->hashid)),
             'patient' => PatientResource::make($patient),
         ]);
     }
@@ -124,9 +92,7 @@ class PatientController extends Controller
      */
     public function edit(int $id): Response
     {
-        $patient = Patient::myByPermission()
-            ->with(['doctor', 'location'])
-            ->findOrFail($id);
+        $patient = Patient::my('created_by')->findOrFail($id);
 
         return inertia('Patients/Edit', [
             'patient' => PatientResource::make($patient),
@@ -139,7 +105,7 @@ class PatientController extends Controller
     public function update(int $id, PatientRequest $request): RedirectResponse
     {
         $patient = $this->patientService->update(
-            $id, $request->validated() + ['photos' => $request->file('photos', [])]
+            $id, $request->validated()
         );
 
         return redirect()->route('patients.show', $patient->id);
@@ -151,59 +117,6 @@ class PatientController extends Controller
     public function saveReport(int $id, PatientReportRequest $request): RedirectResponse
     {
         $this->patientService->saveReport($id, $request->validated());
-
-        return redirect()->route('patients.show', $id);
-    }
-
-    /**
-     * Сохраняет комментарий по итоговому результату диагноза
-     */
-    public function saveComment(int $id, PatientCommentRequest $request): RedirectResponse
-    {
-        $this->patientService->saveComment($id, $request->comment);
-
-        return redirect()->route('patients.show', $id);
-    }
-
-    /**
-     * Меняет статус результата на Проверено
-     */
-    public function markAsChecked(int $id): RedirectResponse
-    {
-        $this->patientService->markAsChecked($id);
-
-        return redirect()->route('patients.show', $id);
-    }
-
-    /**
-     * Возвращает данные для печати на принтере карточки пациента
-     */
-    public function print(Patient $patient): Response
-    {
-        $patient->load(['doctor', 'location', 'caseNumbers']);
-
-        return inertia('Patients/Print', [
-            'currentDate' => now()->format('d.m.Y'),
-            'patient' => PatientResource::make($patient),
-        ]);
-    }
-
-    /**
-     * Сохраняет дату печати карточки клиента
-     */
-    public function editPrintDate(int $id, PrintDateRequest $request): RedirectResponse
-    {
-        $this->patientService->changePrintDate($id, $request->print_date);
-
-        return back();
-    }
-
-    /**
-     * Удаляет загруженное фото пациента по ID фотографии
-     */
-    public function deletePhoto(int $id, int $photo): RedirectResponse
-    {
-        $this->patientService->deletePhoto($id, $photo);
 
         return back();
     }
